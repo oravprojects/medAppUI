@@ -152,7 +152,7 @@ window.onload = function exampleFunction() {
   var date = new Date();
 
   var day = date.getDay();
-
+  
   var dayNumber = date.getDate();
 
   var month = date.getMonth();
@@ -182,7 +182,7 @@ window.onload = function exampleFunction() {
   if (day === 4) { dayName = "Thu" };
   if (day === 5) { dayName = "Fri" };
   if (day === 6) { dayName = "Sat" };
-  if (day === 7) { dayName = "Sun" };
+  if (day === 0) { dayName = "Sun" };
 
 
   dateTitle.innerHTML = dayName + ", " + dayNumber + " " + monthName + " " + year;
@@ -278,5 +278,13 @@ function failure() {
   setTimeout(function () { failure.className = "alert-off"; }, 4900);
 }
 
-
+function saveChanges(e){
+  alert("save changes");
+  e = e || window.event;
+      var target = e.target,
+        // text = target.textContent || target.innerText;
+        text = target.innerText;
+  console.log(e)
+  console.log(text)
+}
 

@@ -38,6 +38,27 @@
     margin: 1%;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sched-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .sched-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+.sched-item-icon {
+    color: grey;
+    margin: 1%;
+    width: 10%;
+}
+.sched-item-content {
+    color: grey;
+    margin: 1%;
+    width: 50%;
+}
 .sched-item {
     color: grey;
     margin: 1%;
@@ -54,10 +75,6 @@
 .report-item {
     margin: 1%;
 }
-
-.sched-item:nth-of-type(1){ flex-grow: 1;}
-.sched-item:nth-of-type(2){ flex-grow: 1;}
-.sched-item:nth-of-type(3){ flex-grow: 1;}
 
 .report-menu:nth-of-type(1){ flex-grow: 1;}
 .report-menu:nth-of-type(2){ flex-grow: 1;}
