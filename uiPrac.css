@@ -5,7 +5,7 @@
 .dash-title {font-weight: bold;}
 .secondary {font-weight: bold;}
 .no-ptr {pointer-events: none;}
-
+.hide {display: none;}
 .flex-container{
     padding: 0;
     margin: 0;

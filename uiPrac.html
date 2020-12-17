@@ -149,7 +149,15 @@
                                             <td>
                                                 <h6 class="card-title secondary" id="helloUsr"></h6>
                                                 <p class="card-text">Don't forget to submit your daily report.</p>
-                                                <a href="#" class="btn btn-primary shadow">complete report</a>
+                                                <a href="#" class="btn btn-primary shadow" id="completeReport"
+                                                    data-toggle="modal" 
+                                                    data-target="#exampleModalCenter">complete
+                                                    report</a>
+                                                <br />
+                                                <br />
+                                                <a href="#" class="btn btn-info shadow" id="viewReportsLog" 
+                                                    data-toggle="modal" 
+                                                    data-target="#reportsModal">view reports log</a>
                                             </td>
                                             <td>
                                                 <div class="text-center">
@@ -309,7 +317,27 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveChanges(event)">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesButton" onclick="saveChanges(event)">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reports Log Modal -->
+    <div class="modal fade" id="reportsModal" tabindex="-1" role="dialog"
+        aria-labelledby="reportsModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportsModalLongTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="reportsModalBody" style="max-height: 400px; overflow: auto;">           
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

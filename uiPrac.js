@@ -1,4 +1,28 @@
 window.onload = function exampleFunction() {
+  // complete report
+  document.querySelector("#completeReport").addEventListener("click", () => {
+    var date = new Date().toString();
+    modalTitle = document.getElementById('exampleModalLongTitle');
+    modalTitle.innerText = date.substr(0, 15) + " Daily Report";
+  });
+  
+  // view reports log
+  document.querySelector("#viewReportsLog").addEventListener("click", () => {
+    modalTitle = document.getElementById('reportsModalLongTitle');
+    modalTitle.innerText = "Reports Log";
+    textArea = document.getElementById("reportsModalBody");
+    logReports = JSON.parse(dailyReport);
+    console.log(logReports)
+    reportsText = "";
+    console.log(logReports[0].user)
+    for(i=0; i<logReports.length; i++){
+      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+      `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+      `<div><b>Notes: </b>${logReports[i].notes}</div>` + 
+      `<div><b>---------------</b></div>`
+    }
+    textArea.innerHTML = reportsText;
+  });
 
   // dashboard appointment clicks
   document.querySelectorAll('.dash-appointment').forEach(item => {
@@ -61,8 +85,6 @@ window.onload = function exampleFunction() {
 
     document.querySelector(".date h1").innerHTML = months[date.getMonth()] + " " + date.getFullYear();
 
-    // document.querySelector(".date p").innerHTML = new Date().toDateString();
-
     let days = "";
 
     for (let x = firstDayIndex; x > 0; x--) {
@@ -97,42 +119,23 @@ window.onload = function exampleFunction() {
       }
       monthDays.innerHTML = days;
     }
-
-    // for (let x = firstDayIndex; x > 0; x--) {
-    //   days += `<div class="prev-date">${prevLastDay - x + 1}</div>`;
-    //   console.log("prevMonthLastDays", prevLastDay - x + 1)
-    // }
-
-    // for (let i = 1; i <= lastDay; i++) {
-    //   if (
-    //     i === new Date().getDate() &&
-    //     date.getMonth() === new Date().getMonth() &&
-    //     date.getFullYear() === thisYear
-    //   ) {
-    //     days += `<div class="today" id="${i+ months[date.getMonth()] + " " + date.getFullYear()}">${i}</div>`;
-    //   } else {
-    //     days += `<div id="${i+ months[date.getMonth()] + " " + date.getFullYear()}">${i}</div>`;
-    //   }
-    // }
-
-    // for (let j = 1; j <= nextDays; j++) {
-    //   days += `<div class="next-date">${j}</div>`;
-    // }
-    // monthDays.innerHTML = days;
   };
 
+  // previous month
   document.querySelector(".prev").addEventListener("click", () => {
     date.setMonth(date.getMonth() - 1);
     console.log("prev", date);
     renderCalendar();
   });
 
+  // next month
   document.querySelector(".next").addEventListener("click", () => {
     date.setMonth(date.getMonth() + 1);
     console.log("next", date);
     renderCalendar();
   });
 
+  // days click event
   document.querySelector(".days").addEventListener("click", function (e) {
     e = e || window.event;
     var target = e.target,
@@ -191,18 +194,6 @@ window.onload = function exampleFunction() {
   var helloUsr = document.getElementById("helloUsr");
   var usr = "John"
   helloUsr.innerHTML = "Hello, " + usr + "!"
-
-  // $( "#success-btn" ).click(function() {
-  //     $( "div.success" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-  //   });
-
-  //   $( "#failure-btn" ).click(function() {
-  //     $( "div.failure" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-  //   });
-
-  //   $( "#warning-btn" ).click(function() {
-  //     $( "div.warning" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
-  //   });
 
   // patient cards
   var patientNumber = 0;
@@ -277,6 +268,28 @@ function failure() {
   setTimeout(function () { failure.className = "alert-item fade-out fadeOutFailure"; }, 3000);
   setTimeout(function () { failure.className = "alert-off"; }, 4900);
 }
+// Daily Report
+var dailyReport = localStorage.getItem("dailyReport");
+if (dailyReport === null){
+  console.log("no daily rep in storage");
+  var dailyReportArray = [];
+    dailyReportArray = JSON.stringify(dailyReportArray)
+    localStorage.setItem("dailyReport", dailyReportArray);
+    dailyReport = localStorage.getItem("dailyReport");
+};
+
+function saveDailyReport(){
+  console.log("function saveDaily report");
+  console.log(dailyReport);
+  dailyReportArray = JSON.parse(dailyReport);
+  var notes = document.getElementById("exampleFormControlTextarea1").value;
+  console.log(notes);
+  dailyReportArray.push({"date": new Date, "user": "Oren", "notes": notes});
+  console.log(dailyReportArray);
+  dailyReportArray = JSON.stringify(dailyReportArray)
+  localStorage.setItem("dailyReport", dailyReportArray);
+  dailyReport = localStorage.getItem("dailyReport");
+}
 
 function saveChanges(e){
   alert("save changes");
@@ -286,5 +299,17 @@ function saveChanges(e){
         text = target.innerText;
   console.log(e)
   console.log(text)
+  console.log(target)
+  var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
+  console.log(modalTitle);
+  if (modalTitle.includes("Daily Report")){
+    console.log("includes daily report");
+    saveDailyReport();
+  }else if (modalTitle.includes("Appointment")){
+      console.log("includes appointment")
+    }
+  else if (modalTitle.length === 15){
+      console.log("includes day")
+    }
 }
 
