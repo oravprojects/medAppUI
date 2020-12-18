@@ -1,11 +1,68 @@
 window.onload = function exampleFunction() {
+  // Reminders
+  var reminderArray = localStorage.getItem("reminders");
+  if (reminderArray === null) {
+    console.log("no reminders in storage");
+    var reminderArray = [];
+    reminderArray = JSON.stringify(reminderArray)
+    localStorage.setItem("reminders", reminderArray);
+    reminderArray = localStorage.getItem("reminders");
+  } else {
+    counter = 0;
+    reminderArray = JSON.parse(reminderArray);
+    console.log(reminderArray);
+    var now = new Date();
+    now = Date.now()
+    for (i = 0; i < reminderArray.length; i++) {
+      console.log("array length: ", reminderArray.length)
+      alarmTime = new Date(reminderArray[i].dateTime);
+      alarmTime = alarmTime.getTime();
+      console.log("alarm time: ", alarmTime);
+      console.log("now: ", now);
+      if (alarmTime < now) { 
+        alert("Missed Reminder number " + i + " set for: " + reminderArray[i].dateTime + "; reminder: " +
+        reminderArray[i].text + " set by: " + reminderArray[i].user + ".");
+        reminderArray.splice(i, 1); 
+        reminderArray = JSON.stringify(reminderArray);
+        localStorage.setItem("reminders", reminderArray);
+      }
+      else if (alarmTime < now + 24 * 60 * 60 * 1000) {
+        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) === 1) {
+          alert("Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
+            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
+        }
+        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) > 1) {
+          alert("Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
+            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
+        }
+        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) < 1) {
+          alert("Reminder number " + i + " is in " +
+            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
+        }
+        counter++
+      }
+      if (i === reminderArray.length - 1) { if (counter === 0) { alert("No reminders for the next 24 hours"); } }
+    }
+  }
+
+  // set reminder
+  document.querySelector("#setReminder").addEventListener("click", () => {
+    alert('set reminder');
+    textArea = document.getElementById('reminderText');
+    textArea.value = "";
+    reminderTime = document.getElementById('reminder-time');
+    reminderTime.value = "";
+  });
+
   // complete report
   document.querySelector("#completeReport").addEventListener("click", () => {
     var date = new Date().toString();
     modalTitle = document.getElementById('exampleModalLongTitle');
     modalTitle.innerText = date.substr(0, 15) + " Daily Report";
+    textArea = document.getElementById('exampleFormControlTextarea1');
+    textArea.value = "";
   });
-  
+
   // view reports log
   document.querySelector("#viewReportsLog").addEventListener("click", () => {
     modalTitle = document.getElementById('reportsModalLongTitle');
@@ -15,11 +72,11 @@ window.onload = function exampleFunction() {
     console.log(logReports)
     reportsText = "";
     console.log(logReports[0].user)
-    for(i=0; i<logReports.length; i++){
+    for (i = 0; i < logReports.length; i++) {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-      `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-      `<div><b>Notes: </b>${logReports[i].notes}</div>` + 
-      `<div><b>---------------</b></div>`
+        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+        `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+        `<div><b>---------------</b></div>`
     }
     textArea.innerHTML = reportsText;
   });
@@ -33,6 +90,8 @@ window.onload = function exampleFunction() {
         text = target.innerText;
       modalTitle = document.getElementById('exampleModalLongTitle');
       modalTitle.innerText = text;
+      textArea = document.getElementById('exampleFormControlTextarea1');
+      textArea.value = "";
     }, false)
   })
 
@@ -144,6 +203,8 @@ window.onload = function exampleFunction() {
     title = new Date(text).toString();
     modalTitle = document.getElementById('exampleModalLongTitle');
     modalTitle.innerText = title.substr(0, 15);
+    textArea = document.getElementById('exampleFormControlTextarea1');
+    textArea.value = "";
   }, false);
 
   renderCalendar();
@@ -155,7 +216,7 @@ window.onload = function exampleFunction() {
   var date = new Date();
 
   var day = date.getDay();
-  
+
   var dayNumber = date.getDate();
 
   var month = date.getMonth();
@@ -270,46 +331,67 @@ function failure() {
 }
 // Daily Report
 var dailyReport = localStorage.getItem("dailyReport");
-if (dailyReport === null){
+if (dailyReport === null) {
   console.log("no daily rep in storage");
   var dailyReportArray = [];
-    dailyReportArray = JSON.stringify(dailyReportArray)
-    localStorage.setItem("dailyReport", dailyReportArray);
-    dailyReport = localStorage.getItem("dailyReport");
+  dailyReportArray = JSON.stringify(dailyReportArray)
+  localStorage.setItem("dailyReport", dailyReportArray);
+  dailyReport = localStorage.getItem("dailyReport");
 };
 
-function saveDailyReport(){
+function saveDailyReport() {
   console.log("function saveDaily report");
   console.log(dailyReport);
   dailyReportArray = JSON.parse(dailyReport);
   var notes = document.getElementById("exampleFormControlTextarea1").value;
   console.log(notes);
-  dailyReportArray.push({"date": new Date, "user": "Oren", "notes": notes});
+  dailyReportArray.push({ "date": new Date, "user": "Oren", "notes": notes });
   console.log(dailyReportArray);
   dailyReportArray = JSON.stringify(dailyReportArray)
   localStorage.setItem("dailyReport", dailyReportArray);
   dailyReport = localStorage.getItem("dailyReport");
 }
 
-function saveChanges(e){
+function saveChanges(e) {
   alert("save changes");
   e = e || window.event;
-      var target = e.target,
-        // text = target.textContent || target.innerText;
-        text = target.innerText;
+  var target = e.target,
+    // text = target.textContent || target.innerText;
+    text = target.innerText;
   console.log(e)
   console.log(text)
   console.log(target)
   var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
   console.log(modalTitle);
-  if (modalTitle.includes("Daily Report")){
+  if (modalTitle.includes("Daily Report")) {
     console.log("includes daily report");
     saveDailyReport();
-  }else if (modalTitle.includes("Appointment")){
-      console.log("includes appointment")
-    }
-  else if (modalTitle.length === 15){
-      console.log("includes day")
-    }
+  } else if (modalTitle.includes("Appointment")) {
+    console.log("includes appointment")
+  }
+  else if (modalTitle.length === 15) {
+    console.log("includes day")
+  }
+}
+
+function setReminder() {
+  var reminderArray = localStorage.getItem("reminders");
+
+  alert("set reminder");
+  var reminderTime = document.getElementById("reminder-time").value;
+  console.log(reminderTime);
+
+  reminderArray = JSON.parse(reminderArray);
+  reminderText = document.getElementById("reminderText").value;
+  console.log(reminderText);
+  reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
+  console.log(reminderArray);
+  reminderArray = JSON.stringify(reminderArray)
+  localStorage.setItem("reminders", reminderArray);
+  reminderArray = localStorage.getItem("reminders");
+
+  const when = Date.now(reminderText);
+
+  console.log(when);
 }
 

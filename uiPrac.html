@@ -101,7 +101,9 @@
                         <a href="#" class="btn btn-primary w-100 no-ptr shadow">end today's shift</a>
                         <br />
                         <br />
-                        <a href="#" class="btn btn-light w-100 no-ptr shadow">set a reminder</a>
+                        <div id="setReminder" data-toggle="modal" data-target="#setReminderModal">
+                            <a href="#" class="btn btn-light w-100 no-ptr shadow">set a reminder</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -150,14 +152,12 @@
                                                 <h6 class="card-title secondary" id="helloUsr"></h6>
                                                 <p class="card-text">Don't forget to submit your daily report.</p>
                                                 <a href="#" class="btn btn-primary shadow" id="completeReport"
-                                                    data-toggle="modal" 
-                                                    data-target="#exampleModalCenter">complete
+                                                    data-toggle="modal" data-target="#exampleModalCenter">complete
                                                     report</a>
                                                 <br />
                                                 <br />
-                                                <a href="#" class="btn btn-info shadow" id="viewReportsLog" 
-                                                    data-toggle="modal" 
-                                                    data-target="#reportsModal">view reports log</a>
+                                                <a href="#" class="btn btn-info shadow" id="viewReportsLog"
+                                                    data-toggle="modal" data-target="#reportsModal">view reports log</a>
                                             </td>
                                             <td>
                                                 <div class="text-center">
@@ -317,15 +317,16 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveChangesButton" onclick="saveChanges(event)">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesButton"
+                        onclick="saveChanges(event)">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Reports Log Modal -->
-    <div class="modal fade" id="reportsModal" tabindex="-1" role="dialog"
-        aria-labelledby="reportsModalTitle" aria-hidden="true">
+    <div class="modal fade" id="reportsModal" tabindex="-1" role="dialog" aria-labelledby="reportsModalTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -334,10 +335,40 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="reportsModalBody" style="max-height: 400px; overflow: auto;">           
+                <div class="modal-body" id="reportsModalBody" style="max-height: 400px; overflow: auto;">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Set Reminder Modal -->
+    <div class="modal fade" id="setReminderModal" tabindex="-1" role="dialog" aria-labelledby="setReminderModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="setReminderModalLongTitle">Set A Reminder</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="reportsModalBody" style="max-height: 400px; overflow: auto;">
+                    <form>
+                        <div class="form-group">
+                            <label for="reminder-time">Reminder date and time:</label>
+                            <input type="datetime-local" id="reminder-time" name="reminder-time">
+                            <label for="reminderText">Reminder:</label>
+                            <textarea class="form-control" id="reminderText" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveReminder" onclick="setReminder()">Set
+                        Reminder</button>
                 </div>
             </div>
         </div>
