@@ -1,50 +1,4 @@
-window.onload = function exampleFunction() {
-  // Reminders
-  var reminderArray = localStorage.getItem("reminders");
-  if (reminderArray === null) {
-    console.log("no reminders in storage");
-    var reminderArray = [];
-    reminderArray = JSON.stringify(reminderArray)
-    localStorage.setItem("reminders", reminderArray);
-    reminderArray = localStorage.getItem("reminders");
-  } else {
-    counter = 0;
-    reminderArray = JSON.parse(reminderArray);
-    console.log(reminderArray);
-    var now = new Date();
-    now = Date.now()
-    for (i = 0; i < reminderArray.length; i++) {
-      console.log("array length: ", reminderArray.length)
-      alarmTime = new Date(reminderArray[i].dateTime);
-      alarmTime = alarmTime.getTime();
-      console.log("alarm time: ", alarmTime);
-      console.log("now: ", now);
-      if (alarmTime < now) { 
-        alert("Missed Reminder number " + i + " set for: " + reminderArray[i].dateTime + "; reminder: " +
-        reminderArray[i].text + " set by: " + reminderArray[i].user + ".");
-        reminderArray.splice(i, 1); 
-        reminderArray = JSON.stringify(reminderArray);
-        localStorage.setItem("reminders", reminderArray);
-      }
-      else if (alarmTime < now + 24 * 60 * 60 * 1000) {
-        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) === 1) {
-          alert("Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
-            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
-        }
-        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) > 1) {
-          alert("Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
-            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
-        }
-        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) < 1) {
-          alert("Reminder number " + i + " is in " +
-            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
-        }
-        counter++
-      }
-      if (i === reminderArray.length - 1) { if (counter === 0) { alert("No reminders for the next 24 hours"); } }
-    }
-  }
-
+window.onload = function exampleFunction(callback) {
   // set reminder
   document.querySelector("#setReminder").addEventListener("click", () => {
     alert('set reminder');
@@ -269,7 +223,77 @@ window.onload = function exampleFunction() {
   patientCard3.innerHTML = "Patient " + (3 + patientNumber);
   patientCard4.innerHTML = "Patient " + (4 + patientNumber);
   patientCard5.innerHTML = "Patient " + (5 + patientNumber);
+
+  // Reminders
+  const reminderFunction = () => {
+  var reminderArray = localStorage.getItem("reminders");
+  if (reminderArray === null) {
+    console.log("no reminders in storage");
+    reminderArray = [];
+    reminderArray = JSON.stringify(reminderArray)
+    localStorage.setItem("reminders", reminderArray);
+    // reminderArray = localStorage.getItem("reminders");
+  } else {
+    counter = 0;
+    reminderArray = JSON.parse(reminderArray);
+    console.log(reminderArray);
+    var now = Date.now()
+    for (i = 0; i < reminderArray.length; i++) {
+      console.log("array length: ", reminderArray.length)
+      alarmTime = new Date(reminderArray[i].dateTime);
+      alarmTime = alarmTime.getTime();
+      console.log("alarm time: ", alarmTime);
+      console.log("now: ", now);
+      if (alarmTime < now) { 
+        alert("Missed Reminder number " + i + " set for: " + reminderArray[i].dateTime + "; reminder: " +
+        reminderArray[i].text + " set by: " + reminderArray[i].user + ".");
+        reminderArray.splice(i, 1); 
+        reminderArray = JSON.stringify(reminderArray);
+        localStorage.setItem("reminders", reminderArray);
+        reminderArray = JSON.parse(reminderArray);
+        i--;
+      }
+      else if (alarmTime <= now + 24 * 60 * 60 * 1000) {
+        var number = i;
+        var setFor = reminderArray[i].dateTime;
+        var text = reminderArray[i].text;
+        var setBy = reminderArray[i].user;
+        setTimeout(function(){
+          alert("This is Reminder number " + number + " set for: " + setFor + "; reminder: " +
+        text + " set by: " + setBy + ".");
+          reminderArray.splice(number, 1); 
+          reminderArray = JSON.stringify(reminderArray);
+          localStorage.setItem("reminders", reminderArray);
+        }, (alarmTime-now))
+        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) === 1) {
+          alert("Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
+            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
+        }
+        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) > 1) {
+          alert("Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
+            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
+        }
+        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) < 1) {
+          alert("Reminder number " + i + " is in " +
+            Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
+        }
+        counter++
+      } else if(alarmTime > now + 24 * 60 * 60 * 1000){
+        if (counter === 0) {
+          alert("No reminders for the next 24 hours");
+          i = reminderArray.length;
+        } else{
+          i = reminderArray.length;
+        }
+      }
+    }
+  }
 }
+setTimeout(function(){
+  reminderFunction();
+}, 10)
+}
+// end of window onload
 
 var patientNumber = 0;
 
