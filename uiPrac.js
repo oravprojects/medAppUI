@@ -379,12 +379,38 @@ function setReminder() {
 
   alert("set reminder");
   var reminderTime = document.getElementById("reminder-time").value;
+  var reminderTimeMilli = new Date(reminderTime);
+  reminderTimeMilli = reminderTimeMilli.getTime();
+
   console.log(reminderTime);
 
   reminderArray = JSON.parse(reminderArray);
   reminderText = document.getElementById("reminderText").value;
   console.log(reminderText);
-  reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
+  var mid = Math.floor(reminderArray.length/2);
+  var start = 0;
+  var end = reminderArray.length-1;
+  for(i=0; i<reminderArray.length; i++){
+    var dateTimeMilli = new Date(reminderArray[mid].dateTime);
+    dateTimeMilli = dateTimeMilli.getTime();
+    
+    if(reminderTimeMilli > dateTimeMilli){
+      start = mid;
+      mid = Math.floor((mid + end/2));
+    } else{
+      end = mid;
+      mid = Math.floor((start + end)/2);
+    }
+    if(mid === start){
+      i = reminderArray.length;
+      if (reminderTimeMilli > dateTimeMilli){
+        reminderArray.splice(mid+1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
+      } else{
+        reminderArray.splice(mid, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
+      }
+    }
+  }
+  // reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
   console.log(reminderArray);
   reminderArray = JSON.stringify(reminderArray)
   localStorage.setItem("reminders", reminderArray);
