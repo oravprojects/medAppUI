@@ -20,10 +20,13 @@
             <div class="centerAlert">Successful Alert !!!</div>
         </div>
         <div id="failure" class="alert-off">
-            <div class="centerAlert">Failure Alert !!!</div>
+            <div class="centerAlert" id="failureText">Failure Alert !!!</div>
         </div>
         <div id="warning" class="alert-off">
             <div class="centerAlert">Warning Alert !!!</div>
+        </div>
+        <div id="reminderAlert" class="alert-off">
+            <div class="centerAlert" id="reminderAlertText">Failure Alert !!!</div>
         </div>
     </div>
     <div class="container mt-5">
@@ -107,6 +110,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-md-9 col-sm-12">
                 <div class="row">
 
@@ -335,7 +339,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="reportsModalBody" style="max-height: 400px; overflow: auto;">
+                <div class="modal-body" id="reportsLogModalBody" style="max-height: 400px; overflow: auto;">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -369,6 +373,26 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="saveReminder" onclick="setReminder()">Set
                         Reminder</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reminder Text Modal -->
+    <div class="modal fade" id="reminderTextModal" tabindex="-1" role="dialog" aria-labelledby="reminderTextModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reminderTextModalLongTitle">Reminder</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="reminderTextModalBody" style="max-height: 400px; overflow: auto;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

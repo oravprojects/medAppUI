@@ -154,6 +154,19 @@
     left: 50%;
     border-radius: 5%;
 }
+.reminder-item{
+    z-index: 1;
+    position: fixed;
+    transform: translateY(-50%);
+    display: inline;
+    height: 50px;
+    width: 400px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    top: 6%;
+    left: 35%;
+}
 .fade-out{
     -webkit-animation-duration: 2s;
     animation-duration: 2s;
@@ -181,6 +194,15 @@
     background-color: #f2dede;
     border-color: #ebccd1;
 }
+.fadeOutReminder{
+  color: #3c763d;
+  /* background-color: #dff0d8; */
+  background-color: rgba(103, 194, 106, 0.2);
+  border: solid;
+  border-color: grey;
+  border-radius: 10px;
+  border-width: 1px;
+}
 
 .fadeInSuccess{
     color: #3c763d;
@@ -196,6 +218,15 @@
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;
+}
+.fadeInReminder{
+  color: #3c763d;
+  background-color: rgba(103, 194, 106, 0.2);
+  border:black;
+  border: solid;
+  border-color: grey;
+  border-radius: 10px;
+  border-width: 1px;
 }
 .centerAlert{
     padding: 12px;
@@ -332,6 +363,19 @@
         border-color: #ebccd1;
         left: 22%;
     }
+    .reminder-item{
+      z-index: 1;
+      position: fixed;
+      transform: translateY(-50%);
+      display: inline;
+      height: 50px;
+      width: 300px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      top: 4%;
+      left: 10%;
+  }
     #prev{
         position: absolute;
         left: 3px;
