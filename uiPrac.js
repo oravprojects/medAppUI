@@ -1,29 +1,98 @@
-window.onload = function exampleFunction() {
-  var message = "";
-  function displayReminder(subject, user, date, text, check){
-    modalMessage = document.getElementById("reminderTextModalBody");
-    reminderModalTitle = document.getElementById("reminderTextModalLongTitle");
-    reminderModalTitle.innerText = subject;
-    message += `<div><b>User: </b>${user}</div>` +
-    `<div><b>Set for: </b>${new Date(date).toString().substr(0, 24)}</div>` +
-    `<div><b>Reminder: </b>${text}</div>` +
-    `<div><b>---------------</b></div>`
-    modalMessage.innerHTML = message;
-    $('#reminderTextModal').modal('show');
-    if(check){reminderFunction()}
-  }
+window.onload = function onLoadFunction() {
 
-  
-  // set reminder
-  document.querySelector("#setReminder").addEventListener("click", () => {
-    alert('set reminder');
-    textArea = document.getElementById('reminderText');
-    textArea.value = "";
-    reminderTime = document.getElementById('reminder-time');
-    reminderTime.value = "";
+  // sort report log messages by user name
+  var sortUserDir = "";
+  document.querySelector(".sortUser").addEventListener("click", () => {
+    textArea = document.getElementById("reportsLogModalBody");
+    logReports = JSON.parse(dailyReport);
+    // console.log(logReports)
+    reportsText = "";
+    function compareAsc(a, b) {
+      if (a.user.toUpperCase() < b.user.toUpperCase()) {
+        return -1;
+      }
+      if (a.user.toUpperCase() > b.user.toUpperCase()) {
+        return 1;
+      }
+      return 0;
+    }
+    function compareDesc(a, b) {
+      if (a.user.toUpperCase() > b.user.toUpperCase()) {
+        return -1;
+      }
+      if (a.user.toUpperCase() < b.user.toUpperCase()) {
+        return 1;
+      }
+      return 0;
+    }
+    if (sortUserDir === "desc") {
+      console.log(sortUserDir, " sort desc")
+      logReports.sort(compareDesc);
+      logReports = logReports.sort(compareDesc);
+      sortUserDir = "asc"
+    } else {
+      console.log(sortUserDir, "sort asc")
+      logReports.sort(compareAsc);
+      logReports = logReports.sort(compareAsc);
+      sortUserDir = "desc"
+    }
+    console.log(logReports)
+    for (i = 0; i < logReports.length; i++) {
+      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+        `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+        `<div><b>---------------</b></div>`
+    }
+    textArea.innerHTML = reportsText;
   });
 
-  // complete report
+  // sort report log messages by date
+  var sortDateDir = "";
+  document.querySelector(".sortDate").addEventListener("click", () => {
+    textArea = document.getElementById("reportsLogModalBody");
+    logReports = JSON.parse(dailyReport);
+    // console.log(logReports)
+    reportsText = "";
+    function compareAsc(a, b) {
+      if (new Date(a.date) < new Date(b.date)) {
+        return -1;
+      }
+      if (new Date(a.date) > new Date(b.date)) {
+        return 1;
+      }
+      return 0;
+    }
+    function compareDesc(a, b) {
+      if (new Date(a.date) > new Date(b.date)) {
+        return -1;
+      }
+      if (new Date(a.date) < new Date(b.date)) {
+        return 1;
+      }
+      return 0;
+    }
+    if (sortDateDir === "desc") {
+      console.log(sortDateDir, " sort desc")
+      logReports.sort(compareAsc);
+      logReports = logReports.sort(compareAsc);
+      sortDateDir = "asc"
+    } else {
+      console.log(sortDateDir, "sort asc")
+      logReports.sort(compareDesc);
+      logReports = logReports.sort(compareDesc);
+      sortDateDir = "desc"
+    }
+    console.log(logReports)
+    for (i = 0; i < logReports.length; i++) {
+      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+        `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+        `<div><b>---------------</b></div>`
+    }
+    textArea.innerHTML = reportsText;
+  });
+
+  // complete report for report log
   document.querySelector("#completeReport").addEventListener("click", () => {
     var date = new Date().toString();
     modalTitle = document.getElementById('exampleModalLongTitle');
@@ -39,12 +108,18 @@ window.onload = function exampleFunction() {
     textArea = document.getElementById("reportsLogModalBody");
     logReports = JSON.parse(dailyReport);
     console.log(logReports)
+    if (logReports.length === 0) {
+      reportsText = "No reports in log.";
+      textArea.innerHTML = reportsText;
+      return;
+    }
     reportsText = "";
     console.log(logReports[0].user)
     for (i = 0; i < logReports.length; i++) {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+        `<div><i class='far fa-edit'></i><i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
         `<div><b>---------------</b></div>`
     }
     textArea.innerHTML = reportsText;
@@ -238,94 +313,6 @@ window.onload = function exampleFunction() {
   patientCard3.innerHTML = "Patient " + (3 + patientNumber);
   patientCard4.innerHTML = "Patient " + (4 + patientNumber);
   patientCard5.innerHTML = "Patient " + (5 + patientNumber);
-
-  // Reminders
-  const reminderFunction = () => {
-  var reminderArray = localStorage.getItem("reminders");
-  if (reminderArray === null) {
-    console.log("no reminders in storage");
-    reminderArray = [];
-    reminderArray = JSON.stringify(reminderArray)
-    localStorage.setItem("reminders", reminderArray);
-    // reminderArray = localStorage.getItem("reminders");
-  } else {
-    counter = 0;
-    reminderArray = JSON.parse(reminderArray);
-    console.log(reminderArray);
-    var now = Date.now()
-    for (i = 0; i < reminderArray.length; i++) {
-      console.log("array length: ", reminderArray.length)
-      alarmTime = new Date(reminderArray[i].dateTime);
-      alarmTime = alarmTime.getTime();
-      console.log("alarm time: ", alarmTime);
-      console.log("now: ", now);
-      if (alarmTime < now) {
-        var subject = "Missed Reminder"; 
-        var setFor = reminderArray[i].dateTime;
-        var text = reminderArray[i].text;
-        var setBy = reminderArray[i].user;
-        var check = true;
-        // message = "Missed Reminder number " + i + " set for: " + reminderArray[i].dateTime + "; reminder: " +
-        // reminderArray[i].text + " set by: " + reminderArray[i].user + ".";
-        displayReminder(subject, setBy, setFor, text, check);
-        reminderArray.splice(i, 1); 
-        reminderArray = JSON.stringify(reminderArray);
-        localStorage.setItem("reminders", reminderArray);
-        reminderArray = JSON.parse(reminderArray);
-        i--;
-      }
-      else if (alarmTime <= now + 24 * 60 * 60 * 1000) {
-        var number = i;
-        var subject = "Reminder";
-        var setFor = reminderArray[i].dateTime;
-        var text = reminderArray[i].text;
-        var setBy = reminderArray[i].user;
-        check = true;
-        setTimeout(function(){
-          reminderArray.splice(number, 1); 
-          reminderArray = JSON.stringify(reminderArray);
-          localStorage.setItem("reminders", reminderArray);
-          reminderArray = JSON.parse(reminderArray);
-          displayReminder(subject, setBy, setFor, text, check);
-        }, (alarmTime-now))
-        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) === 1) {
-          remAlert = "Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
-          Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
-          reminderText(remAlert);
-          // alert("Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
-          //   Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
-        }
-        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) > 1) {
-          remAlert = "Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
-          Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
-          reminderText(remAlert);
-          // alert("Reminder number " + i + " is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
-          //   Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
-        }
-        if (Math.floor((alarmTime - now) / 1000 / 60 / 60) < 1) {
-          remAlert = "Reminder number " + i + " is in " +
-          Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
-          reminderText(remAlert);
-          // alert("Reminder number " + i + " is in " +
-          //   Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes.")
-        }
-        counter++;
-        i = reminderArray.length;
-      } else if(alarmTime > now + 24 * 60 * 60 * 1000){
-        if (counter === 0) {
-          remAlert = "No reminders for the next 24 hours";
-          reminderText(remAlert);
-          i = reminderArray.length;
-        } else{
-          i = reminderArray.length;
-        }
-      }
-    }
-  }
-}
-setTimeout(function(){
-  reminderFunction();
-}, 0)
 }
 // end of window onload
 
@@ -388,14 +375,6 @@ function failure() {
   setTimeout(function () { failure.className = "alert-off"; }, 4900);
 }
 
-function reminderText(message) {
-  var reminderAlert = document.getElementById("reminderAlert");
-  reminderAlert.className = "reminder-item fade-in fadeInReminder";
-  var reminderAlertText = document.getElementById("reminderAlertText");
-  reminderAlertText.innerText = message;
-  setTimeout(function () { reminderAlert.className = "reminder-item fade-out fadeOutReminder"; }, 3000);
-  setTimeout(function () { reminderAlert.className = "alert-off"; }, 4900);
-}
 // Daily Report
 var dailyReport = localStorage.getItem("dailyReport");
 if (dailyReport === null) {
@@ -441,52 +420,20 @@ function saveChanges(e) {
   }
 }
 
-function setReminder() {
-  var reminderArray = localStorage.getItem("reminders");
 
-  alert("set reminder");
-  var reminderTime = document.getElementById("reminder-time").value;
-  var reminderTimeMilli = new Date(reminderTime);
-  reminderTimeMilli = reminderTimeMilli.getTime();
-
-  console.log(reminderTime);
-
-  reminderArray = JSON.parse(reminderArray);
-  reminderText = document.getElementById("reminderText").value;
-  console.log(reminderText);
-  var mid = Math.floor(reminderArray.length/2);
-  var start = 0;
-  var end = reminderArray.length-1;
-  var mid = Math.floor((start+end)/2);
-  for(i=0; i<reminderArray.length; i++){
-    var dateTimeMilli = new Date(reminderArray[mid].dateTime);
-    dateTimeMilli = dateTimeMilli.getTime();
-    if(mid === start){
-      i = reminderArray.length;
-      if (reminderTimeMilli > dateTimeMilli){
-        reminderArray.splice(mid+1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
-        console.log("remTime: " + reminderTimeMilli + " dateTime: " + dateTimeMilli + " placed in place: " + (mid+1))
-      } else{
-        reminderArray.splice(mid, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
-        console.log("remTime: " + reminderTimeMilli + " dateTime: " + dateTimeMilli + " placed in place: " + (mid))
-      }
-    }
-    else if(reminderTimeMilli > dateTimeMilli){
-      start = mid;
-      mid = Math.floor((start + end/2));
-    } else{
-      end = mid;
-      mid = Math.floor((start + end)/2);
-    }
+function deleteRepLog(num) {
+  console.log(num);
+  textArea = document.getElementById("reportsLogModalBody");
+  logReports = JSON.parse(dailyReport);
+  logReports.splice(num, 1);
+  console.log(logReports)
+  reportsText = "";
+  for (i = 0; i < logReports.length; i++) {
+    reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+      `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+      `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+      `<div><i class='far fa-edit'></i><i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+      `<div><b>---------------</b></div>`
   }
-  // reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
-  console.log(reminderArray);
-  reminderArray = JSON.stringify(reminderArray)
-  localStorage.setItem("reminders", reminderArray);
-  reminderArray = localStorage.getItem("reminders");
-
-  const when = Date.now(reminderText);
-
-  console.log(when);
+  textArea.innerHTML = reportsText;
 }
-

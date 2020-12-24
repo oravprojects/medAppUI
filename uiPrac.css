@@ -160,12 +160,12 @@
     transform: translateY(-50%);
     display: inline;
     height: 50px;
-    width: 400px;
+    width: 500px;
     justify-content: center;
     align-items: center;
     text-align: center;
     top: 6%;
-    left: 35%;
+    left: 32%;
 }
 .fade-out{
     -webkit-animation-duration: 2s;
@@ -232,6 +232,16 @@
     padding: 12px;
 }
 
+.fa-trash-alt{
+  color: red;
+  margin-left: 5px;
+}
+/* .sortUser{
+  margin-right: 10%;
+} */
+.sortDate{
+  margin-right: 50%;
+}
 /* calendar */
 .calendar {
     width: 100%;
@@ -327,6 +337,9 @@
 
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
+    .sortDate{
+      margin-right: 29%;
+    }
     .fadeInSuccess{
         color: #3c763d;
         background-color: #dff0d8;
@@ -368,12 +381,12 @@
       position: fixed;
       transform: translateY(-50%);
       display: inline;
-      height: 50px;
+      height: 65px;
       width: 300px;
       justify-content: center;
       align-items: center;
       text-align: center;
-      top: 4%;
+      top: 5%;
       left: 10%;
   }
     #prev{
