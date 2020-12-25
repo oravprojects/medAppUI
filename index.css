@@ -148,14 +148,14 @@
     position: fixed;
     transform: translateY(-50%);
     display: inline;
-    height: 50px;
+    height: 60px;
     width: 200px;
     justify-content: center;
     align-items: center;
     text-align: center;
-    top: 50%;
-    left: 50%;
-    border-radius: 5%;
+    top: 8%;
+    left: 43%;
+    border-radius: 20px;
 }
 .reminder-item{
     z-index: 1;
@@ -232,7 +232,9 @@
   border-width: 1px;
 }
 .centerAlert{
-    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* icons in report log */

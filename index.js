@@ -47,7 +47,8 @@ window.onload = function onLoadFunction() {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit'></i><i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
+        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
         `<div><b>---------------</b></div>`
     }
     textArea.innerHTML = reportsText;
@@ -101,7 +102,8 @@ window.onload = function onLoadFunction() {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit'></i><i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
+        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
         `<div><b>---------------</b></div>`
     }
     textArea.innerHTML = reportsText;
@@ -118,6 +120,12 @@ window.onload = function onLoadFunction() {
 
   // view reports log
   document.querySelector("#viewReportsLog").addEventListener("click", () => {
+    sortUserButton = document.getElementsByClassName("sortUser");
+    sortUserButton[0].className="btn btn-info sortUser";
+    sortUserButton = document.getElementsByClassName("sortDate");
+    sortUserButton[0].className="btn btn-info sortDate";
+    saveEditButton = document.getElementById("saveEditButton");
+    saveEditButton.className = "btn btn-primary hide";
     modalTitle = document.getElementById('reportsModalLongTitle');
     modalTitle.innerText = "Reports Log";
     textArea = document.getElementById("reportsLogModalBody");
@@ -146,7 +154,8 @@ window.onload = function onLoadFunction() {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit'></i><i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
+        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
         `<div><b>---------------</b></div>`
     }
     textArea.innerHTML = reportsText;
@@ -228,22 +237,23 @@ function next() {
   patientCard5.innerHTML = "Patient " + (5 + patientNumber);
 }
 
-function success() {
+function success(message) {
   var success = document.getElementById("success");
-  success.className = "alert-item fade-in fadeInSuccess";
-  setTimeout(function () { success.className = "alert-item fade-out fadeOutSuccess"; }, 3000);
+  success.innerText = message;
+  success.className = "centerAlert alert-item fade-in fadeInSuccess";
+  setTimeout(function () { success.className = "centerAlert alert-item fade-out fadeOutSuccess"; }, 3000);
   setTimeout(function () { success.className = "alert-off"; }, 4900);
 }
 function warning() {
   var warning = document.getElementById("warning");
-  warning.className = "alert-item fade-in fadeInWarning";
-  setTimeout(function () { warning.className = "alert-item fade-out fadeOutWarning"; }, 3000);
+  warning.className = "centerAlert alert-item fade-in fadeInWarning";
+  setTimeout(function () { warning.className = "centerAlert alert-item fade-out fadeOutWarning"; }, 3000);
   setTimeout(function () { warning.className = "alert-off"; }, 4900);
 }
 function failure() {
   var failure = document.getElementById("failure");
-  failure.className = "alert-item fade-in fadeInFailure";
-  setTimeout(function () { failure.className = "alert-item fade-out fadeOutFailure"; }, 3000);
+  failure.className = "centerAlert alert-item fade-in fadeInFailure";
+  setTimeout(function () { failure.className = "centerAlert alert-item fade-out fadeOutFailure"; }, 3000);
   setTimeout(function () { failure.className = "alert-off"; }, 4900);
 }
 
@@ -306,8 +316,62 @@ function deleteRepLog(num) {
     reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
       `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
       `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-      `<div><i class='far fa-edit'></i><i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+      `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
+      `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
       `<div><b>---------------</b></div>`
   }
   textArea.innerHTML = reportsText;
+}
+
+function editRepLog(num) {
+  console.log(num);
+  sortUserButton = document.getElementsByClassName("sortUser");
+  sortUserButton[0].className = "btn btn-info sortUser hide";
+  sortUserButton = document.getElementsByClassName("sortDate");
+  sortUserButton[0].className = "btn btn-info sortDate hide";
+  saveEditButton = document.getElementById("saveEditButton");
+  saveEditButton.className = "btn btn-primary";
+  textArea = document.getElementById("reportsLogModalBody");
+  logReports = JSON.parse(dailyReport);
+  reportsText = "";
+  for (i = 0; i < logReports.length; i++) {
+    if(i === num){
+      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+      `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+      `<div><b>Notes: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`
+    }
+  }
+  textArea.innerHTML = reportsText;
+  saveEditButton.addEventListener("click", () => {
+    saveEdit(num)
+  })
+  return;
+
+  logReports.splice(num, 1);
+  dailyReport = JSON.stringify(logReports);
+  localStorage.setItem("dailyReport", dailyReport);
+  console.log(logReports)
+  reportsText = "";
+  for (i = 0; i < logReports.length; i++) {
+    reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+      `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+      `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+      `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
+      `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+      `<div><b>---------------</b></div>`
+  }
+  textArea.innerHTML = reportsText;
+}
+
+function saveEdit(num){
+  console.log("this is the number: " + num)
+  editReminderText = document.getElementById("editReminderText");
+  console.log(editReminderText.value);
+  logReports = JSON.parse(dailyReport);
+  logReports[num].notes = editReminderText.value;
+  dailyReport = JSON.stringify(logReports);
+  localStorage.setItem("dailyReport", dailyReport);
+  message = "report log edited successfully!"
+  $("#reportsModal").modal('hide');
+  setTimeout(function () { success(message) }, 500);
 }

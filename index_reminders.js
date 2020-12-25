@@ -105,10 +105,10 @@ const reminderFunction = () => {
 // reminders in the next 24 hours 
 function reminderAlert(message) {
     var reminderAlert = document.getElementById("reminderAlert");
-    reminderAlert.className = "reminder-item fade-in fadeInReminder";
+    reminderAlert.className = "centerAlert reminder-item fade-in fadeInReminder";
     var reminderAlertText = document.getElementById("reminderAlertText");
     reminderAlertText.innerText = message;
-    setTimeout(function () { reminderAlert.className = "reminder-item fade-out fadeOutReminder"; }, 3000);
+    setTimeout(function () { reminderAlert.className = "centerAlert reminder-item fade-out fadeOutReminder"; }, 3000);
     setTimeout(function () { reminderAlert.className = "alert-off"; }, 4900);
 }
 
