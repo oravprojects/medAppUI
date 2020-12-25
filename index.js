@@ -5,9 +5,11 @@ window.onload = function onLoadFunction() {
   document.querySelector(".sortUser").addEventListener("click", () => {
     textArea = document.getElementById("reportsLogModalBody");
     logReports = JSON.parse(dailyReport);
-    // console.log(logReports)
     reportsText = "";
     function compareAsc(a, b) {
+      if(logReports.length === 0){
+        return;
+      }
       if (a.user.toUpperCase() < b.user.toUpperCase()) {
         return -1;
       }
@@ -17,6 +19,9 @@ window.onload = function onLoadFunction() {
       return 0;
     }
     function compareDesc(a, b) {
+      if(logReports.length === 0){
+        return;
+      }
       if (a.user.toUpperCase() > b.user.toUpperCase()) {
         return -1;
       }
@@ -27,20 +32,22 @@ window.onload = function onLoadFunction() {
     }
     if (sortUserDir === "desc") {
       console.log(sortUserDir, " sort desc")
-      logReports.sort(compareDesc);
       logReports = logReports.sort(compareDesc);
       sortUserDir = "asc"
     } else {
       console.log(sortUserDir, "sort asc")
-      logReports.sort(compareAsc);
       logReports = logReports.sort(compareAsc);
       sortUserDir = "desc"
     }
     console.log(logReports)
+    dailyReport = JSON.stringify(logReports);
+    localStorage.setItem("dailyReport", dailyReport);
+
     for (i = 0; i < logReports.length; i++) {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+        `<div><i class='far fa-edit'></i><i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
         `<div><b>---------------</b></div>`
     }
     textArea.innerHTML = reportsText;
@@ -54,6 +61,9 @@ window.onload = function onLoadFunction() {
     // console.log(logReports)
     reportsText = "";
     function compareAsc(a, b) {
+      if(logReports.length === 0){
+        return;
+      }
       if (new Date(a.date) < new Date(b.date)) {
         return -1;
       }
@@ -63,6 +73,9 @@ window.onload = function onLoadFunction() {
       return 0;
     }
     function compareDesc(a, b) {
+      if(logReports.length === 0){
+        return;
+      }
       if (new Date(a.date) > new Date(b.date)) {
         return -1;
       }
@@ -73,20 +86,22 @@ window.onload = function onLoadFunction() {
     }
     if (sortDateDir === "desc") {
       console.log(sortDateDir, " sort desc")
-      logReports.sort(compareAsc);
       logReports = logReports.sort(compareAsc);
       sortDateDir = "asc"
     } else {
       console.log(sortDateDir, "sort asc")
-      logReports.sort(compareDesc);
       logReports = logReports.sort(compareDesc);
       sortDateDir = "desc"
     }
     console.log(logReports)
+    dailyReport = JSON.stringify(logReports);
+    localStorage.setItem("dailyReport", dailyReport);
+
     for (i = 0; i < logReports.length; i++) {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+        `<div><i class='far fa-edit'></i><i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
         `<div><b>---------------</b></div>`
     }
     textArea.innerHTML = reportsText;
@@ -107,12 +122,24 @@ window.onload = function onLoadFunction() {
     modalTitle.innerText = "Reports Log";
     textArea = document.getElementById("reportsLogModalBody");
     logReports = JSON.parse(dailyReport);
-    console.log(logReports)
     if (logReports.length === 0) {
       reportsText = "No reports in log.";
       textArea.innerHTML = reportsText;
       return;
     }
+    function compareDesc(a, b) {
+      if(logReports.length === 0){
+        return;
+      }
+      if (new Date(a.date) > new Date(b.date)) {
+        return -1;
+      }
+      if (new Date(a.date) < new Date(b.date)) {
+        return 1;
+      }
+      return 0;
+    }
+    logReports = logReports.sort(compareDesc);
     reportsText = "";
     console.log(logReports[0].user)
     for (i = 0; i < logReports.length; i++) {
@@ -139,161 +166,6 @@ window.onload = function onLoadFunction() {
     }, false)
   })
 
-  // calendar
-  var date = new Date();
-
-  const renderCalendar = () => {
-    date.setDate(1);
-
-    const monthDays = document.querySelector(".days");
-
-    const lastDay = new Date(
-      date.getFullYear(),
-      date.getMonth() + 1,
-      0
-    ).getDate();
-
-    const prevLastDay = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      0
-    ).getDate();
-
-    const firstDayIndex = date.getDay();
-
-    const lastDayIndex = new Date(
-      date.getFullYear(),
-      date.getMonth() + 1,
-      0
-    ).getDay();
-
-    const nextDays = 7 - lastDayIndex - 1;
-
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    const thisYear = new Date().getFullYear();
-
-    document.querySelector(".date h1").innerHTML = months[date.getMonth()] + " " + date.getFullYear();
-
-    let days = "";
-
-    for (let x = firstDayIndex; x > 0; x--) {
-      if (date.getMonth() - 1 < 0) {
-        var lastYear = date.getFullYear() - 1;
-        days += `<div class="prev-date" id="${lastYear + "-" + Number(date.getMonth() + 12) +
-          "-" + Number(prevLastDay - x + 1)}">${prevLastDay - x + 1}</div>`;
-      } else {
-        days += `<div class="prev-date" id="${date.getFullYear() + "-" + Number(date.getMonth()) +
-          "-" + Number(prevLastDay - x + 1)}">${prevLastDay - x + 1}</div>`;
-      }
-    }
-
-    for (let i = 1; i <= lastDay; i++) {
-      if (
-        i === new Date().getDate() &&
-        date.getMonth() === new Date().getMonth() &&
-        date.getFullYear() === thisYear
-      ) {
-        days += `<div class="today" id="${date.getFullYear() + "-" + Number(date.getMonth() + 1) + "-" + i}">${i}</div>`;
-      } else {
-        days += `<div id="${date.getFullYear() + "-" + Number(date.getMonth() + 1) + "-" + i}">${i}</div>`;
-      }
-    }
-
-    for (let j = 1; j <= nextDays; j++) {
-      if (date.getMonth() + 1 > 11) {
-        var nextYear = date.getFullYear() + 1
-        days += `<div class="next-date" id="${nextYear + "-" + Number(date.getMonth() - 10) + "-" + j}">${j}</div>`;
-      } else {
-        days += `<div class="prev-date" id="${date.getFullYear() + "-" + Number(date.getMonth() + 2) + "-" + j}">${j}</div>`;
-      }
-      monthDays.innerHTML = days;
-    }
-  };
-
-  // previous month
-  document.querySelector(".prev").addEventListener("click", () => {
-    date.setMonth(date.getMonth() - 1);
-    console.log("prev", date);
-    renderCalendar();
-  });
-
-  // next month
-  document.querySelector(".next").addEventListener("click", () => {
-    date.setMonth(date.getMonth() + 1);
-    console.log("next", date);
-    renderCalendar();
-  });
-
-  // days click event
-  document.querySelector(".days").addEventListener("click", function (e) {
-    e = e || window.event;
-    var target = e.target,
-      // text = target.textContent || target.innerText;
-      text = target.getAttribute("id")
-    title = new Date(text).toString();
-    modalTitle = document.getElementById('exampleModalLongTitle');
-    modalTitle.innerText = title.substr(0, 15);
-    textArea = document.getElementById('exampleFormControlTextarea1');
-    textArea.value = "";
-  }, false);
-
-  renderCalendar();
-
-  // Set date for schedule
-
-  var dateTitle = document.getElementById("date")
-
-  var date = new Date();
-
-  var day = date.getDay();
-
-  var dayNumber = date.getDate();
-
-  var month = date.getMonth();
-
-  var year = date.getUTCFullYear();
-
-  var monthName = "";
-
-  var dayName = "";
-
-  if (month === 0) { monthName = "Jan" };
-  if (month === 1) { monthName = "Feb" };
-  if (month === 2) { monthName = "Mar" };
-  if (month === 3) { monthName = "Apr" };
-  if (month === 4) { monthName = "May" };
-  if (month === 5) { monthName = "Jun" };
-  if (month === 6) { monthName = "Jul" };
-  if (month === 7) { monthName = "Aug" };
-  if (month === 8) { monthName = "Sep" };
-  if (month === 9) { monthName = "Oct" };
-  if (month === 10) { monthName = "Nov" };
-  if (month === 11) { monthName = "Dec" };
-
-  if (day === 1) { dayName = "Mon" };
-  if (day === 2) { dayName = "Tue" };
-  if (day === 3) { dayName = "Wed" };
-  if (day === 4) { dayName = "Thu" };
-  if (day === 5) { dayName = "Fri" };
-  if (day === 6) { dayName = "Sat" };
-  if (day === 0) { dayName = "Sun" };
-
-
-  dateTitle.innerHTML = dayName + ", " + dayNumber + " " + monthName + " " + year;
 
   // Hello User
   var helloUsr = document.getElementById("helloUsr");
@@ -426,6 +298,8 @@ function deleteRepLog(num) {
   textArea = document.getElementById("reportsLogModalBody");
   logReports = JSON.parse(dailyReport);
   logReports.splice(num, 1);
+  dailyReport = JSON.stringify(logReports);
+  localStorage.setItem("dailyReport", dailyReport);
   console.log(logReports)
   reportsText = "";
   for (i = 0; i < logReports.length; i++) {
