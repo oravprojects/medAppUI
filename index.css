@@ -1,11 +1,13 @@
 
 .dashboard { background-color: rgba(20, 121, 255, 0.1); }
 .shift { background-color: rgba(20, 121, 255, 0.2); }
-.act { background-color:white; }
+.current { background-color:white; }
 .dash-title {font-weight: bold;}
 .secondary {font-weight: bold;}
 .no-ptr {pointer-events: none;}
 .hide {display: none;}
+
+/* container for listing appointments, patients, and report meters */
 .flex-container{
     padding: 0;
     margin: 0;
@@ -27,6 +29,7 @@
     align-items: stretch;
 }
 
+/* list of patients under today's appointments */
 .flex-item:nth-of-type(1){ flex-grow: 1;}
 .flex-item:nth-of-type(2){ flex-grow: 1;}
 .flex-item:nth-of-type(3){ flex-grow: 1;}
@@ -38,6 +41,7 @@
     margin: 1%;
 }
 
+/* scrollbar styling for reports modal */
 /* Works on Firefox */
 #reportsModalBody {
     scrollbar-width: thin;
@@ -59,6 +63,7 @@
     border: 3px solid rgb(228, 235, 236);
   }
 
+/* hide scrollbar for dashboard shift schedule */
 /* Hide scrollbar for Chrome, Safari and Opera */
 .sched-container::-webkit-scrollbar {
     display: none;
@@ -70,6 +75,7 @@
     scrollbar-width: none;  /* Firefox */
   }
 
+/* dashboard shift schedule */
 .sched-item-icon {
     color: grey;
     margin: 1%;
@@ -89,16 +95,10 @@
     margin: 1%;
 }
 
-.report-menu {
-    margin: 1%;
-}
-
+/* monthly reports section */
 .report-item {
     margin: 1%;
 }
-
-.report-menu:nth-of-type(1){ flex-grow: 1;}
-.report-menu:nth-of-type(2){ flex-grow: 1;}
 
 .report-item:nth-of-type(1){ flex-grow: 1;}
 .report-item:nth-of-type(2){ flex-grow: 1;}
@@ -106,6 +106,7 @@
 .report-item1:nth-of-type(1){ flex-grow: 1;}
 .report-item1:nth-of-type(2){ flex-grow: 8; font-weight: bold; text-align: left;}
 
+/* direction buttons for today's appointments */
 .direction{
     border-radius: 50%;
     border: none;
@@ -119,6 +120,7 @@
     font-weight: bolder;
     font-size: 20px;
 }
+
 #next{
     position: absolute;
     right: 5px;
@@ -127,6 +129,7 @@
     font-size: 20px;
 }
 
+/* hide alert divs */
 .alert-off {
     display: none;
 }
@@ -232,104 +235,16 @@
     padding: 12px;
 }
 
+/* icons in report log */
 .fa-trash-alt{
   color: red;
   margin-left: 5px;
 }
-/* .sortUser{
-  margin-right: 10%;
-} */
+
 .sortDate{
   margin-right: 50%;
 }
-/* calendar */
-.calendar {
-    width: 100%;
-    height: 90%;
-    background-color: #222227;
-    box-shadow: 0 0.5rem 3rem rgba(0, 0, 0, 0.4);
-    color: #d6e9c6;
-  }
-  
-  .month {
-    width: 100%;
-    height: 4rem;
-    background-color: #167e56;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    text-align: center;
-    text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5);
-  }
-  
-  .month i {
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
-  
-  .month h1 {
-    font-size: 14px;
-    font-weight: 400;
-    text-transform: uppercase;
-  }
-  
-  .month p {
-    font-size: 12px;
-  }
-  
-  .weekdays {
-    width: 100%;
-    height: 2rem;
-    padding: 0 0.4rem;
-    display: flex;
-    align-items: center;
-  }
-  
-  .weekdays div {
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 1rem;
-    width: calc(100% / 7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5);
-  }
-  
-  .days {
-    width: 98%;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .days div {
-    font-size: 12px;
-    
-    width: calc(96% / 7);
-    height: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.5);
-    transition: background-color 0.2s;
-  }
-  
-  .days div:hover:not(.today) {
-    background-color: #262626;
-    border: 0.2rem solid #777;
-    cursor: pointer;
-  }
-  
-  .prev-date,
-  .next-date {
-    opacity: 0.5;
-  }
-  
-  .today {
-    background-color: #167e56;
-  }
+
 
   #exampleModalLongTitle{
       text-transform: capitalize;
