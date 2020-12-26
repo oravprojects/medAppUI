@@ -7,9 +7,6 @@ window.onload = function onLoadFunction() {
     logReports = JSON.parse(dailyReport);
     reportsText = "";
     function compareAsc(a, b) {
-      if(logReports.length === 0){
-        return;
-      }
       if (a.user.toUpperCase() < b.user.toUpperCase()) {
         return -1;
       }
@@ -19,9 +16,6 @@ window.onload = function onLoadFunction() {
       return 0;
     }
     function compareDesc(a, b) {
-      if(logReports.length === 0){
-        return;
-      }
       if (a.user.toUpperCase() > b.user.toUpperCase()) {
         return -1;
       }
@@ -31,11 +25,21 @@ window.onload = function onLoadFunction() {
       return 0;
     }
     if (sortUserDir === "desc") {
-      console.log(sortUserDir, " sort desc")
+      if(logReports.length === 0){
+        reportsText = "No reports in log.";
+        textArea.innerHTML = reportsText;
+        return;
+      }
+      console.log(sortUserDir, " sort user desc")
       logReports = logReports.sort(compareDesc);
       sortUserDir = "asc"
     } else {
-      console.log(sortUserDir, "sort asc")
+      if(logReports.length === 0){
+        reportsText = "No reports in log.";
+        textArea.innerHTML = reportsText;
+        return;
+      }
+      console.log(sortUserDir, "sort user asc")
       logReports = logReports.sort(compareAsc);
       sortUserDir = "desc"
     }
@@ -62,9 +66,6 @@ window.onload = function onLoadFunction() {
     // console.log(logReports)
     reportsText = "";
     function compareAsc(a, b) {
-      if(logReports.length === 0){
-        return;
-      }
       if (new Date(a.date) < new Date(b.date)) {
         return -1;
       }
@@ -74,9 +75,6 @@ window.onload = function onLoadFunction() {
       return 0;
     }
     function compareDesc(a, b) {
-      if(logReports.length === 0){
-        return;
-      }
       if (new Date(a.date) > new Date(b.date)) {
         return -1;
       }
@@ -86,11 +84,21 @@ window.onload = function onLoadFunction() {
       return 0;
     }
     if (sortDateDir === "desc") {
-      console.log(sortDateDir, " sort desc")
+      if(logReports.length === 0){
+        reportsText = "No reports in log.";
+        textArea.innerHTML = reportsText;
+        return;
+      }
+      console.log(sortDateDir, " sort date desc")
       logReports = logReports.sort(compareAsc);
       sortDateDir = "asc"
     } else {
-      console.log(sortDateDir, "sort asc")
+      if(logReports.length === 0){
+        reportsText = "No reports in log.";
+        textArea.innerHTML = reportsText;
+        return;
+      }
+      console.log(sortDateDir, "sort date asc")
       logReports = logReports.sort(compareDesc);
       sortDateDir = "desc"
     }
@@ -148,6 +156,8 @@ window.onload = function onLoadFunction() {
       return 0;
     }
     logReports = logReports.sort(compareDesc);
+    dailyReport = JSON.stringify(logReports);
+    localStorage.setItem("dailyReport", dailyReport);
     reportsText = "";
     console.log(logReports[0].user)
     for (i = 0; i < logReports.length; i++) {
@@ -303,8 +313,31 @@ function saveChanges(e) {
 }
 
 
+function saveAppSchedChanges(e) {
+  alert("save appointment schedule changes");
+  e = e || window.event;
+  var target = e.target,
+    // text = target.textContent || target.innerText;
+    text = target.innerText;
+  console.log(e)
+  // console.log(text)
+  // console.log(target)
+  // var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
+  // console.log(modalTitle);
+  // if (modalTitle.includes("Daily Report")) {
+  //   console.log("includes daily report");
+  //   saveDailyReport();
+  // } else if (modalTitle.includes("Appointment")) {
+  //   console.log("includes appointment")
+  // }
+  // else if (modalTitle.length === 15) {
+  //   console.log("includes day")
+  // }
+}
+
+
 function deleteRepLog(num) {
-  console.log(num);
+  console.log("delete: " + num);
   textArea = document.getElementById("reportsLogModalBody");
   logReports = JSON.parse(dailyReport);
   logReports.splice(num, 1);

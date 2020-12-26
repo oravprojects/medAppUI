@@ -105,9 +105,9 @@ function loadCalendar() {
       // text = target.textContent || target.innerText;
       text = target.getAttribute("id")
     title = new Date(text).toString();
-    modalTitle = document.getElementById('exampleModalLongTitle');
+    modalTitle = document.getElementById('appSchedModalLongTitle');
     modalTitle.innerText = title.substr(0, 15);
-    textArea = document.getElementById('exampleFormControlTextarea1');
+    textArea = document.getElementById('appSchedModalTextarea1');
     textArea.value = "";
   }, false);
 

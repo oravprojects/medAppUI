@@ -141,7 +141,7 @@
                                         <div>F</div>
                                         <div>S</div>
                                     </div>
-                                    <div class="days" data-toggle="modal" data-target="#exampleModalCenter"></div>
+                                    <div class="days" data-toggle="modal" data-target="#appSchedModal"></div>
                                 </div>
                             </div>
                         </div>
@@ -327,6 +327,45 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="saveChangesButton"
                         onclick="saveChanges(event)">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Appointment Scheduling Modal -->
+    <div class="modal fade" id="appSchedModal" tabindex="-1" role="dialog"
+        aria-labelledby="appSchedModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="appSchedModalLongTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            
+                            <label for="app-start-time">start time:</label>
+                            <input type="time" id="app-start-time" name="start-time" style="margin-left: 5px;">
+                            <label for="app-end-time" style="margin-left: 65px;">end time:</label>
+                            <input type="time" id="app-end-time" name="end-time" style="margin-left: 5px;">
+                            <label for="first-name">first name:</label>
+                            <input type="text" id="first-name" name="first-name" style="margin-left: 2px;">
+                            <br>
+                            <label for="last-name">last name:</label>
+                            <input type="text" id="last-name" name="last-name" style="margin-left: 6px;">
+                            <br>
+                            <label for="appSchedModalTextarea1">Comments:</label>
+                            <textarea class="form-control" id="appSchedModalTextarea1" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveAppSchedButton"
+                        onclick="saveAppSchedChanges(event)">Save changes</button>
                 </div>
             </div>
         </div>
