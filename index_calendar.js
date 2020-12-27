@@ -106,7 +106,7 @@ function loadCalendar() {
       text = target.getAttribute("id")
     title = new Date(text).toString();
     modalTitle = document.getElementById('appSchedModalLongTitle');
-    modalTitle.innerText = title.substr(0, 15);
+    modalTitle.innerText = title.substr(0, 15) + " Appointments";
     textArea = document.getElementById('appSchedModalTextarea1');
     textArea.value = "";
   }, false);
@@ -155,6 +155,37 @@ function loadCalendar() {
 
   dateTitle.innerHTML = dayName + ", " + dayNumber + " " + monthName + " " + year;
 }
+
+function saveAppSchedChanges(e) {
+  alert("save appointment schedule changes");
+  e = e || window.event;
+  var target = e.target,
+    // text = target.textContent || target.innerText;
+    text = target.innerText;
+  console.log(e)
+  startTime = document.getElementById("app-start-time").value;
+  endTime = document.getElementById("app-end-time").value;
+  fName = document.getElementById("first-name").value;
+  lName = document.getElementById("last-name").value;
+  comments = document.getElementById("appSchedModalTextarea1").value;
+  appArray = [];
+  appArray.push({ "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+  console.log("App Array: " + JSON.stringify(appArray))
+  // console.log(text)
+  // console.log(target)
+  // var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
+  // console.log(modalTitle);
+  // if (modalTitle.includes("Daily Report")) {
+  //   console.log("includes daily report");
+  //   saveDailyReport();
+  // } else if (modalTitle.includes("Appointment")) {
+  //   console.log("includes appointment")
+  // }
+  // else if (modalTitle.length === 15) {
+  //   console.log("includes day")
+  // }
+}
+
 
 // function that allows to add additional window.onload functions
 function addLoadEvent(func) {

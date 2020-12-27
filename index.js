@@ -312,30 +312,6 @@ function saveChanges(e) {
   }
 }
 
-
-function saveAppSchedChanges(e) {
-  alert("save appointment schedule changes");
-  e = e || window.event;
-  var target = e.target,
-    // text = target.textContent || target.innerText;
-    text = target.innerText;
-  console.log(e)
-  // console.log(text)
-  // console.log(target)
-  // var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
-  // console.log(modalTitle);
-  // if (modalTitle.includes("Daily Report")) {
-  //   console.log("includes daily report");
-  //   saveDailyReport();
-  // } else if (modalTitle.includes("Appointment")) {
-  //   console.log("includes appointment")
-  // }
-  // else if (modalTitle.length === 15) {
-  //   console.log("includes day")
-  // }
-}
-
-
 function deleteRepLog(num) {
   console.log("delete: " + num);
   textArea = document.getElementById("reportsLogModalBody");

@@ -346,16 +346,25 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            
-                            <label for="app-start-time">start time:</label>
-                            <input type="time" id="app-start-time" name="start-time" style="margin-left: 5px;">
-                            <label for="app-end-time" style="margin-left: 65px;">end time:</label>
-                            <input type="time" id="app-end-time" name="end-time" style="margin-left: 5px;">
+                            <br>
+                            <div id="app-sched-modal-time">
+                                <span>
+                                    <label for="app-start-time">start time:</label>
+                                    <input type="time" id="app-start-time" name="start-time">
+                                </span>
+                                <span>
+                                    <label for="app-end-time" id="label-end-time">end time:</label>
+                                    <input type="time" id="app-end-time" name="end-time">
+                                </span>
+                            </div>
+                            <br>
                             <label for="first-name">first name:</label>
-                            <input type="text" id="first-name" name="first-name" style="margin-left: 2px;">
+                            <input type="text" id="first-name" name="first-name">
+                            <br>
                             <br>
                             <label for="last-name">last name:</label>
-                            <input type="text" id="last-name" name="last-name" style="margin-left: 6px;">
+                            <input type="text" id="last-name" name="last-name">
+                            <br>
                             <br>
                             <label for="appSchedModalTextarea1">Comments:</label>
                             <textarea class="form-control" id="appSchedModalTextarea1" rows="3"></textarea>

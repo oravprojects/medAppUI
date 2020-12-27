@@ -248,15 +248,48 @@
 }
 
 
-  #exampleModalLongTitle{
-      text-transform: capitalize;
-  }
+#exampleModalLongTitle{
+    text-transform: capitalize;
+}
+
+/* schedule appointment modal */
+#app-start-time, #app-end-time{
+    margin-left: 5px;
+}
+#label-end-time{
+    margin-left: 55px;
+}
+#first-name{
+    margin-left: 2px;
+}
+#last-name{
+    margin-left: 6px;
+}
 
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
-    .sortDate{
-      margin-right: 29%;
+
+    /* schedule appointment modal */
+    #app-sched-modal-time span:last-of-type {
+        display: block;
     }
+    #app-sched-modal-time span::before {
+        content: "\a";
+        white-space: pre;
+    }
+    #label-end-time{
+        margin-left: 0px;
+    }
+    #app-end-time{
+        margin-left: 11px;
+    }
+
+    /* reports log modal */
+    .sortDate{
+        margin-right: 29%;
+    }
+
+    /* alerts */
     .fadeInSuccess{
         color: #3c763d;
         background-color: #dff0d8;
@@ -294,18 +327,20 @@
         left: 22%;
     }
     .reminder-item{
-      z-index: 1;
-      position: fixed;
-      transform: translateY(-50%);
-      display: inline;
-      height: 65px;
-      width: 300px;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      top: 5%;
-      left: 10%;
-  }
+        z-index: 1;
+        position: fixed;
+        transform: translateY(-50%);
+        display: inline;
+        height: 65px;
+        width: 300px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        top: 5%;
+        left: 10%;
+    }
+
+    /* today's appointments */
     #prev{
         position: absolute;
         left: 3px;
