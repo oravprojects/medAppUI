@@ -122,6 +122,13 @@ function setReminder() {
     reminderArray = JSON.parse(reminderArray);
     reminderText = document.getElementById("reminderText").value;
     console.log(reminderText);
+    if(reminderArray.length === 0){
+        reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
+        reminderArray = JSON.stringify(reminderArray)
+        localStorage.setItem("reminders", reminderArray);
+        reminderArray = localStorage.getItem("reminders");
+        return;
+    }
     var mid = Math.floor(reminderArray.length / 2);
     var start = 0;
     var end = reminderArray.length - 1;
@@ -141,7 +148,7 @@ function setReminder() {
         }
         else if (reminderTimeMilli > dateTimeMilli) {
             start = mid;
-            mid = Math.floor((start + end / 2));
+            mid = Math.floor((start + end) / 2);
         } else {
             end = mid;
             mid = Math.floor((start + end) / 2);

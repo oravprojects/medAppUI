@@ -156,21 +156,72 @@ function loadCalendar() {
   dateTitle.innerHTML = dayName + ", " + dayNumber + " " + monthName + " " + year;
 }
 
+const appointmentSchedFunction = () => {
+  var appSchedArray = localStorage.getItem("appSched");
+  console.log("1: " + appSchedArray);
+  // appSchedArray = JSON.parse(appSchedArray);
+  // console.log("2: " + appSchedArray);
+  // create an appointment schedule array if it doesn't exist
+  if (appSchedArray === null) {
+      console.log("no appointments in storage");
+      appSchedArray = [];
+      appSchedArray = JSON.stringify(appSchedArray);
+      localStorage.setItem("appSched", appSchedArray);
+  }
+}
+
 function saveAppSchedChanges(e) {
   alert("save appointment schedule changes");
-  e = e || window.event;
-  var target = e.target,
-    // text = target.textContent || target.innerText;
-    text = target.innerText;
-  console.log(e)
-  startTime = document.getElementById("app-start-time").value;
-  endTime = document.getElementById("app-end-time").value;
-  fName = document.getElementById("first-name").value;
-  lName = document.getElementById("last-name").value;
-  comments = document.getElementById("appSchedModalTextarea1").value;
-  appArray = [];
-  appArray.push({ "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
-  console.log("App Array: " + JSON.stringify(appArray))
+  modalTitle = document.getElementById('appSchedModalLongTitle');
+  var appDate = new Date(modalTitle.innerText.substr(4, 11));
+  console.log(appDate);
+  
+  var appSchedArray = localStorage.getItem("appSched");
+  appSchedArray = JSON.parse(appSchedArray)
+  var startTime = document.getElementById("app-start-time").value;
+  var endTime = document.getElementById("app-end-time").value;
+  var fName = document.getElementById("first-name").value;
+  var lName = document.getElementById("last-name").value;
+  var comments = document.getElementById("appSchedModalTextarea1").value;
+  var startHour = startTime.substr(0, 2);
+  var startMin = startTime.substr(3, 2);
+  if(appSchedArray.length === 0){
+    appSchedArray.push({ "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+    localStorage.setItem("appSched", appSchedArray);
+    return;
+}
+  
+  var mid = Math.floor(appSchedArray.length / 2);
+    var start = 0;
+    var end = appSchedArray.length - 1;
+    var mid = Math.floor((start + end) / 2);
+    for (i = 0; i < appSchedArray.length; i++) {
+      console.log("mid: " + mid)
+        var existStartHour = appSchedArray[mid].start.substr(0, 2);
+        console.log(existStartHour);
+        var existStartMin = appSchedArray[mid].start.substr(3, 2);
+        if (mid === start) {
+            i = appSchedArray.length;
+            if (startHour > existStartHour) {
+                appSchedArray.splice(mid + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+            } else {
+                appSchedArray.splice(mid, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+            }
+        }
+        else if (startHour > existStartHour) {
+            start = mid;
+            console.log("start: " + start)
+            mid = Math.floor((start + end) / 2);
+            console.log("mid calc: " + start + "+" + end + " = " + mid)
+        } else {
+            end = mid;
+            mid = Math.floor((start + end) / 2);
+        }
+    }
+  // appSchedArray.push({ "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+  appSchedArray = JSON.stringify(appSchedArray)
+  console.log("App Array: " + appSchedArray);
+  localStorage.setItem("appSched", appSchedArray);
   // console.log(text)
   // console.log(target)
   // var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
@@ -202,6 +253,7 @@ function addLoadEvent(func) {
     }
 }
 addLoadEvent(loadCalendar);
+addLoadEvent(appointmentSchedFunction);
 
 // addLoadEvent(function() {
 //     document.body.style.backgroundColor = '#EFDF95';
