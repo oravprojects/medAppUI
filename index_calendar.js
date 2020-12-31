@@ -109,6 +109,14 @@ function loadCalendar() {
     modalTitle.innerText = title.substr(0, 15) + " Appointments";
     textArea = document.getElementById('appSchedModalTextarea1');
     textArea.value = "";
+    modalFirstName = document.getElementById("first-name");
+    modalFirstName.value = "";
+    modalLastName = document.getElementById("last-name");
+    modalLastName.value = "";
+    modalStartTime = document.getElementById("app-start-time");
+    modalStartTime.value = null; 
+    modalEndTime = document.getElementById("app-end-time");
+    modalEndTime.value = null; 
   }, false);
 
   renderCalendar();
@@ -171,8 +179,14 @@ const appointmentSchedFunction = () => {
 function saveAppSchedChanges(e) {
   alert("save appointment schedule changes");
   modalTitle = document.getElementById('appSchedModalLongTitle');
+  console.log(modalTitle.innerText);
   var appDate = new Date(modalTitle.innerText.substr(4, 11));
-  console.log(appDate);
+  console.log(appDate)
+  //GMT offset to local time
+  var d = new Date();
+  var n = d.getTimezoneOffset()/60;
+  if (n < 0) {n = n * -1};
+  appDate.setHours(appDate.getHours()+n);
   var appSchedArray = localStorage.getItem("appSched");
   appSchedArray = JSON.parse(appSchedArray)
   var startTime = document.getElementById("app-start-time").value;
@@ -196,17 +210,24 @@ function saveAppSchedChanges(e) {
     var start = 0;
     var end = appSchedArray.length - 1;
     var mid = Math.floor((start + end) / 2);
+    var existDateTime = 0;
     for (i = 0; i < appSchedArray.length; i++) {
+      console.log(i + " " + new Date (appSchedArray[end].date.substr(0, 11) + appSchedArray[end].start+":00.000Z").getTime());
       console.log("mid: " + mid)
-        var existDateTime = new Date(appSchedArray[mid].date.substr(0, 11) + appSchedArray[mid].start+":00.000Z").getTime();
-        console.log("existDateTime: " + existDateTime);
+        existDateTime = new Date(appSchedArray[mid].date.substr(0, 11) + appSchedArray[mid].start+":00.000Z").getTime();
+        console.log("existDateTime: " + existDateTime + "dateTime: " + dateTime);
         // var existStartHour = appSchedArray[mid].start.substr(0, 2);
         // console.log(existStartHour);
         // var existStartMin = appSchedArray[mid].start.substr(3, 2);
         if (mid === start) {
             i = appSchedArray.length;
             if (dateTime > existDateTime) {
+              existDateTime = new Date (appSchedArray[end].date.substr(0, 11) + appSchedArray[end].start+":00.000Z").getTime();
+              if( dateTime > existDateTime ){
+                appSchedArray.splice(end + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+              } else {
                 appSchedArray.splice(mid + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+              }
             } else {
                 appSchedArray.splice(mid, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
             }
