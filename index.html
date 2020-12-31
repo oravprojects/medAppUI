@@ -345,38 +345,39 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form onsubmit="saveAppSchedChanges(event)">
                         <div class="form-group">
                             <br>
                             <div id="app-sched-modal-time">
                                 <span>
                                     <label for="app-start-time">start time:</label>
-                                    <input type="time" id="app-start-time" name="start-time">
+                                    <input type="time" id="app-start-time" name="start-time" required>
                                 </span>
                                 <span>
                                     <label for="app-end-time" id="label-end-time">end time:</label>
-                                    <input type="time" id="app-end-time" name="end-time">
+                                    <input type="time" id="app-end-time" name="end-time" required>
                                 </span>
                             </div>
                             <br>
                             <label for="first-name">first name:</label>
-                            <input type="text" id="first-name" name="first-name">
+                            <input type="text" id="first-name" name="first-name" required>
                             <br>
                             <br>
                             <label for="last-name">last name:</label>
-                            <input type="text" id="last-name" name="last-name">
+                            <input type="text" id="last-name" name="last-name" required>
                             <br>
                             <br>
                             <label for="appSchedModalTextarea1">Comments:</label>
-                            <textarea class="form-control" id="appSchedModalTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="appSchedModalTextarea1" rows="3" required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveAppSchedButton">Save changes</button>
                         </div>
                     </form>
+                    
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveAppSchedButton"
-                        onclick="saveAppSchedChanges(event)">Save changes</button>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -416,19 +417,19 @@
                     </button>
                 </div>
                 <div class="modal-body" id="reportsModalBody" style="max-height: 400px; overflow: auto;">
-                    <form>
+                    <form onsubmit="setReminder()">
                         <div class="form-group">
                             <label for="reminder-time">Reminder date and time:</label>
-                            <input type="datetime-local" id="reminder-time" name="reminder-time">
+                            <input type="datetime-local" id="reminder-time" name="reminder-time" required>
                             <label for="reminderText">Reminder:</label>
-                            <textarea class="form-control" id="reminderText" rows="3"></textarea>
+                            <textarea class="form-control" id="reminderText" rows="3" required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveReminder">Set
+                                Reminder</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveReminder" onclick="setReminder()">Set
-                        Reminder</button>
                 </div>
             </div>
         </div>

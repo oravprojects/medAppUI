@@ -260,8 +260,9 @@ function warning() {
   setTimeout(function () { warning.className = "centerAlert alert-item fade-out fadeOutWarning"; }, 3000);
   setTimeout(function () { warning.className = "alert-off"; }, 4900);
 }
-function failure() {
+function failure(message) {
   var failure = document.getElementById("failure");
+  failure.innerText = message;
   failure.className = "centerAlert alert-item fade-in fadeInFailure";
   setTimeout(function () { failure.className = "centerAlert alert-item fade-out fadeOutFailure"; }, 3000);
   setTimeout(function () { failure.className = "alert-off"; }, 4900);
@@ -282,6 +283,11 @@ function saveDailyReport() {
   console.log(dailyReport);
   dailyReportArray = JSON.parse(dailyReport);
   var notes = document.getElementById("exampleFormControlTextarea1").value;
+  if (notes === ""){
+    message = "Please, fill out the comments section.";
+    failure(message);
+    return;
+  }
   console.log(notes);
   dailyReportArray.push({ "date": new Date, "user": "Oren", "notes": notes });
   console.log(dailyReportArray);
@@ -291,7 +297,6 @@ function saveDailyReport() {
 }
 
 function saveChanges(e) {
-  alert("save changes");
   e = e || window.event;
   var target = e.target,
     // text = target.textContent || target.innerText;

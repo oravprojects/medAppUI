@@ -193,6 +193,7 @@
     border-color: #faebcc;
 }
 .fadeOutFailure{
+    z-index: 7000;
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;
@@ -218,6 +219,7 @@
     border-color: #faebcc;
 }
 .fadeInFailure{
+    z-index: 7000;
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;

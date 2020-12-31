@@ -234,9 +234,7 @@ function saveAppSchedChanges(e) {
         }
         else if (dateTime > existDateTime) {
             start = mid;
-            console.log("start: " + start)
             mid = Math.floor((start + end) / 2);
-            console.log("mid calc: " + start + "+" + end + " = " + mid)
         } else {
             end = mid;
             mid = Math.floor((start + end) / 2);

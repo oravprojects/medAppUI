@@ -27,7 +27,12 @@ const reminderFunction = () => {
         counter = 0;
         reminderArray = JSON.parse(reminderArray);
         console.log(reminderArray);
-        var now = Date.now()
+        if (reminderArray.length === 0) {
+            remAlert = "No reminders for the next 24 hours";
+            reminderAlert(remAlert);
+            return;
+        }
+        var now = Date.now();
         for (var i = 0; i < reminderArray.length; i++) {
             console.log("array length: ", reminderArray.length)
             alarmTime = new Date(reminderArray[i].dateTime);
@@ -41,14 +46,14 @@ const reminderFunction = () => {
                 var setFor = reminderArray[i].dateTime;
                 var text = reminderArray[i].text;
                 var setBy = reminderArray[i].user;
-                var check = true;
+                
                 displayReminder(subject, setBy, setFor, text);
                 reminderArray.splice(i, 1);
                 reminderArray = JSON.stringify(reminderArray);
                 localStorage.setItem("reminders", reminderArray);
                 reminderArray = JSON.parse(reminderArray);
                 i--;
-                check = false;
+                
             }
 
             // check if there are reminders set for the next 24 hours and set a timeout to notify user 
@@ -59,14 +64,14 @@ const reminderFunction = () => {
                 var setFor = reminderArray[i].dateTime;
                 var text = reminderArray[i].text;
                 var setBy = reminderArray[i].user;
-                check = true;
+                
                 setTimeout(function () {
                     reminderArray.splice(number, 1);
                     reminderArray = JSON.stringify(reminderArray);
                     localStorage.setItem("reminders", reminderArray);
                     reminderArray = JSON.parse(reminderArray);
                     displayReminder(subject, setBy, setFor, text);
-                    check = false;
+                    
                 }, (alarmTime - now))
                 if (Math.floor((alarmTime - now) / 1000 / 60 / 60) === 1) {
                     remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
@@ -139,8 +144,12 @@ function setReminder() {
         if (mid === start) {
             i = reminderArray.length;
             if (reminderTimeMilli > dateTimeMilli) {
-                reminderArray.splice(mid + 1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
-                console.log("remTime: " + reminderTimeMilli + " dateTime: " + dateTimeMilli + " placed in place: " + (mid + 1))
+                dateTimeMilli = new Date(reminderArray[end].dateTime);
+                if (reminderTimeMilli > dateTimeMilli) {
+                    reminderArray.splice(end + 1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
+                } else { 
+                    reminderArray.splice(mid + 1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
+                }   
             } else {
                 reminderArray.splice(mid, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
                 console.log("remTime: " + reminderTimeMilli + " dateTime: " + dateTimeMilli + " placed in place: " + (mid))
