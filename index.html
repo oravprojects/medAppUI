@@ -15,6 +15,7 @@
     <script type="text/javascript" src="index.js"></script>
     <script type="text/javascript" src="index_reminders.js"></script>
     <script type="text/javascript" src="index_calendar.js"></script>
+    <script type="text/javascript" src="appSched.js"></script>
     <title>Document</title>
 </head>
 
@@ -42,7 +43,6 @@
                 <div class="card dashboard">
                     <div class="card-body">
                         <h4 class="card-title dash-title">Your Dashboard</h4>
-                        <div class="sched-container" style="height: 250px; overflow-y: auto;">
                             <div class="dash-appointment">
                                 <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr shift">
                                     <ul class="flex-container">
@@ -52,6 +52,8 @@
                                     </ul>
                                 </a>
                             </div>
+
+                            <div class="sched-container" id="sched-container" style="height: 250px; overflow-y: auto;">
 
                             <div class="dash-appointment" data-toggle="modal" data-target="#exampleModalCenter">
                                 <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr dashboard">
