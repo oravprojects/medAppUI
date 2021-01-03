@@ -43,17 +43,17 @@
                 <div class="card dashboard">
                     <div class="card-body">
                         <h4 class="card-title dash-title">Your Dashboard</h4>
-                            <div class="dash-appointment">
-                                <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr shift">
-                                    <ul class="flex-container">
-                                        <li class="sched-item-icon"><i class="fa fa-hourglass-start"></i></li>
-                                        <li class="sched-item-content">start shift</li>
-                                        <li class="sched-item">6:30 AM</li>
-                                    </ul>
-                                </a>
-                            </div>
+                        <div class="dash-appointment">
+                            <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr shift">
+                                <ul class="flex-container">
+                                    <li class="sched-item-icon"><i class="fa fa-hourglass-start"></i></li>
+                                    <li class="sched-item-content">start shift</li>
+                                    <li class="sched-item">6:30 AM</li>
+                                </ul>
+                            </a>
+                        </div>
 
-                            <div class="sched-container" id="sched-container" style="height: 250px; overflow-y: auto;">
+                        <div class="sched-container" id="sched-container" style="height: 200px; overflow-y: auto;">
 
                             <div class="dash-appointment" data-toggle="modal" data-target="#exampleModalCenter">
                                 <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr dashboard">
@@ -302,9 +302,9 @@
     </div>
     <!-- alerts -->
     <p>
-        <button id="success-btn" onclick="success()">Success</button>
-        <button id="failure-btn" onclick="failure()">Failure</button>
-        <button id="warning-btn" onclick="warning()">Warning</button>
+        <button id="success-btn" onclick="alert('success', 'testing success alert')">Success</button>
+        <button id="failure-btn" onclick="alert('failure', 'testing failure alert')">Failure</button>
+        <button id="warning-btn" onclick="alert('warning', 'testing warning alert')">Warning</button>
     </p>
 
     <!-- Modal -->
@@ -329,15 +329,15 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="saveChangesButton"
-                        onclick="saveChanges(event)">Save changes</button>
+                        onclick="saveChanges()">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Appointment Scheduling Modal -->
-    <div class="modal fade" id="appSchedModal" tabindex="-1" role="dialog"
-        aria-labelledby="appSchedModalTitle" aria-hidden="true">
+    <div class="modal fade" id="appSchedModal" tabindex="-1" role="dialog" aria-labelledby="appSchedModalTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -377,9 +377,9 @@
                             <button type="submit" class="btn btn-primary" id="saveAppSchedButton">Save changes</button>
                         </div>
                     </form>
-                    
+
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -436,7 +436,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Reminder Text Modal -->
     <div class="modal fade" id="reminderTextModal" tabindex="-1" role="dialog" aria-labelledby="reminderTextModalTitle"
         aria-hidden="true">

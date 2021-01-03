@@ -22,12 +22,9 @@ tomorrow.setMilliseconds(0);
 tomorrow.setHours(tomorrow.getHours() + n);
 
 for (i = 0; i < appSched.length; i++) {
-    console.log(i + "appSchedArr: " + new Date(appSched[i].date).getTime() + "curr: " + currDate.getTime() +
-        " tomorrow: " + tomorrow.getTime())
     if (new Date(appSched[i].date).getTime() >= currDate.getTime() &&
         new Date(appSched[i].date).getTime() < tomorrow.getTime()) {
         appSchedTemp.push(appSched[i]);
-        console.log(appSchedTemp);
     }
 }
 
@@ -38,7 +35,6 @@ function loadAppSched() {
     }
     if (appSchedTemp.length > 0) {
         for (i = 0; i < appSchedTemp.length; i++) {
-            console.log("going: " + i)
             var firstName = appSchedTemp[i].fName;
             var lastName = appSchedTemp[i].lName;
             var startTime = appSchedTemp[i].start;
@@ -69,10 +65,7 @@ function loadAppSched() {
 
                 // append appointment elements
                 var node = document.createElement("div");
-                console.log(currDate + " " + appSchedDate + " currDateMill: " + currDate.getTime() + " appSchedMill: " + (appSchedDate.getTime() + hour * 60 * 60 * 1000 + min * 60 * 1000))
-                console.log("endMill: " + (appSchedDate.getTime() + endHour * 60 * 60 * 1000 + endMin * 60 * 1000));
-                console.log("CHECK: " + checkAgain)
-
+                
                 if (checkAgain) {
                     if (currDate.getTime() < (appSchedDate.getTime() + hour * 60 * 60 * 1000 + min * 60 * 1000)) {
                         setTimeout(function () { loadAppSched(); }, ((appSchedDate.getTime() + hour * 60 * 60 * 1000 + min * 60 * 1000) - currDate.getTime()));

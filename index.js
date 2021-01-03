@@ -1,6 +1,6 @@
 window.onload = function onLoadFunction() {
 
-  // sort report log messages by user name
+  // Sort report log messages by user name.
   var sortUserDir = "";
   document.querySelector(".sortUser").addEventListener("click", () => {
     textArea = document.getElementById("reportsLogModalBody");
@@ -58,12 +58,11 @@ window.onload = function onLoadFunction() {
     textArea.innerHTML = reportsText;
   });
 
-  // sort report log messages by date
+  // Sort report log messages by date.
   var sortDateDir = "";
   document.querySelector(".sortDate").addEventListener("click", () => {
     textArea = document.getElementById("reportsLogModalBody");
     logReports = JSON.parse(dailyReport);
-    // console.log(logReports)
     reportsText = "";
     function compareAsc(a, b) {
       if (new Date(a.date) < new Date(b.date)) {
@@ -117,7 +116,7 @@ window.onload = function onLoadFunction() {
     textArea.innerHTML = reportsText;
   });
 
-  // complete report for report log
+  // Complete report for report log.
   document.querySelector("#completeReport").addEventListener("click", () => {
     var date = new Date().toString();
     modalTitle = document.getElementById('exampleModalLongTitle');
@@ -126,7 +125,7 @@ window.onload = function onLoadFunction() {
     textArea.value = "";
   });
 
-  // view reports log
+  // View reports log.
   document.querySelector("#viewReportsLog").addEventListener("click", () => {
     sortUserButton = document.getElementsByClassName("sortUser");
     sortUserButton[0].className="btn btn-info sortUser";
@@ -171,7 +170,7 @@ window.onload = function onLoadFunction() {
     textArea.innerHTML = reportsText;
   });
 
-  // dashboard appointment clicks
+  // Dashboard appointment clicks.
   document.querySelectorAll('.dash-appointment').forEach(item => {
     item.addEventListener('click', e => {
       e = e || window.event;
@@ -191,7 +190,7 @@ window.onload = function onLoadFunction() {
   var usr = "John"
   helloUsr.innerHTML = "Hello, " + usr + "!"
 
-  // patient cards
+  // Patient cards
   var patientNumber = 0;
   var patientCard1 = document.getElementById("patient1");
   var patientCard2 = document.getElementById("patient2");
@@ -205,7 +204,7 @@ window.onload = function onLoadFunction() {
   patientCard4.innerHTML = "Patient " + (4 + patientNumber);
   patientCard5.innerHTML = "Patient " + (5 + patientNumber);
 }
-// end of window onload
+// End of window onload
 
 var patientNumber = 0;
 
@@ -247,28 +246,17 @@ function next() {
   patientCard5.innerHTML = "Patient " + (5 + patientNumber);
 }
 
-function success(message) {
-  var success = document.getElementById("success");
-  success.innerText = message;
-  success.className = "centerAlert alert-item fade-in fadeInSuccess";
-  setTimeout(function () { success.className = "centerAlert alert-item fade-out fadeOutSuccess"; }, 3000);
-  setTimeout(function () { success.className = "alert-off"; }, 4900);
-}
-function warning() {
-  var warning = document.getElementById("warning");
-  warning.className = "centerAlert alert-item fade-in fadeInWarning";
-  setTimeout(function () { warning.className = "centerAlert alert-item fade-out fadeOutWarning"; }, 3000);
-  setTimeout(function () { warning.className = "alert-off"; }, 4900);
-}
-function failure(message) {
-  var failure = document.getElementById("failure");
-  failure.innerText = message;
-  failure.className = "centerAlert alert-item fade-in fadeInFailure";
-  setTimeout(function () { failure.className = "centerAlert alert-item fade-out fadeOutFailure"; }, 3000);
-  setTimeout(function () { failure.className = "alert-off"; }, 4900);
+// Display alert messages.
+function alert(type, message){
+  var alertType = document.getElementById(type);
+  alertType.innerText = message;
+  alertClass = type.charAt(0).toUpperCase() + type.slice(1);
+  alertType.className = "centerAlert alert-item fade-in fadeIn" + alertClass;
+  setTimeout(function () { alertType.className = "centerAlert alert-item fade-out fadeOut" + alertClass; }, 3000);
+  setTimeout(function () { alertType.className = "alert-off"; }, 4900);
 }
 
-// Daily Report
+// Create an empty daily report array if it doesn't exist yet.
 var dailyReport = localStorage.getItem("dailyReport");
 if (dailyReport === null) {
   console.log("no daily rep in storage");
@@ -278,6 +266,7 @@ if (dailyReport === null) {
   dailyReport = localStorage.getItem("dailyReport");
 };
 
+// Save report in daily report log.
 function saveDailyReport() {
   console.log("function saveDaily report");
   console.log(dailyReport);
@@ -285,38 +274,28 @@ function saveDailyReport() {
   var notes = document.getElementById("exampleFormControlTextarea1").value;
   if (notes === ""){
     message = "Please, fill out the comments section.";
-    failure(message);
+    alert('failure', message);
     return;
   }
-  console.log(notes);
   dailyReportArray.push({ "date": new Date, "user": "Oren", "notes": notes });
   console.log(dailyReportArray);
   dailyReportArray = JSON.stringify(dailyReportArray)
   localStorage.setItem("dailyReport", dailyReportArray);
   dailyReport = localStorage.getItem("dailyReport");
+  message = "Report submitted successfully!";
+  alert('success', message);
 }
 
-function saveChanges(e) {
-  e = e || window.event;
-  var target = e.target,
-    // text = target.textContent || target.innerText;
-    text = target.innerText;
-  console.log(e)
-  console.log(text)
-  console.log(target)
+// Multi-purpose save button; for now it activates the saveDailyReport function.
+function saveChanges() {
   var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
   console.log(modalTitle);
   if (modalTitle.includes("Daily Report")) {
-    console.log("includes daily report");
     saveDailyReport();
-  } else if (modalTitle.includes("Appointment")) {
-    console.log("includes appointment")
-  }
-  else if (modalTitle.length === 15) {
-    console.log("includes day")
   }
 }
 
+// Delete reports from report log.
 function deleteRepLog(num) {
   console.log("delete: " + num);
   textArea = document.getElementById("reportsLogModalBody");
@@ -335,8 +314,11 @@ function deleteRepLog(num) {
       `<div><b>---------------</b></div>`
   }
   textArea.innerHTML = reportsText;
+  message = "Report deleted successfully!";
+  alert('success', message);
 }
 
+// Edit reports in report log.
 function editRepLog(num) {
   console.log(num);
   sortUserButton = document.getElementsByClassName("sortUser");
@@ -360,23 +342,9 @@ function editRepLog(num) {
     saveEdit(num)
   })
   return;
-
-  logReports.splice(num, 1);
-  dailyReport = JSON.stringify(logReports);
-  localStorage.setItem("dailyReport", dailyReport);
-  console.log(logReports)
-  reportsText = "";
-  for (i = 0; i < logReports.length; i++) {
-    reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-      `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-      `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-      `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
-      `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-      `<div><b>---------------</b></div>`
-  }
-  textArea.innerHTML = reportsText;
 }
 
+// Save edited reports in report log.
 function saveEdit(num){
   console.log("this is the number: " + num)
   editReminderText = document.getElementById("editReminderText");
@@ -387,5 +355,5 @@ function saveEdit(num){
   localStorage.setItem("dailyReport", dailyReport);
   message = "report log edited successfully!"
   $("#reportsModal").modal('hide');
-  setTimeout(function () { success(message) }, 500);
+  setTimeout(function () { alert('success', message) }, 500);
 }
