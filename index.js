@@ -1,5 +1,13 @@
 window.onload = function onLoadFunction() {
 
+  var lang = document.querySelectorAll("[lang='he']");
+
+  console.log(lang);
+  for(i=0; i<lang.length; i++){
+    // lang[i].className += " hide";
+    lang[i].style = "display: none";
+  }
+
   // Sort report log messages by user name.
   var sortUserDir = "";
   document.querySelector(".sortUser").addEventListener("click", () => {

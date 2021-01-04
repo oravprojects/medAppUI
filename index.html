@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -42,12 +42,14 @@
             <div class="col-md-3 col-sm-12">
                 <div class="card dashboard">
                     <div class="card-body">
-                        <h4 class="card-title dash-title">Your Dashboard</h4>
+                        <h4 lang="en" class="card-title dash-title">Your Dashboard</h4>
+                        <h4 lang="he" class="card-title dash-title" style="text-align: center;">סדר יום</h4>
                         <div class="dash-appointment">
                             <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr shift">
                                 <ul class="flex-container">
                                     <li class="sched-item-icon"><i class="fa fa-hourglass-start"></i></li>
-                                    <li class="sched-item-content">start shift</li>
+                                    <li lang="en" class="sched-item-content">start shift</li>
+                                    <li lang="he" class="sched-item-content">תחילת משמרת</li>
                                     <li class="sched-item">6:30 AM</li>
                                 </ul>
                             </a>
@@ -59,7 +61,8 @@
                                 <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr dashboard">
                                     <ul class="flex-container">
                                         <li class="sched-item-icon"><i class="fa fa-user"></i></li>
-                                        <li class="sched-item-content">appointment</li>
+                                        <li lang="en" class="sched-item-content">appointment</li>
+                                        <li lang="he" class="sched-item-content">פגישה</li>
                                         <li class="sched-item">7:00 AM</li>
                                     </ul>
                                 </a>
@@ -69,7 +72,8 @@
                                 <a href="#" class="btn btn-light w-100 p-2  mb-1 no-ptr dashboard">
                                     <ul class="flex-container">
                                         <li class="sched-item-icon"><i class="fa fa-user"></i></li>
-                                        <li class="sched-item-content">appointment</li>
+                                        <li lang="en" class="sched-item-content">appointment</li>
+                                        <li lang="he" class="sched-item-content">פגישה</li>
                                         <li class="sched-item">7:30 AM</li>
                                     </ul>
                                 </a>
@@ -79,7 +83,8 @@
                                 <a href="#" class="btn btn-light w-100 p-2  mb-1 no-ptr dashboard">
                                     <ul class="flex-container">
                                         <li class="sched-item-icon"><i class="fa fa-user"></i></li>
-                                        <li class="sched-item-content">appointment</li>
+                                        <li lang="en" class="sched-item-content">appointment</li>
+                                        <li lang="he" class="sched-item-content">פגישה</li>
                                         <li class="sched-item">8:00 AM</li>
                                     </ul>
                                 </a>
@@ -89,7 +94,8 @@
                                 <a href="#" class="btn btn-outline-primary w-100 p-2  mb-1 no-ptr current">
                                     <ul class="flex-container">
                                         <li class="sched-item-icon"><i class="fa fa-user"></i></li>
-                                        <li class="sched-item-content">appointment</li>
+                                        <li lang="en" class="sched-item-content">appointment</li>
+                                        <li lang="he" class="sched-item-content">פגישה</li>
                                         <li class="sched-item">8:30 AM</li>
                                     </ul>
                                 </a>
@@ -99,7 +105,8 @@
                                 <a href="#" class="btn btn-light w-100 p-2  mb-1 no-ptr dashboard">
                                     <ul class="flex-container">
                                         <li class="sched-item-icon"><i class="fa fa-user"></i></li>
-                                        <li class="sched-item-content">appointment</li>
+                                        <li lang="en" class="sched-item-content">appointment</li>
+                                        <li lang="he" class="sched-item-content">פגישה</li>
                                         <li class="sched-item">9:00 AM</li>
                                     </ul>
                                 </a>
@@ -108,11 +115,13 @@
 
                         <hr style="height:2px;width:50%;text-align:center;border-width:0;color:gray;
                             background-color:gray">
-                        <a href="#" class="btn btn-primary w-100 no-ptr shadow">end today's shift</a>
+                        <a href="#" lang="en" class="btn btn-primary w-100 no-ptr shadow">end today's shift</a>
+                        <a href="#" lang="he" class="btn btn-primary w-100 no-ptr shadow">סיום משמרת</a>
                         <br />
                         <br />
                         <div id="setReminder" data-toggle="modal" data-target="#setReminderModal">
-                            <a href="#" class="btn btn-light w-100 no-ptr shadow">set a reminder</a>
+                            <a href="#" lang="en" class="btn btn-light w-100 no-ptr shadow">set a reminder</a>
+                            <a href="#" lang="he" class="btn btn-light w-100 no-ptr shadow">הוסף תזכורת</a>
                         </div>
                     </div>
                 </div>
@@ -125,26 +134,38 @@
                     <div class="col-md-4 col-sm-12">
                         <div class="card h-100  shadow">
                             <div class="card-body">
-                                <h6 class="card-title secondary" id="date"></h6>
+                                <h6 class="card-title secondary" id="date" lang="en"></h6>
+                                <h6 class="card-title secondary" id="dateHeb" lang="he" dir="rtl" style="text-align: right;"></h6>
                                 <div class="calendar">
                                     <div class="month">
                                         <i class="fa fa-angle-left prev"></i>
                                         <div class="date">
-                                            <h1></h1>
+                                            <h1 lang="en"></h1>
+                                            <h1 lang="he" class="hebMonth" style="font-size: 16px;"></h1>
                                             <!-- <p></p> -->
                                         </div>
                                         <i class="fa fa-angle-right next"></i>
                                     </div>
-                                    <div class="weekdays">
+                                    <div lang="en" class="weekdays">
                                         <div>S</div>
                                         <div>M</div>
                                         <div>T</div>
                                         <div>W</div>
                                         <div>T</div>
                                         <div>F</div>
-                                        <div>S</div>
+                                        <div>S</div>      
                                     </div>
-                                    <div class="days" data-toggle="modal" data-target="#appSchedModal"></div>
+                                    <div lang="he" dir="rtl" class="hebWeekdays">
+                                        <div>א</div>
+                                        <div>ב</div>
+                                        <div>ג</div>
+                                        <div>ד</div>
+                                        <div>ה</div>
+                                        <div>ו</div>
+                                        <div>ש</div>
+                                    </div>
+                                    <div class="days" lang="en" data-toggle="modal" data-target="#appSchedModal"></div>
+                                    <div class="hebDays" dir="rtl" lang="he" data-toggle="modal" data-target="#appSchedModal"></div>
                                 </div>
                             </div>
                         </div>
