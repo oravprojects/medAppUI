@@ -1,12 +1,17 @@
 window.onload = function onLoadFunction() {
 
-  var lang = document.querySelectorAll("[lang='he']");
+  $('[lang="en"]').hide();
 
-  console.log(lang);
-  for(i=0; i<lang.length; i++){
-    // lang[i].className += " hide";
-    lang[i].style = "display: none";
-  }
+  $('#switch-lang').click(function () {
+    var langSwitchButton = document.getElementById("switch-lang");
+    if (langSwitchButton.innerText === "English"){
+      langSwitchButton.innerText = "עברית"
+    }else{
+      langSwitchButton.innerText = "English"
+    }
+    $('[lang="en"]').toggle();
+    $('[lang="he"]').toggle();
+  });
 
   // Sort report log messages by user name.
   var sortUserDir = "";
@@ -197,6 +202,10 @@ window.onload = function onLoadFunction() {
   var helloUsr = document.getElementById("helloUsr");
   var usr = "John"
   helloUsr.innerHTML = "Hello, " + usr + "!"
+
+  var helloUsrHeb = document.getElementById("helloUsrHeb");
+  var usrHeb = "אורן"
+  helloUsrHeb.innerHTML = "שלום, " + usrHeb + "!"
 
   // Patient cards
   var patientNumber = 0;

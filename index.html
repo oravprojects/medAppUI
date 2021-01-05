@@ -43,7 +43,7 @@
                 <div class="card dashboard">
                     <div class="card-body">
                         <h4 lang="en" class="card-title dash-title">Your Dashboard</h4>
-                        <h4 lang="he" class="card-title dash-title" style="text-align: center;">סדר יום</h4>
+                        <h4 lang="he" class="card-title dash-title" dir="rtl" style="text-align: right">ניהול פגישות</h4>
                         <div class="dash-appointment">
                             <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr shift">
                                 <ul class="flex-container">
@@ -181,15 +181,21 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <h6 class="card-title secondary" id="helloUsr"></h6>
-                                                <p class="card-text">Don't forget to submit your daily report.</p>
-                                                <a href="#" class="btn btn-primary shadow" id="completeReport"
-                                                    data-toggle="modal" data-target="#exampleModalCenter">complete
+                                                <h6 class="card-title secondary" id="helloUsr" lang="en"></h6>
+                                                <h6 class="card-title secondary" id="helloUsrHeb" lang="he" dir="rtl" style="text-align: right;"></h6>
+                                                <p class="card-text" lang="en">Don't forget to submit your daily report.</p>
+                                                <p class="card-text" lang="he" dir="rtl" style="text-align: right;">נא לא לשכוח להגיש את הדו"ח היומי.</p>
+                                                <a href="#" class="btn btn-primary w-100 shadow" id="completeReport"
+                                                    data-toggle="modal" data-target="#exampleModalCenter" lang="en">complete
                                                     report</a>
+                                                <a href="#" class="btn btn-primary w-100 shadow" id="completeReport"
+                                                    data-toggle="modal" data-target="#exampleModalCenter" lang="he">הגש דו"ח</a>
                                                 <br />
                                                 <br />
-                                                <a href="#" class="btn btn-info shadow" id="viewReportsLog"
-                                                    data-toggle="modal" data-target="#reportsModal">view reports log</a>
+                                                <a href="#" class="btn btn-info  w-100 shadow" id="viewReportsLog"
+                                                    data-toggle="modal" data-target="#reportsModal" lang="en">view reports log</a>
+                                                <a href="#" class="btn btn-info  w-100 shadow" id="viewReportsLog"
+                                                    data-toggle="modal" data-target="#reportsModal" lang="he">הצג דוחות</a>
                                             </td>
                                             <td>
                                                 <div class="text-center">
@@ -209,7 +215,8 @@
                 <div class="row p-3">
                     <div class="card w-100  shadow">
                         <div class="card-body">
-                            <h6 class="card-title secondary">Today's Appointments</h6>
+                            <h6 class="card-title secondary" lang="en">Today's Appointments</h6>
+                            <h6 class="card-title secondary" lang="he" dir="rtl" style="text-align: right;">פגישות היום</h6>
                             <ul class="flex-container">
                                 <li class="flex-item">
                                     <div class="card shadow" style="text-align: center;">
@@ -273,7 +280,8 @@
                             <br />
 
                             <!-- monthly report -->
-                            <h6 class="card-title secondary">Monthly Reports</h6>
+                            <h6 class="card-title secondary" lang="en">Monthly Reports</h6>
+                            <h6 class="card-title secondary" lang="he" dir="rtl" style="text-align: right;">דוחות חודשיים</h6>
                             <ul class="flex-container">
                                 <li class="report-item">
                                     <div class="card shadow" style="text-align: center;">
@@ -284,7 +292,8 @@
                                                         alt="avatar" alt="Card image cap">
                                                 </li>
                                                 <li class="report-item1">
-                                                    <div>treatment report</div>
+                                                    <div lang="en">treatment report</div>
+                                                    <div lang="he" dir="rtl" style="text-align: right;  margin-right: 10px;">דוחות טיפול</div>
                                                     <div>
                                                         <!-- <meter id="disk_c" value="7" min="0" max="10"></meter>&nbsp;70%<br> -->
                                                         <progress value="85" max="100"></progress>&nbsp;85%
@@ -305,7 +314,8 @@
                                                         alt="avatar" alt="Card image cap">
                                                 </li>
                                                 <li class="report-item1">
-                                                    <div>state of being report</div>
+                                                    <div lang="en">state of being report</div>
+                                                    <div lang="he" dir="rtl" style="text-align: right; margin-right: 10px;">דוחות רווחת המטופל</div>
                                                     <!-- <label for="disk_c">state of being report</label> -->
                                                     <!-- <meter id="disk_c" value="2" min="0" max="10"></meter>&nbsp;20%<br> -->
                                                     <progress value="65" max="100"></progress>&nbsp;65%
@@ -322,11 +332,19 @@
         </div>
     </div>
     <!-- alerts -->
-    <p>
-        <button id="success-btn" onclick="alert('success', 'testing success alert')">Success</button>
-        <button id="failure-btn" onclick="alert('failure', 'testing failure alert')">Failure</button>
-        <button id="warning-btn" onclick="alert('warning', 'testing warning alert')">Warning</button>
-    </p>
+    
+        <!-- Example single danger button -->
+    <div class="btn-group">
+        <p>
+            <button id="success-btn" onclick="alert('success', 'testing success alert')">Success</button>
+            <button id="failure-btn" onclick="alert('failure', 'testing failure alert')">Failure</button>
+            <button id="warning-btn" onclick="alert('warning', 'testing warning alert')">Warning</button>
+        </p>
+        <button type="button" id="switch-lang" class="btn btn-info ml-1">
+            English
+        </button>
+    </div>
+    
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
