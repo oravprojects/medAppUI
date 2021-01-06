@@ -124,9 +124,25 @@ window.onload = function onLoadFunction() {
     textArea = document.getElementById('exampleFormControlTextarea1');
     textArea.value = "";
   });
+  
+  document.querySelector("#completeReportHe").addEventListener("click", () => {
+    var dateHeb = document.getElementById("dateHeb").innerText;
+    modalTitle = document.getElementById('exampleModalLongTitle');
+    modalTitle.innerText =  'דו"ח ' + dateHeb;
+    textArea = document.getElementById('exampleFormControlTextarea1');
+    textArea.value = "";
+  });
 
   // View reports log.
+  document.querySelector("#viewReportsLogHeb").addEventListener("click", () => {
+    viewRepLog();
+  })
+
   document.querySelector("#viewReportsLog").addEventListener("click", () => {
+    viewRepLog();
+  })
+
+  function viewRepLog(){
     sortUserButton = document.getElementsByClassName("sortUser");
     sortUserButton[0].className="btn btn-info sortUser";
     sortUserButton = document.getElementsByClassName("sortDate");
@@ -168,7 +184,7 @@ window.onload = function onLoadFunction() {
         `<div><b>---------------</b></div>`
     }
     textArea.innerHTML = reportsText;
-  });
+  };
 
   // Dashboard appointment clicks.
   document.querySelectorAll('.dash-appointment').forEach(item => {
@@ -298,7 +314,7 @@ function saveDailyReport() {
 function saveChanges() {
   var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
   console.log(modalTitle);
-  if (modalTitle.includes("Daily Report")) {
+  if (modalTitle.includes("Daily Report") || modalTitle.includes('דו"ח')) {
     saveDailyReport();
   }
 }
