@@ -1,18 +1,5 @@
 window.onload = function onLoadFunction() {
 
-  $('[lang="en"]').hide();
-
-  $('#switch-lang').click(function () {
-    var langSwitchButton = document.getElementById("switch-lang");
-    if (langSwitchButton.innerText === "English"){
-      langSwitchButton.innerText = "עברית"
-    }else{
-      langSwitchButton.innerText = "English"
-    }
-    $('[lang="en"]').toggle();
-    $('[lang="he"]').toggle();
-  });
-
   // Sort report log messages by user name.
   var sortUserDir = "";
   document.querySelector(".sortUser").addEventListener("click", () => {
@@ -208,18 +195,22 @@ window.onload = function onLoadFunction() {
   helloUsrHeb.innerHTML = "שלום, " + usrHeb + "!"
 
   // Patient cards
-  var patientNumber = 0;
-  var patientCard1 = document.getElementById("patient1");
-  var patientCard2 = document.getElementById("patient2");
-  var patientCard3 = document.getElementById("patient3");
-  var patientCard4 = document.getElementById("patient4");
-  var patientCard5 = document.getElementById("patient5");
+  // var patientNumber = 0;
+  // var patientCard1 = document.getElementById("patient1");
+  // var patientCard2 = document.getElementById("patient2");
+  // var patientCard3 = document.getElementById("patient3");
+  // var patientCard4 = document.getElementById("patient4");
+  // var patientCard5 = document.getElementById("patient5");
 
-  patientCard1.innerHTML = "Patient " + (1 + patientNumber);
-  patientCard2.innerHTML = "Patient " + (2 + patientNumber);
-  patientCard3.innerHTML = "Patient " + (3 + patientNumber);
-  patientCard4.innerHTML = "Patient " + (4 + patientNumber);
-  patientCard5.innerHTML = "Patient " + (5 + patientNumber);
+  // patientCard1.innerHTML = `
+  // <div lang="en" style="height: 25px;">Oren Avni</div>
+  // <div lang="he" dir="rtl" style="height: 25px;">Oren Avni</div>
+  // <div class="sched-item">7:30 AM</div>
+  // `
+  // patientCard2.innerHTML = "Patient " + (2 + patientNumber);
+  // patientCard3.innerHTML = "Patient " + (3 + patientNumber);
+  // patientCard4.innerHTML = "Patient " + (4 + patientNumber);
+  // patientCard5.innerHTML = "Patient " + (5 + patientNumber);
 }
 // End of window onload
 
