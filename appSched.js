@@ -1,4 +1,6 @@
-var test = "test";
+var langSelect = "hebrew";
+localStorage.setItem("langSelect", langSelect);
+langSelect = localStorage.getItem("langSelect");
 var checkAgain = true;
 var appSched = localStorage.getItem("appSched");
 appSched = JSON.parse(appSched);
@@ -128,7 +130,6 @@ function loadAppSched() {
             console.log(listInfo[j].innerText);
             var patient = document.getElementById("patient" + i);
             console.log(patient);
-            console.log(listInfo.lang)
             if (listInfo[j].lang === "he") {
                 patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
             } else if (listInfo[j].lang === "en") {
@@ -169,6 +170,16 @@ addLoadEvent(function () {
         } else {
             langSwitchButton.innerText = "English"
         }
+        if (langSelect === "hebrew") {
+            langSelect = "english";
+            localStorage.setItem("langSelect", langSelect);
+            langSelect = localStorage.getItem("langSelect");
+        } else {
+            langSelect = "hebrew";
+            localStorage.setItem("langSelect", langSelect);
+            langSelect = localStorage.getItem("langSelect");
+        }
+        console.log(langSelect)
         $('[lang="en"]').toggle();
         $('[lang="he"]').toggle();
     });

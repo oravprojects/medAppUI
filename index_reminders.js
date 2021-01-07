@@ -28,7 +28,11 @@ const reminderFunction = () => {
         reminderArray = JSON.parse(reminderArray);
         console.log(reminderArray);
         if (reminderArray.length === 0) {
-            remAlert = "No reminders for the next 24 hours";
+            if (localStorage.getItem("langSelect") === "english") {
+                remAlert = "No reminders for the next 24 hours";
+            } else {
+                remAlert = "אין תזכורות ל-24 שעות הקרובות";
+            }
             reminderAlert(remAlert);
             return;
         }
@@ -74,18 +78,35 @@ const reminderFunction = () => {
                     
                 }, (alarmTime - now))
                 if (Math.floor((alarmTime - now) / 1000 / 60 / 60) === 1) {
-                    remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
+                    if (localStorage.getItem("langSelect") === "english") {
+                        remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
                         Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
+                    } else {
+                        remAlert = "ההתרעה הקרובה היא לעוד " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + "שעה ו-" +
+                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות."
+                    
+                    }
                     reminderAlert(remAlert);
                 }
                 if (Math.floor((alarmTime - now) / 1000 / 60 / 60) > 1) {
-                    remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
+                    if (localStorage.getItem("langSelect") === "english") {
+                        remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
                         Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
+                    } else {
+                        remAlert = "ההתרעה הקרובה היא לעוד " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + "שעות ו-" +
+                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות."
+                    
+                    }
                     reminderAlert(remAlert);
                 }
                 if (Math.floor((alarmTime - now) / 1000 / 60 / 60) < 1) {
-                    remAlert = "The next reminder is in " +
+                    if (localStorage.getItem("langSelect") === "english") {
+                        remAlert = "The next reminder is in " +
                         Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
+                    } else {
+                        remAlert = "ההתרעה הקרובה היא לעוד " +
+                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות."
+                    }
                     reminderAlert(remAlert);
                 }
                 counter++;
@@ -95,7 +116,11 @@ const reminderFunction = () => {
             // notify the user that there are no reminders set for the next 24 hours
             else if (alarmTime > now + 24 * 60 * 60 * 1000) {
                 if (counter === 0) {
-                    remAlert = "No reminders for the next 24 hours";
+                    if (localStorage.getItem("langSelect") === "english") {
+                        remAlert = "No reminders for the next 24 hours";
+                    } else {
+                        remAlert = "אין תזכורות ל-24 שעות הקרובות";
+                    }
                     reminderAlert(remAlert);
                     i = reminderArray.length;
                 } else {

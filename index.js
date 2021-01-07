@@ -271,7 +271,7 @@ function next() {
 }
 
 // Display alert messages.
-function alert(type, message){
+function alertToast(type, message){
   var alertType = document.getElementById(type);
   alertType.innerText = message;
   alertClass = type.charAt(0).toUpperCase() + type.slice(1);
@@ -297,8 +297,12 @@ function saveDailyReport() {
   dailyReportArray = JSON.parse(dailyReport);
   var notes = document.getElementById("exampleFormControlTextarea1").value;
   if (notes === ""){
-    message = "Please, fill out the comments section.";
-    alert('failure', message);
+    if(localStorage.getItem("langSelect") === "english"){
+      message = "Please, fill out the comments section.";
+    }else{
+      message = ".נא למלא את חלק ההערות";
+    }
+    alertToast('failure', message);
     return;
   }
   dailyReportArray.push({ "date": new Date, "user": "Oren", "notes": notes });
@@ -306,8 +310,12 @@ function saveDailyReport() {
   dailyReportArray = JSON.stringify(dailyReportArray)
   localStorage.setItem("dailyReport", dailyReportArray);
   dailyReport = localStorage.getItem("dailyReport");
-  message = "Report submitted successfully!";
-  alert('success', message);
+  if(localStorage.getItem("langSelect") === "english"){
+    message = "Report submitted successfully!";
+  }else{
+    message = '!הדו"ח נשמר בהצלחה';
+  }
+  alertToast('success', message);
 }
 
 // Multi-purpose save button; for now it activates the saveDailyReport function.
@@ -338,8 +346,13 @@ function deleteRepLog(num) {
       `<div><b>---------------</b></div>`
   }
   textArea.innerHTML = reportsText;
-  message = "Report deleted successfully!";
-  alert('success', message);
+  
+  if(localStorage.getItem("langSelect") === "english"){
+    message = "Report deleted successfully!";
+  }else{
+    message = '!הדו"ח נמחק בהצלחה';
+  }
+  alertToast('success', message);
 }
 
 // Edit reports in report log.
@@ -377,7 +390,11 @@ function saveEdit(num){
   logReports[num].notes = editReminderText.value;
   dailyReport = JSON.stringify(logReports);
   localStorage.setItem("dailyReport", dailyReport);
-  message = "report log edited successfully!"
+  if(localStorage.getItem("langSelect") === "english"){
+    message = "report log edited successfully!";
+  }else{
+    message = '!הדו"ח נערך בהצלחה';
+  }
   $("#reportsModal").modal('hide');
-  setTimeout(function () { alert('success', message) }, 500);
+  setTimeout(function () { alertToast('success', message) }, 500);
 }
