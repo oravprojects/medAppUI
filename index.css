@@ -6,6 +6,9 @@
 .secondary {font-weight: bold;}
 .no-ptr {pointer-events: none;}
 .hide {display: none;}
+#repCommentLabel{
+    margin-left: 90%;
+}
 
 /* container for listing appointments, patients, and report meters */
 .flex-container{
@@ -248,11 +251,6 @@
   margin-left: 5px;
 }
 
-.sortDate{
-  margin-right: 50%;
-}
-
-
 #exampleModalLongTitle{
     text-transform: capitalize;
 }
@@ -274,6 +272,11 @@
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
 
+    #repCommentLabel{
+        margin-left: 85%;
+    }
+    
+
     /* schedule appointment modal */
     #app-sched-modal-time span:last-of-type {
         display: block;
@@ -287,12 +290,7 @@
     }
     #app-end-time{
         margin-left: 11px;
-    }
-
-    /* reports log modal */
-    .sortDate{
-        margin-right: 29%;
-    }
+    }  
 
     /* alerts */
     .fadeInSuccess{

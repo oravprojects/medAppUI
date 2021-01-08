@@ -2,119 +2,149 @@ window.onload = function onLoadFunction() {
 
   // Sort report log messages by user name.
   var sortUserDir = "";
-  document.querySelector(".sortUser").addEventListener("click", () => {
-    textArea = document.getElementById("reportsLogModalBody");
-    logReports = JSON.parse(dailyReport);
-    reportsText = "";
-    function compareAsc(a, b) {
-      if (a.user.toUpperCase() < b.user.toUpperCase()) {
-        return -1;
+  var sortUserClick = document.querySelectorAll(".sortUser, .sortUserHeb");
+  for (i = 0; i < sortUserClick.length; i++) {
+    sortUserClick[i].addEventListener("click", () => {
+      textArea = document.getElementById("reportsLogModalBody");
+      logReports = JSON.parse(dailyReport);
+      reportsText = "";
+      function compareAsc(a, b) {
+        if (a.user.toUpperCase() < b.user.toUpperCase()) {
+          return -1;
+        }
+        if (a.user.toUpperCase() > b.user.toUpperCase()) {
+          return 1;
+        }
+        return 0;
       }
-      if (a.user.toUpperCase() > b.user.toUpperCase()) {
-        return 1;
+      function compareDesc(a, b) {
+        if (a.user.toUpperCase() > b.user.toUpperCase()) {
+          return -1;
+        }
+        if (a.user.toUpperCase() < b.user.toUpperCase()) {
+          return 1;
+        }
+        return 0;
       }
-      return 0;
-    }
-    function compareDesc(a, b) {
-      if (a.user.toUpperCase() > b.user.toUpperCase()) {
-        return -1;
+      if (sortUserDir === "desc") {
+        if (logReports.length === 0) {
+          reportsText = "No reports in log.";
+          textArea.innerHTML = reportsText;
+          return;
+        }
+        console.log(sortUserDir, " sort user desc")
+        logReports = logReports.sort(compareDesc);
+        sortUserDir = "asc"
+      } else {
+        if (logReports.length === 0) {
+          reportsText = "No reports in log.";
+          textArea.innerHTML = reportsText;
+          return;
+        }
+        console.log(sortUserDir, "sort user asc")
+        logReports = logReports.sort(compareAsc);
+        sortUserDir = "desc"
       }
-      if (a.user.toUpperCase() < b.user.toUpperCase()) {
-        return 1;
-      }
-      return 0;
-    }
-    if (sortUserDir === "desc") {
-      if(logReports.length === 0){
-        reportsText = "No reports in log.";
-        textArea.innerHTML = reportsText;
-        return;
-      }
-      console.log(sortUserDir, " sort user desc")
-      logReports = logReports.sort(compareDesc);
-      sortUserDir = "asc"
-    } else {
-      if(logReports.length === 0){
-        reportsText = "No reports in log.";
-        textArea.innerHTML = reportsText;
-        return;
-      }
-      console.log(sortUserDir, "sort user asc")
-      logReports = logReports.sort(compareAsc);
-      sortUserDir = "desc"
-    }
-    console.log(logReports)
-    dailyReport = JSON.stringify(logReports);
-    localStorage.setItem("dailyReport", dailyReport);
+      console.log(logReports)
+      dailyReport = JSON.stringify(logReports);
+      localStorage.setItem("dailyReport", dailyReport);
 
-    for (i = 0; i < logReports.length; i++) {
-      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-        `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
-        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-        `<div><b>---------------</b></div>`
-    }
-    textArea.innerHTML = reportsText;
-  });
+      for (i = 0; i < logReports.length; i++) {
+        if (localStorage.getItem("langSelect") === "english") {
+          reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+            `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+            `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+            `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+            `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+            `<div><b>---------------</b></div>`
+        } else {
+          reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+            `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+            `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
+            `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+            `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+            `<div dir="rtl"><b>---------------</b></div>`
+        }
+      }
+      textArea.innerHTML = reportsText;
+      if (localStorage.getItem("langSelect") === "hebrew") {
+        textArea.style.textAlign = "right";
+      }
+    });
+  }
 
   // Sort report log messages by date.
   var sortDateDir = "";
-  document.querySelector(".sortDate").addEventListener("click", () => {
-    textArea = document.getElementById("reportsLogModalBody");
-    logReports = JSON.parse(dailyReport);
-    reportsText = "";
-    function compareAsc(a, b) {
-      if (new Date(a.date) < new Date(b.date)) {
-        return -1;
+  var sortDateClick = document.querySelectorAll(".sortDate, .sortDateHeb");
+  for (i = 0; i < sortDateClick.length; i++) {
+    sortDateClick[i].addEventListener("click", () => {
+      textArea = document.getElementById("reportsLogModalBody");
+      logReports = JSON.parse(dailyReport);
+      reportsText = "";
+      function compareAsc(a, b) {
+        if (new Date(a.date) < new Date(b.date)) {
+          return -1;
+        }
+        if (new Date(a.date) > new Date(b.date)) {
+          return 1;
+        }
+        return 0;
       }
-      if (new Date(a.date) > new Date(b.date)) {
-        return 1;
+      function compareDesc(a, b) {
+        if (new Date(a.date) > new Date(b.date)) {
+          return -1;
+        }
+        if (new Date(a.date) < new Date(b.date)) {
+          return 1;
+        }
+        return 0;
       }
-      return 0;
-    }
-    function compareDesc(a, b) {
-      if (new Date(a.date) > new Date(b.date)) {
-        return -1;
+      if (sortDateDir === "desc") {
+        if (logReports.length === 0) {
+          reportsText = "No reports in log.";
+          textArea.innerHTML = reportsText;
+          return;
+        }
+        console.log(sortDateDir, " sort date desc")
+        logReports = logReports.sort(compareAsc);
+        sortDateDir = "asc"
+      } else {
+        if (logReports.length === 0) {
+          reportsText = "No reports in log.";
+          textArea.innerHTML = reportsText;
+          return;
+        }
+        console.log(sortDateDir, "sort date asc")
+        logReports = logReports.sort(compareDesc);
+        sortDateDir = "desc"
       }
-      if (new Date(a.date) < new Date(b.date)) {
-        return 1;
-      }
-      return 0;
-    }
-    if (sortDateDir === "desc") {
-      if(logReports.length === 0){
-        reportsText = "No reports in log.";
-        textArea.innerHTML = reportsText;
-        return;
-      }
-      console.log(sortDateDir, " sort date desc")
-      logReports = logReports.sort(compareAsc);
-      sortDateDir = "asc"
-    } else {
-      if(logReports.length === 0){
-        reportsText = "No reports in log.";
-        textArea.innerHTML = reportsText;
-        return;
-      }
-      console.log(sortDateDir, "sort date asc")
-      logReports = logReports.sort(compareDesc);
-      sortDateDir = "desc"
-    }
-    console.log(logReports)
-    dailyReport = JSON.stringify(logReports);
-    localStorage.setItem("dailyReport", dailyReport);
+      console.log(logReports)
+      dailyReport = JSON.stringify(logReports);
+      localStorage.setItem("dailyReport", dailyReport);
 
-    for (i = 0; i < logReports.length; i++) {
-      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-        `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
-        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-        `<div><b>---------------</b></div>`
-    }
-    textArea.innerHTML = reportsText;
-  });
+      for (i = 0; i < logReports.length; i++) {
+        if (localStorage.getItem("langSelect") === "english") {
+          reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+            `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+            `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+            `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+            `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+            `<div><b>---------------</b></div>`
+        } else {
+          reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+            `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+            `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
+            `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+            `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+            `<div dir="rtl"><b>---------------</b></div>`
+        }
+      }
+      textArea.innerHTML = reportsText;
+      if (localStorage.getItem("langSelect") === "hebrew") {
+        textArea.style = "text-align: right";
+      }
+    });
+  }
 
   // Complete report for report log.
   document.querySelector("#completeReport").addEventListener("click", () => {
@@ -123,14 +153,16 @@ window.onload = function onLoadFunction() {
     modalTitle.innerText = date.substr(0, 15) + " Daily Report";
     textArea = document.getElementById('exampleFormControlTextarea1');
     textArea.value = "";
+    textArea.dir = "ltr";
   });
-  
+
   document.querySelector("#completeReportHe").addEventListener("click", () => {
     var dateHeb = document.getElementById("dateHeb").innerText;
     modalTitle = document.getElementById('exampleModalLongTitle');
-    modalTitle.innerText =  'דו"ח ' + dateHeb;
+    modalTitle.innerText = 'דו"ח ' + dateHeb;
     textArea = document.getElementById('exampleFormControlTextarea1');
     textArea.value = "";
+    textArea.dir = "rtl";
   });
 
   // View reports log.
@@ -142,15 +174,39 @@ window.onload = function onLoadFunction() {
     viewRepLog();
   })
 
-  function viewRepLog(){
+  function viewRepLog() {
     sortUserButton = document.getElementsByClassName("sortUser");
-    sortUserButton[0].className="btn btn-info sortUser";
-    sortUserButton = document.getElementsByClassName("sortDate");
-    sortUserButton[0].className="btn btn-info sortDate";
+    sortUserButton[0].className = "btn btn-info sortUser";
+    console.log(localStorage.getItem("langSelect"))
+    if (localStorage.getItem("langSelect") === "hebrew") {
+      sortUserButton[0].innerText = "משתמש ↕"
+      } else{
+        sortUserButton[0].innerText = "user ↕"
+      }
+    sortDateButton = document.getElementsByClassName("sortDate");
+    sortDateButton[0].className = "btn btn-info sortDate";
+    if (localStorage.getItem("langSelect") === "hebrew") {
+    sortDateButton[0].innerText = "תאריך ↕";
+    if(screen.width > 360){
+      sortDateButton[0].style.marginRight = "40%";
+    }else{ 
+      sortDateButton[0].style.marginRight = "20%";
+    }
+    } else{
+      sortDateButton[0].innerText = "date ↕";
+      if(screen.width > 360){
+        sortDateButton[0].style.marginRight = "40%";
+      }else{ 
+        sortDateButton[0].style.marginRight = "30%";
+      }
+    }
     saveEditButton = document.getElementById("saveEditButton");
+    saveEditButton.style.display = "";
     saveEditButton.className = "btn btn-primary hide";
     modalTitle = document.getElementById('reportsModalLongTitle');
+    modalTitleHeb = document.getElementById('reportsModalLongTitleHeb');
     modalTitle.innerText = "Reports Log";
+    modalTitleHeb.innerText = 'יומן דו"חות';
     textArea = document.getElementById("reportsLogModalBody");
     logReports = JSON.parse(dailyReport);
     if (logReports.length === 0) {
@@ -159,7 +215,7 @@ window.onload = function onLoadFunction() {
       return;
     }
     function compareDesc(a, b) {
-      if(logReports.length === 0){
+      if (logReports.length === 0) {
         return;
       }
       if (new Date(a.date) > new Date(b.date)) {
@@ -176,14 +232,28 @@ window.onload = function onLoadFunction() {
     reportsText = "";
     console.log(logReports[0].user)
     for (i = 0; i < logReports.length; i++) {
-      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-        `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
-        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-        `<div><b>---------------</b></div>`
+      if (localStorage.getItem("langSelect") === "english") {
+        reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+          `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+          `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+          `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+          `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+          `<div><b>---------------</b></div>`
+      } else {
+        reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+          `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+          `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
+          `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+          `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+          `<div dir="rtl"><b>---------------</b></div>`
+      }
     }
     textArea.innerHTML = reportsText;
+    if (localStorage.getItem("langSelect") === "hebrew") {
+      textArea.style.textAlign = "right";
+    } else{
+      textArea.style.textAlign = "left";
+    }
   };
 
   // Dashboard appointment clicks.
@@ -271,7 +341,7 @@ function next() {
 }
 
 // Display alert messages.
-function alertToast(type, message){
+function alertToast(type, message) {
   var alertType = document.getElementById(type);
   alertType.innerText = message;
   alertClass = type.charAt(0).toUpperCase() + type.slice(1);
@@ -296,10 +366,10 @@ function saveDailyReport() {
   console.log(dailyReport);
   dailyReportArray = JSON.parse(dailyReport);
   var notes = document.getElementById("exampleFormControlTextarea1").value;
-  if (notes === ""){
-    if(localStorage.getItem("langSelect") === "english"){
+  if (notes === "") {
+    if (localStorage.getItem("langSelect") === "english") {
       message = "Please, fill out the comments section.";
-    }else{
+    } else {
       message = ".נא למלא את חלק ההערות";
     }
     alertToast('failure', message);
@@ -310,9 +380,9 @@ function saveDailyReport() {
   dailyReportArray = JSON.stringify(dailyReportArray)
   localStorage.setItem("dailyReport", dailyReportArray);
   dailyReport = localStorage.getItem("dailyReport");
-  if(localStorage.getItem("langSelect") === "english"){
+  if (localStorage.getItem("langSelect") === "english") {
     message = "Report submitted successfully!";
-  }else{
+  } else {
     message = '!הדו"ח נשמר בהצלחה';
   }
   alertToast('success', message);
@@ -341,15 +411,15 @@ function deleteRepLog(num) {
     reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
       `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
       `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-      `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` + 
+      `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
       `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
       `<div><b>---------------</b></div>`
   }
   textArea.innerHTML = reportsText;
-  
-  if(localStorage.getItem("langSelect") === "english"){
+
+  if (localStorage.getItem("langSelect") === "english") {
     message = "Report deleted successfully!";
-  }else{
+  } else {
     message = '!הדו"ח נמחק בהצלחה';
   }
   alertToast('success', message);
@@ -360,21 +430,30 @@ function editRepLog(num) {
   console.log(num);
   sortUserButton = document.getElementsByClassName("sortUser");
   sortUserButton[0].className = "btn btn-info sortUser hide";
-  sortUserButton = document.getElementsByClassName("sortDate");
-  sortUserButton[0].className = "btn btn-info sortDate hide";
+  sortDateButton = document.getElementsByClassName("sortDate");
+  sortDateButton[0].className = "btn btn-info sortDate hide";
   saveEditButton = document.getElementById("saveEditButton");
   saveEditButton.className = "btn btn-primary";
   textArea = document.getElementById("reportsLogModalBody");
   logReports = JSON.parse(dailyReport);
   reportsText = "";
   for (i = 0; i < logReports.length; i++) {
-    if(i === num){
-      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-      `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-      `<div><b>Notes: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`
+    if (i === num) {
+      if (localStorage.getItem("langSelect") === "english") {
+        reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+        `<div><b>Notes: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`;
+      } else {
+        reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+        `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+        `<div dir="rtl"><b>הערות: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`;
+      }
     }
   }
   textArea.innerHTML = reportsText;
+  if (localStorage.getItem("langSelect") === "english") {
+    textArea.style = "text-align: right;";
+  }
   saveEditButton.addEventListener("click", () => {
     saveEdit(num)
   })
@@ -382,7 +461,7 @@ function editRepLog(num) {
 }
 
 // Save edited reports in report log.
-function saveEdit(num){
+function saveEdit(num) {
   console.log("this is the number: " + num)
   editReminderText = document.getElementById("editReminderText");
   console.log(editReminderText.value);
@@ -390,9 +469,9 @@ function saveEdit(num){
   logReports[num].notes = editReminderText.value;
   dailyReport = JSON.stringify(logReports);
   localStorage.setItem("dailyReport", dailyReport);
-  if(localStorage.getItem("langSelect") === "english"){
+  if (localStorage.getItem("langSelect") === "english") {
     message = "report log edited successfully!";
-  }else{
+  } else {
     message = '!הדו"ח נערך בהצלחה';
   }
   $("#reportsModal").modal('hide');

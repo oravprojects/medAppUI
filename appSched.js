@@ -165,22 +165,35 @@ addLoadEvent(function () {
 
     $('#switch-lang').click(function () {
         var langSwitchButton = document.getElementById("switch-lang");
-        if (langSwitchButton.innerText === "English") {
-            langSwitchButton.innerText = "עברית"
-        } else {
-            langSwitchButton.innerText = "English"
-        }
+        // if (langSwitchButton.innerText === "English") {
+        //     langSwitchButton.innerText = "עברית";
+        //     $('[lang="he"]').hide();
+        //     $('[lang="en"]').show();
+        //     langSelect = "english";
+        //     localStorage.setItem("langSelect", langSelect);
+        //     langSelect = localStorage.getItem("langSelect");
+        // } else {
+        //     langSwitchButton.innerText = "English"
+        //     $('[lang="he"]').show();
+        //     $('[lang="en"]').hide();
+        // }
         if (langSelect === "hebrew") {
             langSelect = "english";
             localStorage.setItem("langSelect", langSelect);
             langSelect = localStorage.getItem("langSelect");
+            $('[lang="en"]').show();
+            $('[lang="he"]').hide();
+            langSwitchButton.innerText = "עברית";
         } else {
             langSelect = "hebrew";
             localStorage.setItem("langSelect", langSelect);
             langSelect = localStorage.getItem("langSelect");
+            $('[lang="en"]').hide();
+            $('[lang="he"]').show();
+            langSwitchButton.innerText = "English"
         }
         console.log(langSelect)
-        $('[lang="en"]').toggle();
-        $('[lang="he"]').toggle();
+        // $('[lang="en"]').toggle();
+        // $('[lang="he"]').toggle();
     });
 })
