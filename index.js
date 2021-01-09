@@ -69,6 +69,8 @@ window.onload = function onLoadFunction() {
       textArea.innerHTML = reportsText;
       if (localStorage.getItem("langSelect") === "hebrew") {
         textArea.style.textAlign = "right";
+      }else{
+        textArea.style.textAlign = "left";
       }
     });
   }
@@ -141,7 +143,9 @@ window.onload = function onLoadFunction() {
       }
       textArea.innerHTML = reportsText;
       if (localStorage.getItem("langSelect") === "hebrew") {
-        textArea.style = "text-align: right";
+        textArea.style.textAlign = "right";
+      }else{
+        textArea.style.textAlign = "left";
       }
     });
   }
@@ -188,20 +192,25 @@ window.onload = function onLoadFunction() {
     if (localStorage.getItem("langSelect") === "hebrew") {
     sortDateButton[0].innerText = "תאריך ↕";
     if(screen.width > 360){
-      sortDateButton[0].style.marginRight = "40%";
+      sortDateButton[0].style.marginRight = "48%";
     }else{ 
-      sortDateButton[0].style.marginRight = "20%";
+      sortDateButton[0].style.marginRight = "23%";
     }
     } else{
       sortDateButton[0].innerText = "date ↕";
       if(screen.width > 360){
-        sortDateButton[0].style.marginRight = "40%";
+        sortDateButton[0].style.marginRight = "50%";
       }else{ 
-        sortDateButton[0].style.marginRight = "30%";
+        sortDateButton[0].style.marginRight = "26%";
       }
     }
     saveEditButton = document.getElementById("saveEditButton");
-    saveEditButton.style.display = "";
+    if (localStorage.getItem("langSelect") === "hebrew") {
+      saveEditButton.innerText = "שמור"
+      } else{
+        saveEditButton.innerText = "Save changes"
+      }
+
     saveEditButton.className = "btn btn-primary hide";
     modalTitle = document.getElementById('reportsModalLongTitle');
     modalTitleHeb = document.getElementById('reportsModalLongTitleHeb');
@@ -433,6 +442,11 @@ function editRepLog(num) {
   sortDateButton = document.getElementsByClassName("sortDate");
   sortDateButton[0].className = "btn btn-info sortDate hide";
   saveEditButton = document.getElementById("saveEditButton");
+  if (localStorage.getItem("langSelect") === "hebrew") {
+    saveEditButton.innerText = "שמור"
+    } else{
+      saveEditButton.innerText = "Save changes"
+    }
   saveEditButton.className = "btn btn-primary";
   textArea = document.getElementById("reportsLogModalBody");
   logReports = JSON.parse(dailyReport);
@@ -451,8 +465,10 @@ function editRepLog(num) {
     }
   }
   textArea.innerHTML = reportsText;
-  if (localStorage.getItem("langSelect") === "english") {
-    textArea.style = "text-align: right;";
+  if (localStorage.getItem("langSelect") === "hebrew") {
+    textArea.style.textAlign = "right";
+  }else{
+    textArea.style.textAlign = "left";
   }
   saveEditButton.addEventListener("click", () => {
     saveEdit(num)
