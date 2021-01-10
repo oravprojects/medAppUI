@@ -6,10 +6,21 @@ function displayReminder(subject, user, date, text) {
     modalMessage = document.getElementById("reminderTextModalBody");
     reminderModalTitle = document.getElementById("reminderTextModalLongTitle");
     reminderModalTitle.innerText = subject;
-    message += `<div><b>User: </b>${user}</div>` +
+    if((localStorage.getItem)("langSelect") === "hebrew"){
+        modalMessage.dir = "rtl";
+        modalMessage.style.textAlign = "right";
+        message += `<div><b>משתמש: </b>${user}</div>` +
+        `<div><b>נקבעה ל: </b>${new Date(date).toString().substr(0, 24)}</div>` +
+        `<div><b>תזכורת: </b>${text}</div>` +
+        `<div><b>---------------</b></div>`
+    }else{
+        modalMessage.dir = "ltr";
+        modalMessage.style.textAlign = "left";
+        message += `<div><b>User: </b>${user}</div>` +
         `<div><b>Set for: </b>${new Date(date).toString().substr(0, 24)}</div>` +
         `<div><b>Reminder: </b>${text}</div>` +
         `<div><b>---------------</b></div>`
+    }
     modalMessage.innerHTML = message;
     $('#reminderTextModal').modal('show');
 }
@@ -64,7 +75,11 @@ const reminderFunction = () => {
             // when reminder is due
             else if (alarmTime <= now + 24 * 60 * 60 * 1000) {
                 var number = i;
-                var subject = "Reminder";
+                if(localStorage.getItem("langSelect")==="hebrew"){
+                    var subject = "תזכורת";    
+                }else{
+                    var subject = "Reminder";
+                }
                 var setFor = reminderArray[i].dateTime;
                 var text = reminderArray[i].text;
                 var setBy = reminderArray[i].user;
@@ -83,7 +98,7 @@ const reminderFunction = () => {
                         Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
                     } else {
                         remAlert = "ההתרעה הקרובה היא לעוד " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + "שעה ו-" +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות."
+                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
                     
                     }
                     reminderAlert(remAlert);
@@ -94,7 +109,7 @@ const reminderFunction = () => {
                         Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
                     } else {
                         remAlert = "ההתרעה הקרובה היא לעוד " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + "שעות ו-" +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות."
+                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
                     
                     }
                     reminderAlert(remAlert);
@@ -105,7 +120,7 @@ const reminderFunction = () => {
                         Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
                     } else {
                         remAlert = "ההתרעה הקרובה היא לעוד " +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות."
+                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
                     }
                     reminderAlert(remAlert);
                 }
@@ -144,13 +159,18 @@ function reminderAlert(message) {
 
 // allows user to set a new reminder
 function setReminder() {
+    if(localStorage.getItem("langSelect") === "hebrew"){
+        var reminderTime = document.getElementById("reminder-time-he").value;
+        var reminderText = document.getElementById("reminderText-he").value;
+    }else{
+        var reminderTime = document.getElementById("reminder-time").value;
+        var reminderText = document.getElementById("reminderText").value;
+    }
     var reminderArray = localStorage.getItem("reminders");
-    var reminderTime = document.getElementById("reminder-time").value;
     var reminderTimeMilli = new Date(reminderTime);
     reminderTimeMilli = reminderTimeMilli.getTime();
     console.log(reminderTime);
     reminderArray = JSON.parse(reminderArray);
-    reminderText = document.getElementById("reminderText").value;
     console.log(reminderText);
     if(reminderArray.length === 0){
         reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
@@ -189,6 +209,11 @@ function setReminder() {
         }
     }
     // reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
+    if(localStorage.getItem("langSelect")==="hebrew"){
+        reminderAlert(".התזכורת נשמרה בהצלחה")
+    }else{
+        reminderAlert("Reminder saved successfully!")
+    }
     console.log(reminderArray);
     reminderArray = JSON.stringify(reminderArray)
     localStorage.setItem("reminders", reminderArray);

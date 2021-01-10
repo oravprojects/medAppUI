@@ -197,3 +197,17 @@ addLoadEvent(function () {
         // $('[lang="he"]').toggle();
     });
 })
+
+addLoadEvent(function () {
+    if(localStorage.getItem("langSelect") === "hebrew"){
+        document.getElementById("reminder-time").required = false;
+        document.getElementById("reminder-time-he").required = true;
+        document.getElementById("reminderText").required = false;
+        document.getElementById("reminderText-he").required = true;
+    }else{
+        document.getElementById("reminder-time").required = true;
+        document.getElementById("reminder-time-he").required = false;
+        document.getElementById("reminderText").required = true;
+        document.getElementById("reminderText-he").required = false;
+    }    
+})
