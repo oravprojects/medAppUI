@@ -394,7 +394,8 @@ function saveDailyReport() {
   } else {
     message = '!הדו"ח נשמר בהצלחה';
   }
-  alertToast('success', message);
+  $("#exampleModalCenter").modal('hide');
+  setTimeout(function () { alertToast('success', message) }, 500);
 }
 
 // Multi-purpose save button; for now it activates the saveDailyReport function.
@@ -417,12 +418,21 @@ function deleteRepLog(num) {
   console.log(logReports)
   reportsText = "";
   for (i = 0; i < logReports.length; i++) {
-    reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+    if(localStorage.getItem("langSelect") === "english"){
+      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
       `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
       `<div><b>Notes: </b>${logReports[i].notes}</div>` +
       `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
       `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
       `<div><b>---------------</b></div>`
+    }else {
+        reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+          `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+          `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
+          `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+          `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+          `<div dir="rtl"><b>---------------</b></div>`
+      }
   }
   textArea.innerHTML = reportsText;
 
@@ -470,14 +480,13 @@ function editRepLog(num) {
   }else{
     textArea.style.textAlign = "left";
   }
-  saveEditButton.addEventListener("click", () => {
-    saveEdit(num)
-  })
+
+  saveEditButton.onclick = function(){saveEdit(num)};
   return;
 }
 
 // Save edited reports in report log.
-function saveEdit(num) {
+  function saveEdit(num) {
   console.log("this is the number: " + num)
   editReminderText = document.getElementById("editReminderText");
   console.log(editReminderText.value);
@@ -492,4 +501,5 @@ function saveEdit(num) {
   }
   $("#reportsModal").modal('hide');
   setTimeout(function () { alertToast('success', message) }, 500);
+  return;
 }
