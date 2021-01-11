@@ -409,29 +409,48 @@
                             <br>
                             <div id="app-sched-modal-time">
                                 <span>
-                                    <label for="app-start-time">start time:</label>
-                                    <input type="time" id="app-start-time" name="start-time" required>
+                                    <label for="app-start-time" lang="en">start time:</label>
+                                    <label for="app-start-time-he" lang="he" dir="rtl" style="float: right;">התחלה:</label>
+                                    <input type="time" id="app-start-time" name="start-time" lang="en" required>
+                                    <input type="time" id="app-start-time-he" name="start-time-he"  lang="he" required 
+                                    style="float: right; margin-right: 5px;">
                                 </span>
                                 <span>
-                                    <label for="app-end-time" id="label-end-time">end time:</label>
-                                    <input type="time" id="app-end-time" name="end-time" required>
+                                    <label for="app-end-time" id="label-end-time" lang="en">end time:</label>
+                                    <label for="app-end-time-he" id="label-end-time-he" lang="he" dir="rtl" 
+                                    style="float: right; margin-right: 100px;">סיום:</label>
+                                    <input type="time" id="app-end-time" name="end-time"  lang="en" required>
+                                    <input type="time" id="app-end-time-he" name="end-time-he"  lang="he" required 
+                                    style="float: right; margin-right: 5px;">
                                 </span>
                             </div>
                             <br>
-                            <label for="first-name">first name:</label>
-                            <input type="text" id="first-name" name="first-name" required>
+                            <label for="first-name" lang="en">first name:</label>
+                            <br lang="he">
+                            <label for="first-name-he" lang="he" dir="rtl" style="float: right;">שם פרטי:</label>
+                            <input type="text" id="first-name" name="first-name"  lang="en" required>
+                            <input type="text" id="first-name-he" name="first-name-he"  lang="he" required 
+                            style="float: right; margin-right: 5px;">
                             <br>
                             <br>
-                            <label for="last-name">last name:</label>
-                            <input type="text" id="last-name" name="last-name" required>
+                            <label for="last-name" lang="en">last name:</label>
+                            <label for="last-name-he" lang="he" dir="rtl" style="float: right;">שם משפחה:</label>
+                            <input type="text" id="last-name" name="last-name"  lang="en" required>
+                            <input type="text" id="last-name-he" name="last-name-he"  lang="he" required 
+                            style="float: right; margin-right: 5px;">
                             <br>
                             <br>
-                            <label for="appSchedModalTextarea1">Comments:</label>
-                            <textarea class="form-control" id="appSchedModalTextarea1" rows="3" required></textarea>
+                            <label for="appSchedModalTextarea1" lang="en">Comments:</label>
+                            <label for="appSchedModalTextarea1-he"  lang="he" dir="rtl" style="float: right;">הערות:</label>
+                            <textarea class="form-control" id="appSchedModalTextarea1" rows="3"  lang="en" required></textarea>
+                            <textarea class="form-control" id="appSchedModalTextarea1-he" rows="3"  lang="he" required 
+                            dir="rtl" style="float: right;"></textarea>
                         </div>
                         <div class="modal-footer pr-0 pb-0">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="saveAppSchedButton">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="en">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="he" dir="rtl">סגור</button>
+                            <button type="submit" class="btn btn-primary" id="saveAppSchedButton" lang="en">Save changes</button>
+                            <button type="submit" class="btn btn-primary" id="saveAppSchedButtonHe" lang="he">שמור</button>
                         </div>
                     </form>
 

@@ -211,3 +211,29 @@ addLoadEvent(function () {
         document.getElementById("reminderText-he").required = false;
     }    
 })
+
+addLoadEvent(function () {
+    if(localStorage.getItem("langSelect") === "hebrew"){
+        document.getElementById("app-start-time").required = false;
+        document.getElementById("app-start-time-he").required = true;
+        document.getElementById("app-end-time").required = false;
+        document.getElementById("app-end-time-he").required = true;
+        document.getElementById("first-name").required = false;
+        document.getElementById("first-name-he").required = true;
+        document.getElementById("last-name").required = false;
+        document.getElementById("last-name-he").required = true;
+        document.getElementById("appSchedModalTextarea1").required = false;
+        document.getElementById("appSchedModalTextarea1-he").required = true;
+    }else{
+        document.getElementById("app-start-time").required = true;
+        document.getElementById("app-start-time-he").required = false;
+        document.getElementById("app-end-time").required = true;
+        document.getElementById("app-end-time-he").required = false;
+        document.getElementById("first-name").required = true;
+        document.getElementById("first-name-he").required = false;
+        document.getElementById("last-name").required = true;
+        document.getElementById("last-name-he").required = false;
+        document.getElementById("appSchedModalTextarea1").required = true;
+        document.getElementById("appSchedModalTextarea1-he").required = false;
+    }    
+})

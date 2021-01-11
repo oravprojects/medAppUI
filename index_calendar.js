@@ -122,7 +122,31 @@ function loadCalendar() {
     var target = e.target,
       // text = target.textContent || target.innerText;
       text = target.getAttribute("id")
+      console.log(text)
     title = new Date(text).toString();
+    console.log(title)
+    modalTitle = document.getElementById('appSchedModalLongTitle');
+    modalTitle.innerText = title.substr(0, 15) + " Appointments";
+    textArea = document.getElementById('appSchedModalTextarea1');
+    textArea.value = "";
+    modalFirstName = document.getElementById("first-name");
+    modalFirstName.value = "";
+    modalLastName = document.getElementById("last-name");
+    modalLastName.value = "";
+    modalStartTime = document.getElementById("app-start-time");
+    modalStartTime.value = null; 
+    modalEndTime = document.getElementById("app-end-time");
+    modalEndTime.value = null; 
+  }, false);
+  
+  document.querySelector(".hebDays").addEventListener("click", function (e) {
+    e = e || window.event;
+    var target = e.target,
+      // text = target.textContent || target.innerText;
+      text = target.getAttribute("id")
+      console.log(text)
+    title = new Date(text).toString();
+    console.log(title)
     modalTitle = document.getElementById('appSchedModalLongTitle');
     modalTitle.innerText = title.substr(0, 15) + " Appointments";
     textArea = document.getElementById('appSchedModalTextarea1');
