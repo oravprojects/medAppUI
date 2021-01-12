@@ -44,7 +44,7 @@ function loadCalendar() {
       "November",
       "December",
     ];
-    
+
     const hebMonths = [
       "ינואר",
       "פברואר",
@@ -122,7 +122,7 @@ function loadCalendar() {
     var target = e.target,
       // text = target.textContent || target.innerText;
       text = target.getAttribute("id")
-      console.log(text)
+    console.log(text)
     title = new Date(text).toString();
     console.log(title)
     modalTitle = document.getElementById('appSchedModalLongTitle');
@@ -134,17 +134,17 @@ function loadCalendar() {
     modalLastName = document.getElementById("last-name");
     modalLastName.value = "";
     modalStartTime = document.getElementById("app-start-time");
-    modalStartTime.value = null; 
+    modalStartTime.value = null;
     modalEndTime = document.getElementById("app-end-time");
-    modalEndTime.value = null; 
+    modalEndTime.value = null;
   }, false);
-  
+
   document.querySelector(".hebDays").addEventListener("click", function (e) {
     e = e || window.event;
     var target = e.target,
       // text = target.textContent || target.innerText;
       text = target.getAttribute("id")
-      console.log(text)
+    console.log(text)
     title = new Date(text).toString();
     console.log(title)
     modalTitle = document.getElementById('appSchedModalLongTitle');
@@ -156,9 +156,9 @@ function loadCalendar() {
     modalLastName = document.getElementById("last-name");
     modalLastName.value = "";
     modalStartTime = document.getElementById("app-start-time");
-    modalStartTime.value = null; 
+    modalStartTime.value = null;
     modalEndTime = document.getElementById("app-end-time");
-    modalEndTime.value = null; 
+    modalEndTime.value = null;
   }, false);
 
   renderCalendar();
@@ -196,7 +196,7 @@ function loadCalendar() {
   if (month === 9) { monthName = "Oct" };
   if (month === 10) { monthName = "Nov" };
   if (month === 11) { monthName = "Dec" };
-  
+
   if (month === 0) { monthHebName = "ינואר" };
   if (month === 1) { monthHebName = "פברואר" };
   if (month === 2) { monthHebName = "מרץ" };
@@ -209,7 +209,7 @@ function loadCalendar() {
   if (month === 9) { monthHebName = "אוקטובר" };
   if (month === 10) { monthHebName = "נובמבר" };
   if (month === 11) { monthHebName = "דצמבר" };
-  
+
   if (day === 1) { dayName = "Mon" };
   if (day === 2) { dayName = "Tue" };
   if (day === 3) { dayName = "Wed" };
@@ -217,7 +217,7 @@ function loadCalendar() {
   if (day === 5) { dayName = "Fri" };
   if (day === 6) { dayName = "Sat" };
   if (day === 0) { dayName = "Sun" };
-  
+
   if (day === 1) { dayHebName = "יום שני" };
   if (day === 2) { dayHebName = "יום שלישי" };
   if (day === 3) { dayHebName = "יום רביעי" };
@@ -236,10 +236,10 @@ const appointmentSchedFunction = () => {
   console.log("1: " + appSchedArray);
   // create an appointment schedule array if it doesn't exist
   if (appSchedArray === null) {
-      console.log("no appointments in storage");
-      appSchedArray = [];
-      appSchedArray = JSON.stringify(appSchedArray);
-      localStorage.setItem("appSched", appSchedArray);
+    console.log("no appointments in storage");
+    appSchedArray = [];
+    appSchedArray = JSON.stringify(appSchedArray);
+    localStorage.setItem("appSched", appSchedArray);
   }
 }
 
@@ -251,95 +251,82 @@ function saveAppSchedChanges(e) {
   console.log(appDate)
   //GMT offset to local time
   var d = new Date();
-  var n = d.getTimezoneOffset()/60;
-  if (n < 0) {n = n * -1};
-  appDate.setHours(appDate.getHours()+n);
+  var n = d.getTimezoneOffset() / 60;
+  if (n < 0) { n = n * -1 };
+  appDate.setHours(appDate.getHours() + n);
   var appSchedArray = localStorage.getItem("appSched");
   appSchedArray = JSON.parse(appSchedArray)
-  var startTime = document.getElementById("app-start-time").value;
-  var endTime = document.getElementById("app-end-time").value;
-  var fName = document.getElementById("first-name").value;
-  var lName = document.getElementById("last-name").value;
-  var comments = document.getElementById("appSchedModalTextarea1").value;
+  if (localStorage.getItem("langSelect") === "english") {
+    var startTime = document.getElementById("app-start-time").value;
+    var endTime = document.getElementById("app-end-time").value;
+    var fName = document.getElementById("first-name").value;
+    var lName = document.getElementById("last-name").value;
+    var comments = document.getElementById("appSchedModalTextarea1").value;
+  } else {
+    var startTime = document.getElementById("app-start-time-he").value;
+    var endTime = document.getElementById("app-end-time-he").value;
+    var fName = document.getElementById("first-name-he").value;
+    var lName = document.getElementById("last-name-he").value;
+    var comments = document.getElementById("appSchedModalTextarea1-he").value;
+  }
   var startHour = startTime.substr(0, 2);
   var startMin = startTime.substr(3, 2);
-  var dateTime = appDate.getTime() + startHour*60*60*1000 + startMin*60*1000;
+  var dateTime = appDate.getTime() + startHour * 60 * 60 * 1000 + startMin * 60 * 1000;
   console.log("dateTime: " + dateTime);
-  if(appSchedArray.length === 0){
+  if (appSchedArray.length === 0) {
     appSchedArray.push({ "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
     appSchedArray = JSON.stringify(appSchedArray);
     localStorage.setItem("appSched", appSchedArray);
     console.log(appSchedArray);
     return;
-}
-  
+  }
+
   var mid = Math.floor(appSchedArray.length / 2);
-    var start = 0;
-    var end = appSchedArray.length - 1;
-    var mid = Math.floor((start + end) / 2);
-    var existDateTime = 0;
-    for (i = 0; i < appSchedArray.length; i++) {
-      console.log(i + " " + new Date (appSchedArray[end].date.substr(0, 11) + appSchedArray[end].start+":00.000Z").getTime());
-      console.log("mid: " + mid)
-        existDateTime = new Date(appSchedArray[mid].date.substr(0, 11) + appSchedArray[mid].start+":00.000Z").getTime();
-        console.log("existDateTime: " + existDateTime + "dateTime: " + dateTime);
-        // var existStartHour = appSchedArray[mid].start.substr(0, 2);
-        // console.log(existStartHour);
-        // var existStartMin = appSchedArray[mid].start.substr(3, 2);
-        if (mid === start) {
-            i = appSchedArray.length;
-            if (dateTime > existDateTime) {
-              existDateTime = new Date (appSchedArray[end].date.substr(0, 11) + appSchedArray[end].start+":00.000Z").getTime();
-              if( dateTime > existDateTime ){
-                appSchedArray.splice(end + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
-              } else {
-                appSchedArray.splice(mid + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
-              }
-            } else {
-                appSchedArray.splice(mid, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
-            }
-        }
-        else if (dateTime > existDateTime) {
-            start = mid;
-            mid = Math.floor((start + end) / 2);
+  var start = 0;
+  var end = appSchedArray.length - 1;
+  var mid = Math.floor((start + end) / 2);
+  var existDateTime = 0;
+  for (i = 0; i < appSchedArray.length; i++) {
+    if (mid === start) {
+      i = appSchedArray.length;
+      if (dateTime > existDateTime) {
+        existDateTime = new Date(appSchedArray[end].date.substr(0, 11) + appSchedArray[end].start + ":00.000Z").getTime();
+        if (dateTime > existDateTime) {
+          appSchedArray.splice(end + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
         } else {
-            end = mid;
-            mid = Math.floor((start + end) / 2);
+          appSchedArray.splice(mid + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
         }
+      } else {
+        appSchedArray.splice(mid, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+      }
     }
-  // appSchedArray.push({ "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+    else if (dateTime > existDateTime) {
+      start = mid;
+      mid = Math.floor((start + end) / 2);
+    } else {
+      end = mid;
+      mid = Math.floor((start + end) / 2);
+    }
+  }
   appSchedArray = JSON.stringify(appSchedArray)
   console.log("App Array: " + appSchedArray);
   localStorage.setItem("appSched", appSchedArray);
-  // console.log(text)
-  // console.log(target)
-  // var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
-  // console.log(modalTitle);
-  // if (modalTitle.includes("Daily Report")) {
-  //   console.log("includes daily report");
-  //   saveDailyReport();
-  // } else if (modalTitle.includes("Appointment")) {
-  //   console.log("includes appointment")
-  // }
-  // else if (modalTitle.length === 15) {
-  //   console.log("includes day")
-  // }
 }
 
 
 // function that allows to add additional window.onload functions
 function addLoadEvent(func) {
-    var oldonload = window.onload;
-    if (typeof window.onload != 'function') {
-        window.onload = func;
-    } else {
-        window.onload = function () {
-            if (oldonload) {
-                oldonload();
-            }
-            func();
-        }
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function () {
+      if (oldonload) {
+        oldonload();
+      }
+      func();
     }
+  }
 }
 addLoadEvent(loadCalendar);
 addLoadEvent(appointmentSchedFunction);

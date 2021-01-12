@@ -34,27 +34,18 @@ function loadAppSched() {
     if (appSchedTemp.length > 0) {
         var schedContainer = document.getElementById("sched-container");
         schedContainer.innerHTML = "";
-    }
-    if (appSchedTemp.length > 0) {
         for (i = 0; i < appSchedTemp.length; i++) {
             var firstName = appSchedTemp[i].fName;
             var lastName = appSchedTemp[i].lName;
             var startTime = appSchedTemp[i].start;
             var endTime = appSchedTemp[i].end;
             var appSchedDate = new Date(appSchedTemp[i].date);
-            var appSchedYear = appSchedDate.getFullYear();
-            var appSchedMonth = appSchedDate.getMonth();
-            var appSchedDay = appSchedDate.getDay();
             var currDate = new Date();
             // compensate for GMT offset
             var d = new Date();
             var n = d.getTimezoneOffset() / 60;
             if (n < 0) { n = n * -1 };
             currDate.setHours(currDate.getHours() + n);
-            var currYear = currDate.getFullYear();
-            var currMonth = currDate.getMonth();
-            var currDay = currDate.getDay();
-            // if (appSchedYear === currYear && appSchedMonth === currMonth && appSchedDay === currDay) {
             var hour = startTime.substr(0, 2);
             var endHour = endTime.substr(0, 2);
             var endMin = endTime.substr(3, 2);
@@ -81,7 +72,7 @@ function loadAppSched() {
             if (currDate.getTime() >= (appSchedDate.getTime() + hour * 60 * 60 * 1000 + min * 60 * 1000)
                 && currDate.getTime() < (appSchedDate.getTime() + endHour * 60 * 60 * 1000 + endMin * 60 * 1000)) {
                 var content = `<div class="dash-appointment" data-toggle="modal" data-target="#exampleModalCenter">
-            <a href="#" class="btn btn-outline-primary w-100 p-2  mb-1 no-ptr current">
+            <a href="#" class="btn btn-outline-primary w-100 p-2  mb-1 no-ptr current" style="font-size: 14px">
             <ul class="flex-container">
             <li class="sched-item-icon"><i class="fa fa-user"></i></li>
             <li lang="en" class="sched-item-content">${firstName + " " + lastName}</li>
@@ -91,7 +82,7 @@ function loadAppSched() {
             </a></div>`
             } else {
                 var content = `<div class="dash-appointment" data-toggle="modal" data-target="#exampleModalCenter">
-        <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr dashboard">
+        <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr dashboard" style="font-size: 14px">
         <ul class="flex-container">
         <li class="sched-item-icon"><i class="fa fa-user"></i></li>
         <li lang="en" class="sched-item-content">${firstName + " " + lastName}</li>
@@ -103,7 +94,6 @@ function loadAppSched() {
             node.innerHTML = content;
             schedContainer.appendChild(node);
         }
-        // convert time from military time format to 12 hour am/pm format
     }
     var todayApps = document.querySelectorAll(".dash-appointment");
     var todayAppContainer = document.getElementById("todayAppContainer");
@@ -142,7 +132,7 @@ function loadAppSched() {
         }
     }
 }
-// }
+
 // function that allows to add additional window.onload functions
 function addLoadEvent(func) {
     var oldonload = window.onload;
@@ -165,18 +155,6 @@ addLoadEvent(function () {
 
     $('#switch-lang').click(function () {
         var langSwitchButton = document.getElementById("switch-lang");
-        // if (langSwitchButton.innerText === "English") {
-        //     langSwitchButton.innerText = "עברית";
-        //     $('[lang="he"]').hide();
-        //     $('[lang="en"]').show();
-        //     langSelect = "english";
-        //     localStorage.setItem("langSelect", langSelect);
-        //     langSelect = localStorage.getItem("langSelect");
-        // } else {
-        //     langSwitchButton.innerText = "English"
-        //     $('[lang="he"]').show();
-        //     $('[lang="en"]').hide();
-        // }
         if (langSelect === "hebrew") {
             langSelect = "english";
             localStorage.setItem("langSelect", langSelect);
@@ -195,10 +173,15 @@ addLoadEvent(function () {
         console.log(langSelect)
         // $('[lang="en"]').toggle();
         // $('[lang="he"]').toggle();
+        setReminderForm();
+        setAppSchedForm();
     });
+    setReminderForm();
+    setAppSchedForm();
 })
 
-addLoadEvent(function () {
+function setReminderForm () {
+    console.log("setRemFunction")
     if(localStorage.getItem("langSelect") === "hebrew"){
         document.getElementById("reminder-time").required = false;
         document.getElementById("reminder-time-he").required = true;
@@ -210,10 +193,11 @@ addLoadEvent(function () {
         document.getElementById("reminderText").required = true;
         document.getElementById("reminderText-he").required = false;
     }    
-})
+}
 
-addLoadEvent(function () {
+function setAppSchedForm() {
     if(localStorage.getItem("langSelect") === "hebrew"){
+        console.log("setAppSched")
         document.getElementById("app-start-time").required = false;
         document.getElementById("app-start-time-he").required = true;
         document.getElementById("app-end-time").required = false;
@@ -236,4 +220,4 @@ addLoadEvent(function () {
         document.getElementById("appSchedModalTextarea1").required = true;
         document.getElementById("appSchedModalTextarea1-he").required = false;
     }    
-})
+}
