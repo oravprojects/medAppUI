@@ -496,10 +496,15 @@ function editRepLog(num) {
   localStorage.setItem("dailyReport", dailyReport);
   if (localStorage.getItem("langSelect") === "english") {
     message = "report log edited successfully!";
-  } else {
-    message = '!הדו"ח נערך בהצלחה';
+    } else {
+      message = '!הדו"ח נערך בהצלחה';
+    }
+    $("#reportsModal").modal('hide');
+    if (localStorage.getItem("langSelect") === "english") {
+      setTimeout(function () { document.getElementById("viewReportsLog").click(); }, 500);
+    } else {
+      setTimeout(function () { document.getElementById("viewReportsLogHeb").click(); }, 500);
+    }
+    setTimeout(function () { alertToast('success', message) }, 500);
+    return;
   }
-  $("#reportsModal").modal('hide');
-  setTimeout(function () { alertToast('success', message) }, 500);
-  return;
-}

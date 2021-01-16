@@ -145,19 +145,49 @@ function loadCalendar() {
       // text = target.textContent || target.innerText;
       text = target.getAttribute("id")
     console.log(text)
-    title = new Date(text).toString();
+    day = new Date(text).getDay();
+    month = new Date(text).getMonth();
+    year = new Date(text).getFullYear();
+    localStorage.setItem("appSchedHebDate", new Date(text))
+    console.log("day: " + day);
+    console.log("month: " + month);
+    console.log("year: " + year);
+
+  if (month === 0) { monthHebName = "ינואר" };
+  if (month === 1) { monthHebName = "פברואר" };
+  if (month === 2) { monthHebName = "מרץ" };
+  if (month === 3) { monthHebName = "אפריל" };
+  if (month === 4) { monthHebName = "מאי" };
+  if (month === 5) { monthHebName = "יוני" };
+  if (month === 6) { monthHebName = "יולי" };
+  if (month === 7) { monthHebName = "אוגוסט" };
+  if (month === 8) { monthHebName = "ספטמבר" };
+  if (month === 9) { monthHebName = "אוקטובר" };
+  if (month === 10) { monthHebName = "נובמבר" };
+  if (month === 11) { monthHebName = "דצמבר" };
+
+  if (day === 1) { dayHebName = "יום שני" };
+  if (day === 2) { dayHebName = "יום שלישי" };
+  if (day === 3) { dayHebName = "יום רביעי" };
+  if (day === 4) { dayHebName = "יום חמישי" };
+  if (day === 5) { dayHebName = "יום שישי" };
+  if (day === 6) { dayHebName = "יום שבת" };
+  if (day === 0) { dayHebName = "יום ראשון" };
+
+  title = dayHebName + ", " + dayNumber + " " + monthHebName + ", " + year;
+    
     console.log(title)
     modalTitle = document.getElementById('appSchedModalLongTitle');
-    modalTitle.innerText = title.substr(0, 15) + " Appointments";
-    textArea = document.getElementById('appSchedModalTextarea1');
+    modalTitle.innerText = "פגישות " + title;
+    textArea = document.getElementById('appSchedModalTextarea1-he');
     textArea.value = "";
-    modalFirstName = document.getElementById("first-name");
+    modalFirstName = document.getElementById("first-name-he");
     modalFirstName.value = "";
-    modalLastName = document.getElementById("last-name");
+    modalLastName = document.getElementById("last-name-he");
     modalLastName.value = "";
-    modalStartTime = document.getElementById("app-start-time");
+    modalStartTime = document.getElementById("app-start-time-he");
     modalStartTime.value = null;
-    modalEndTime = document.getElementById("app-end-time");
+    modalEndTime = document.getElementById("app-end-time-he");
     modalEndTime.value = null;
   }, false);
 
@@ -247,8 +277,12 @@ function saveAppSchedChanges(e) {
   alert("save appointment schedule changes");
   modalTitle = document.getElementById('appSchedModalLongTitle');
   console.log(modalTitle.innerText);
-  var appDate = new Date(modalTitle.innerText.substr(4, 11));
-  console.log(appDate)
+  if(localStorage.getItem("langSelect")==="english"){
+    var appDate = new Date(modalTitle.innerText.substr(4, 11));
+  }else{
+    var appDate = new Date(localStorage.getItem("appSchedHebDate"));
+  }
+  console.log("appDate: " + appDate)
   //GMT offset to local time
   var d = new Date();
   var n = d.getTimezoneOffset() / 60;
