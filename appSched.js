@@ -35,12 +35,18 @@ function loadAppSched() {
         var schedContainer = document.getElementById("sched-container");
         schedContainer.innerHTML = "";
         for (i = 0; i < appSchedTemp.length; i++) {
+            var patt = /[A-Za-z]/
             var firstName = appSchedTemp[i].fName;
             var lastName = appSchedTemp[i].lName;
             var startTime = appSchedTemp[i].start;
             var endTime = appSchedTemp[i].end;
             var appSchedDate = new Date(appSchedTemp[i].date);
             var currDate = new Date();
+            if(patt.test(firstName)){
+                langDir = 'ltr'
+            }else{
+                langDir = 'rtl'
+            }
             // compensate for GMT offset
             var d = new Date();
             var n = d.getTimezoneOffset() / 60;
@@ -75,8 +81,8 @@ function loadAppSched() {
             <a href="#" class="btn btn-outline-primary w-100 p-2  mb-1 no-ptr current" style="font-size: 14px">
             <ul class="flex-container">
             <li class="sched-item-icon"><i class="fa fa-user"></i></li>
-            <li lang="en" class="sched-item-content">${firstName + " " + lastName}</li>
-            <li lang="he" class="sched-item-content" dir="rtl">${firstName + " " + lastName}</li>
+            <li lang="en" class="sched-item-content" dir=${langDir}>${firstName + " " + lastName}</li>
+            <li lang="he" class="sched-item-content" dir=${langDir}>${firstName + " " + lastName}</li>
             <li class="sched-item">${startTime}</li>
             </ul>
             </a></div>`
@@ -85,8 +91,8 @@ function loadAppSched() {
         <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr dashboard" style="font-size: 14px">
         <ul class="flex-container">
         <li class="sched-item-icon"><i class="fa fa-user"></i></li>
-        <li lang="en" class="sched-item-content">${firstName + " " + lastName}</li>
-        <li lang="he" class="sched-item-content" dir="rtl">${firstName + " " + lastName}</li>
+        <li lang="en" class="sched-item-content" dir=${langDir}>${firstName + " " + lastName}</li>
+        <li lang="he" class="sched-item-content" dir=${langDir}>${firstName + " " + lastName}</li>
         <li class="sched-item">${startTime}</li>
         </ul>
         </a></div>`
@@ -115,15 +121,23 @@ function loadAppSched() {
     for (i = 1; i < todayApps.length; i++) {
         var listInfo = todayApps[i].getElementsByTagName("li");
         console.log(listInfo[1].lang)
-        var patientInfo = "";
+        var patientInfo = "";   
         for (j = 1; j < listInfo.length; j++) {
             console.log(listInfo[j].innerText);
             var patient = document.getElementById("patient" + i);
             console.log(patient);
             if (listInfo[j].lang === "he") {
-                patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
+                if(patt.test(listInfo[j].innerHTML)){
+                    patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
+                }else{
+                    patientInfo += "<div lang='he' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+                }
             } else if (listInfo[j].lang === "en") {
-                patientInfo += "<div lang='en'>" + listInfo[j].innerHTML + "</div>";
+                if(patt.test(listInfo[j].innerHTML)){
+                    patientInfo += "<div lang='en'>" + listInfo[j].innerHTML + "</div>";
+                }else{
+                    patientInfo += "<div lang='en' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+                }
             } else {
                 patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
             }
