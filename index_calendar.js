@@ -264,13 +264,6 @@ function loadCalendar() {
 const appointmentSchedFunction = () => {
   var appSchedArray = localStorage.getItem("appSched");
   console.log("1: " + appSchedArray);
-  // create an appointment schedule array if it doesn't exist
-  if (appSchedArray === null) {
-    console.log("no appointments in storage");
-    appSchedArray = [];
-    appSchedArray = JSON.stringify(appSchedArray);
-    localStorage.setItem("appSched", appSchedArray);
-  }
 }
 
 function saveAppSchedChanges(e) {

@@ -309,45 +309,6 @@ window.onload = function onLoadFunction() {
 }
 // End of window onload
 
-var patientNumber = 0;
-
-function prev() {
-  console.log("prev");
-  patientNumber--;
-  if (patientNumber < 0) {
-    patientNumber = 5;
-  }
-  var patientCard1 = document.getElementById("patient1");
-  var patientCard2 = document.getElementById("patient2");
-  var patientCard3 = document.getElementById("patient3");
-  var patientCard4 = document.getElementById("patient4");
-  var patientCard5 = document.getElementById("patient5");
-
-  patientCard1.innerHTML = "Patient " + (1 + patientNumber);
-  patientCard2.innerHTML = "Patient " + (2 + patientNumber);
-  patientCard3.innerHTML = "Patient " + (3 + patientNumber);
-  patientCard4.innerHTML = "Patient " + (4 + patientNumber);
-  patientCard5.innerHTML = "Patient " + (5 + patientNumber);
-}
-function next() {
-  console.log("next");
-  patientNumber++;
-  if (patientNumber > 5) {
-    patientNumber = 0;
-  }
-
-  var patientCard1 = document.getElementById("patient1");
-  var patientCard2 = document.getElementById("patient2");
-  var patientCard3 = document.getElementById("patient3");
-  var patientCard4 = document.getElementById("patient4");
-  var patientCard5 = document.getElementById("patient5");
-
-  patientCard1.innerHTML = "Patient " + (1 + patientNumber);
-  patientCard2.innerHTML = "Patient " + (2 + patientNumber);
-  patientCard3.innerHTML = "Patient " + (3 + patientNumber);
-  patientCard4.innerHTML = "Patient " + (4 + patientNumber);
-  patientCard5.innerHTML = "Patient " + (5 + patientNumber);
-}
 
 // Display alert messages.
 function alertToast(type, message) {

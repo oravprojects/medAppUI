@@ -2,7 +2,16 @@ var langSelect = "hebrew";
 localStorage.setItem("langSelect", langSelect);
 langSelect = localStorage.getItem("langSelect");
 var checkAgain = true;
+var patientNumber = 0;
+var todayApps = document.querySelectorAll(".dash-appointment");
 var appSched = localStorage.getItem("appSched");
+// create an appointment schedule array if it doesn't exist
+if (appSched === null) {
+    console.log("no appointments in storage");
+    appSched = [];
+    appSched = JSON.stringify(appSched);
+    localStorage.setItem("appSched", appSched);
+}
 appSched = JSON.parse(appSched);
 console.log(appSched);
 var appSchedTemp = [];
@@ -42,9 +51,9 @@ function loadAppSched() {
             var endTime = appSchedTemp[i].end;
             var appSchedDate = new Date(appSchedTemp[i].date);
             var currDate = new Date();
-            if(patt.test(firstName)){
+            if (patt.test(firstName)) {
                 langDir = 'ltr'
-            }else{
+            } else {
                 langDir = 'rtl'
             }
             // compensate for GMT offset
@@ -111,41 +120,125 @@ function loadAppSched() {
                         <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
                             width="80px" alt="avatar" alt="Card image cap">
                         <div class="card-body p-1">
-                            <div id="patient${i}">patient</div>
+                            <div id="patient${i}">Patient ${i}</div>
                         </div>
                     </span>
                 </div>
             </li>`
         todayAppContainer.innerHTML = appContainerContent;
+        if (i === 5) {
+            i = todayApps.length;
+        }
     }
-    for (i = 1; i < todayApps.length; i++) {
-        var listInfo = todayApps[i].getElementsByTagName("li");
-        console.log(listInfo[1].lang)
-        var patientInfo = "";   
-        for (j = 1; j < listInfo.length; j++) {
-            console.log(listInfo[j].innerText);
-            var patient = document.getElementById("patient" + i);
-            console.log(patient);
-            if (listInfo[j].lang === "he") {
-                if(patt.test(listInfo[j].innerHTML)){
-                    patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
-                }else{
-                    patientInfo += "<div lang='he' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+    if (appSched.length > 0) {
+        for (i = 1; i < todayApps.length; i++) {
+            var listInfo = todayApps[i+patientNumber].getElementsByTagName("li");
+            console.log(listInfo[1].lang)
+            var patientInfo = "";
+            for (j = 1; j < listInfo.length; j++) {
+                console.log(listInfo[j].innerHTML);
+                var patient = document.getElementById("patient" + i);
+                console.log(patient);
+                if (listInfo[j].lang === "he") {
+                    console.log(listInfo[j].innerHTML)
+                    if (patt.test(listInfo[j].innerHTML)) {
+                        patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
+                    } else {
+                        patientInfo += "<div lang='he' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+                    }
+                } else if (listInfo[j].lang === "en") {
+                    console.log(listInfo[j].innerHTML)
+                    if (patt.test(listInfo[j].innerHTML)) {
+                        patientInfo += "<div lang='en'>" + listInfo[j].innerHTML + "</div>";
+                    } else {
+                        patientInfo += "<div lang='en' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+                    }
+                } else {
+                    patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
                 }
-            } else if (listInfo[j].lang === "en") {
-                if(patt.test(listInfo[j].innerHTML)){
-                    patientInfo += "<div lang='en'>" + listInfo[j].innerHTML + "</div>";
-                }else{
-                    patientInfo += "<div lang='en' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
-                }
-            } else {
-                patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
+                console.log(patientInfo);
+                patient.innerHTML = patientInfo;
             }
-            console.log(patientInfo);
-            patient.innerHTML = patientInfo;
+            if (i === 5) {
+                i = todayApps.length;
+            }
         }
     }
 }
+
+function prev() {
+  console.log("prev");
+  if(appSched.length > 0 && appSched.length <= 5){
+      return;
+  }
+  patientNumber--;
+  if (patientNumber < 0) {
+    patientNumber = 5;
+  }
+  for (i = 1; i < todayApps.length; i++) {
+    var listInfo = todayApps[i+patientNumber].getElementsByTagName("li");
+    console.log(listInfo[1].lang)
+    var patientInfo = "";
+    for (j = 1; j < listInfo.length; j++) {
+        console.log(listInfo[j].innerHTML);
+        var patient = document.getElementById("patient" + i);
+        console.log(patient);
+        if (listInfo[j].lang === "he") {
+            console.log(listInfo[j].innerHTML)
+            if (patt.test(listInfo[j].innerHTML)) {
+                patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
+            } else {
+                patientInfo += "<div lang='he' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+            }
+        } else if (listInfo[j].lang === "en") {
+            console.log(listInfo[j].innerHTML)
+            if (patt.test(listInfo[j].innerHTML)) {
+                patientInfo += "<div lang='en'>" + listInfo[j].innerHTML + "</div>";
+            } else {
+                patientInfo += "<div lang='en' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+            }
+        } else {
+            patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
+        }
+        console.log(patientInfo);
+        patient.innerHTML = patientInfo;
+    }
+    if (i === 5) {
+        i = todayApps.length;
+    }
+}
+//   var patientCard1 = document.getElementById("patient1");
+//   var patientCard2 = document.getElementById("patient2");
+//   var patientCard3 = document.getElementById("patient3");
+//   var patientCard4 = document.getElementById("patient4");
+//   var patientCard5 = document.getElementById("patient5");
+
+//   patientCard1.innerHTML = "Patient " + (1 + patientNumber);
+//   patientCard2.innerHTML = "Patient " + (2 + patientNumber);
+//   patientCard3.innerHTML = "Patient " + (3 + patientNumber);
+//   patientCard4.innerHTML = "Patient " + (4 + patientNumber);
+//   patientCard5.innerHTML = "Patient " + (5 + patientNumber);
+}
+function next() {
+  console.log("next");
+  patientNumber++;
+  if (patientNumber > 5) {
+    patientNumber = 0;
+  }
+
+  var patientCard1 = document.getElementById("patient1");
+  var patientCard2 = document.getElementById("patient2");
+  var patientCard3 = document.getElementById("patient3");
+  var patientCard4 = document.getElementById("patient4");
+  var patientCard5 = document.getElementById("patient5");
+
+  patientCard1.innerHTML = "Patient " + (1 + patientNumber);
+  patientCard2.innerHTML = "Patient " + (2 + patientNumber);
+  patientCard3.innerHTML = "Patient " + (3 + patientNumber);
+  patientCard4.innerHTML = "Patient " + (4 + patientNumber);
+  patientCard5.innerHTML = "Patient " + (5 + patientNumber);
+}
+
 
 // function that allows to add additional window.onload functions
 function addLoadEvent(func) {
@@ -194,23 +287,23 @@ addLoadEvent(function () {
     setAppSchedForm();
 })
 
-function setReminderForm () {
+function setReminderForm() {
     console.log("setRemFunction")
-    if(localStorage.getItem("langSelect") === "hebrew"){
+    if (localStorage.getItem("langSelect") === "hebrew") {
         document.getElementById("reminder-time").required = false;
         document.getElementById("reminder-time-he").required = true;
         document.getElementById("reminderText").required = false;
         document.getElementById("reminderText-he").required = true;
-    }else{
+    } else {
         document.getElementById("reminder-time").required = true;
         document.getElementById("reminder-time-he").required = false;
         document.getElementById("reminderText").required = true;
         document.getElementById("reminderText-he").required = false;
-    }    
+    }
 }
 
 function setAppSchedForm() {
-    if(localStorage.getItem("langSelect") === "hebrew"){
+    if (localStorage.getItem("langSelect") === "hebrew") {
         console.log("setAppSched")
         document.getElementById("app-start-time").required = false;
         document.getElementById("app-start-time-he").required = true;
@@ -222,7 +315,7 @@ function setAppSchedForm() {
         document.getElementById("last-name-he").required = true;
         document.getElementById("appSchedModalTextarea1").required = false;
         document.getElementById("appSchedModalTextarea1-he").required = true;
-    }else{
+    } else {
         document.getElementById("app-start-time").required = true;
         document.getElementById("app-start-time-he").required = false;
         document.getElementById("app-end-time").required = true;
@@ -233,5 +326,5 @@ function setAppSchedForm() {
         document.getElementById("last-name-he").required = false;
         document.getElementById("appSchedModalTextarea1").required = true;
         document.getElementById("appSchedModalTextarea1-he").required = false;
-    }    
+    }
 }
