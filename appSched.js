@@ -1,6 +1,8 @@
 var langSelect = "hebrew";
 localStorage.setItem("langSelect", langSelect);
 langSelect = localStorage.getItem("langSelect");
+var patt = /[A-Za-z]/
+var start = 0;
 var checkAgain = true;
 var patientNumber = 0;
 var todayApps = document.querySelectorAll(".dash-appointment");
@@ -164,61 +166,66 @@ function loadAppSched() {
             }
         }
     }
+    console.log("today app: " + todayApps.length)
 }
 
 function prev() {
-  console.log("prev");
-  if(appSched.length > 0 && appSched.length <= 5){
-      return;
-  }
-  patientNumber--;
-  if (patientNumber < 0) {
-    patientNumber = 5;
-  }
-  for (i = 1; i < todayApps.length; i++) {
-    var listInfo = todayApps[i+patientNumber].getElementsByTagName("li");
-    console.log(listInfo[1].lang)
-    var patientInfo = "";
-    for (j = 1; j < listInfo.length; j++) {
-        console.log(listInfo[j].innerHTML);
-        var patient = document.getElementById("patient" + i);
-        console.log(patient);
-        if (listInfo[j].lang === "he") {
-            console.log(listInfo[j].innerHTML)
-            if (patt.test(listInfo[j].innerHTML)) {
-                patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
-            } else {
-                patientInfo += "<div lang='he' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
-            }
-        } else if (listInfo[j].lang === "en") {
-            console.log(listInfo[j].innerHTML)
-            if (patt.test(listInfo[j].innerHTML)) {
-                patientInfo += "<div lang='en'>" + listInfo[j].innerHTML + "</div>";
-            } else {
-                patientInfo += "<div lang='en' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
-            }
-        } else {
-            patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
+    var skip = 0;
+    todayApps = document.querySelectorAll(".dash-appointment");
+    if (appSched.length > 0 && appSched.length <= 5) {
+        console.log("short app sched: " + appSched.length)
+        return;
+    }
+    patientNumber--;
+    if (Math.abs(patientNumber) > appSched.length){
+        patientNumber = 0;
+    }
+    start = 0 + patientNumber;
+    if(start < 0){
+        start = appSched.length - Math.abs(patientNumber);
+    }
+    for (i = 1; i < 6; i++) {
+        console.log("this is i: " + i);
+        if(start + i > appSched.length){
+            start = -i;
         }
-        console.log(patientInfo);
-        patient.innerHTML = patientInfo;
-    }
-    if (i === 5) {
-        i = todayApps.length;
-    }
-}
-//   var patientCard1 = document.getElementById("patient1");
-//   var patientCard2 = document.getElementById("patient2");
-//   var patientCard3 = document.getElementById("patient3");
-//   var patientCard4 = document.getElementById("patient4");
-//   var patientCard5 = document.getElementById("patient5");
 
-//   patientCard1.innerHTML = "Patient " + (1 + patientNumber);
-//   patientCard2.innerHTML = "Patient " + (2 + patientNumber);
-//   patientCard3.innerHTML = "Patient " + (3 + patientNumber);
-//   patientCard4.innerHTML = "Patient " + (4 + patientNumber);
-//   patientCard5.innerHTML = "Patient " + (5 + patientNumber);
+        if(i + start === 0){
+            skip = 1;    
+        }
+        var listInfo = todayApps[i + start + skip].getElementsByTagName("li");
+        console.log("i is: " + i + " start is: " + start + " skip is: " + skip)
+        var patientInfo = "";
+        for (j = 1; j < listInfo.length; j++) {
+            var patient = document.getElementById("patient" + i);
+            console.log("patient" + i)
+            if (listInfo[j].lang === "he") {
+                if (patt.test(listInfo[j].innerHTML)) {
+                    patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
+                } else {
+                    patientInfo += "<div lang='he' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+                }
+            } else if (listInfo[j].lang === "en") {
+                if (patt.test(listInfo[j].innerHTML)) {
+                    patientInfo += "<div lang='en'>" + listInfo[j].innerHTML + "</div>";
+                } else {
+                    patientInfo += "<div lang='en' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+                }
+            } else {
+                patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
+            }
+            patient.innerHTML = patientInfo;
+        }
+    }
+    if(langSelect === "hebrew"){
+        $('[lang="he"]').show();
+        $('[lang="en"]').hide();    
+    }else{
+        $('[lang="en"]').show();
+        $('[lang="he"]').hide();    
+    }
 }
+
 function next() {
   console.log("next");
   patientNumber++;
