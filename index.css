@@ -10,6 +10,29 @@
     margin-left: 90%;
 }
 
+div.card.shadow.open {
+    transition: 1s;
+}
+
+div.card.shadow.m {
+    transition: 500ms;
+}
+div.card.shadow.open {
+    transition: 50ms;
+}
+
+.m {
+    -webkit-transform-origin: 100% 50%;
+    transform-origin: 100% 50%;
+    transform: translateX(10px);
+}
+
+.open {
+    -webkit-transform-origin: 100% 50%;
+    transform-origin: 100% 50%;
+    transform: translateX(0px);
+}
+
 /* container for listing appointments, patients, and report meters */
 .flex-container{
     padding: 0;
