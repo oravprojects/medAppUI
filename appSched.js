@@ -115,6 +115,8 @@ function loadAppSched() {
     var todayApps = document.querySelectorAll(".dash-appointment");
     var todayAppContainer = document.getElementById("todayAppContainer");
     var appContainerContent = "";
+    var dotContainer = document.getElementById("dot-container");
+    var dotContainerContent = "";
     for (i = 1; i < todayApps.length; i++) {
         appContainerContent += `<li class="flex-item">
                 <div class="card shadow" style="text-align: center;">
@@ -130,6 +132,15 @@ function loadAppSched() {
         todayAppContainer.innerHTML = appContainerContent;
         if (i === 5) {
             i = todayApps.length;
+        }
+    }
+    for (i = 1; i < todayApps.length; i++) {
+        if(i < 6){
+            dotContainerContent += `<span class="dot active"></span>`
+            dotContainer.innerHTML = dotContainerContent;    
+        }else{
+            dotContainerContent += `<span class="dot"></span>`
+            dotContainer.innerHTML = dotContainerContent;    
         }
     }
     if (appSched.length > 0) {
@@ -170,7 +181,11 @@ function loadAppSched() {
 }
 
 function prev() {
-
+    var todayApps = document.querySelectorAll(".dash-appointment");
+    if (todayApps.length > 0 && todayApps.length <= 6) {
+        console.log("short app sched: " + todayApps.length)
+        return;
+    }
     for (i = 0; i < 5; i++) {
         var patient = document.getElementById("patient" + (i + 1));
         parent = patient.parentElement.parentElement.parentElement;
@@ -182,11 +197,6 @@ function prev() {
     }
 
     setTimeout(function () {
-    var todayApps = document.querySelectorAll(".dash-appointment");
-    if (todayApps.length > 0 && todayApps.length <= 6) {
-        console.log("short app sched: " + todayApps.length)
-        return;
-    }
     patientNumber--;
     if (Math.abs(patientNumber) > todayApps.length - 1) {
         patientNumber = -1;
@@ -259,6 +269,8 @@ function prev() {
 }
 
 function next() {
+    var dotContainer = document.getElementById("dot-container");
+    var dotContainerContent = "";
     if (patientNumber === 0) {
         patientNumber = 1;
     }
@@ -274,6 +286,26 @@ function next() {
     start = patientNumber;
     if (start < 0) {
         start = todayApps.length - Math.abs(patientNumber);
+    }
+    for (i = 0; i < todayApps.length-1; i++){
+        console.log("dot start val: " + start)
+        console.log("todayApps length: " + (todayApps.length-1))
+        if (start+3 > (todayApps.length-2)){
+            console.log("start over")
+            if (i <= ((start+3)-(todayApps.length-1)) || i >= (start-1)){
+                dotContainerContent += `<span class="dot active"></span>`
+                dotContainer.innerHTML = dotContainerContent; 
+            } else{
+                dotContainerContent += `<span class="dot"></span>`
+                dotContainer.innerHTML = dotContainerContent;   
+            }
+        }else if (i < (start-1) || i > (start+3)){
+            dotContainerContent += `<span class="dot"></span>`
+            dotContainer.innerHTML = dotContainerContent;    
+        }else{
+            dotContainerContent += `<span class="dot active"></span>`
+            dotContainer.innerHTML = dotContainerContent;       
+        }
     }
     for (i = 0; i < 5; i++) {
         if (start + i > todayApps.length - 1) {
