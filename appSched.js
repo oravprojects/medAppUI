@@ -181,6 +181,8 @@ function loadAppSched() {
 }
 
 function prev() {
+    var dotContainer = document.getElementById("dot-container");
+    var dotContainerContent = "";
     var todayApps = document.querySelectorAll(".dash-appointment");
     if (todayApps.length > 0 && todayApps.length <= 6) {
         console.log("short app sched: " + todayApps.length)
@@ -208,6 +210,26 @@ function prev() {
     if (start < 0) {
         start = todayApps.length - Math.abs(patientNumber);
     }
+    for (i = 0; i < todayApps.length-1; i++){
+        console.log("dot start val: " + start)
+        console.log("todayApps length: " + (todayApps.length-1))
+        if (start+3 > (todayApps.length-2)){
+            console.log("start over")
+            if (i <= ((start+3)-(todayApps.length-1)) || i >= (start-1)){
+                dotContainerContent += `<span class="dot active"></span>`
+                dotContainer.innerHTML = dotContainerContent; 
+            } else{
+                dotContainerContent += `<span class="dot"></span>`
+                dotContainer.innerHTML = dotContainerContent;   
+            }
+        }else if (i < (start-1) || i > (start+3)){
+            dotContainerContent += `<span class="dot"></span>`
+            dotContainer.innerHTML = dotContainerContent;    
+        }else{
+            dotContainerContent += `<span class="dot active"></span>`
+            dotContainer.innerHTML = dotContainerContent;       
+        }
+    }
     for (i = 0; i < 5; i++) {
         if (start + i > todayApps.length - 1) {
             start = -i;
@@ -223,6 +245,7 @@ function prev() {
         var patientInfo = "";
         for (j = 1; j < listInfo.length; j++) {
             var patient = document.getElementById("patient" + (i + 1));
+            var patientNew = document.getElementById("slide-" + (i + 1));
             console.log("patient" + (i + 1))
             if (listInfo[j].lang === "he") {
                 if (patt.test(listInfo[j].innerHTML)) {
@@ -240,6 +263,7 @@ function prev() {
                 patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
             }
             patient.innerHTML = patientInfo;
+            patientNew.innerHTML = patientInfo;
 
             // animation 
             var posit = patient.getBoundingClientRect();
@@ -265,7 +289,7 @@ function prev() {
         $('[lang="en"]').show();
         $('[lang="he"]').hide();
     }
-    }, 500);
+    }, 100);
 }
 
 function next() {
