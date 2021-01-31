@@ -74,15 +74,16 @@
   .author-info a {
     color: white;
   }
-  #slideNumbers > a {
+  #slideNumbers > button {
     display: inline-flex;
     width: 1.5rem;
     height: 1.5rem;
-    background: white;
+    background: #F5F5F5;
     text-decoration: none;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    border: none;
     margin: 0 0 0.5rem 0;
     position: relative;
   }

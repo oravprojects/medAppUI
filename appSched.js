@@ -39,7 +39,24 @@ for (i = 0; i < appSched.length; i++) {
         appSchedTemp.push(appSched[i]);
     }
 }
-
+function scrollFunction(num){
+    if ((window.innerHeight + window.scrollY - 48) >= (document.body.offsetHeight)) {
+        console.log("at bottom");
+        console.log("inner height: " + window.innerHeight + " scrollY: " + window.scrollY + " offset height: " + document.body.offsetHeight);
+        window.location.href="#slide-"+num;
+        return;
+    }
+    console.log("hello" + num);
+    var y = window.scrollY;
+    var x = window.scrollX;
+    window.location.href="#slide-"+num;
+    console.log(x, y);
+    window.scrollTo(x, y);
+    if(window.scrollY !=y){
+        console.log("fix scroll y")
+        window.scrollTo(x, y);
+    }
+}
 function loadAppSched() {
     var patt = /[A-Za-z]/
     if (appSchedTemp.length > 0) {
@@ -69,8 +86,14 @@ function loadAppSched() {
             var dispHour = hour;
             var min = startTime.substr(3, 2);
             if (hour < 12) { startTime += " AM" } else {
-                dispHour = (hour - 12);
-                startTime = dispHour + ":" + min + " PM"
+                if(hour == 12){
+                    console.log("It's 12: " + hour);
+                    startTime += " PM"
+                }else{
+                    console.log("this is the hour: " + hour)
+                    dispHour = (hour - 12);
+                    startTime = dispHour + ":" + min + " PM"    
+                }
             }
 
             // append appointment elements
@@ -175,7 +198,7 @@ function loadAppSched() {
             dotContainerContent += `<span class="dot"></span>`
             // dotContainer.innerHTML = dotContainerContent;    
         }
-        slideNumberContainerContent+=`<a href="#slide-${i}">${i}</a>`;
+        slideNumberContainerContent+=`<button id="slideButton" onclick="scrollFunction(${i})">${i}</a>`;
         slideNumberContainer.innerHTML = slideNumberContainerContent;
     }
     if (appSched.length > 0) {
