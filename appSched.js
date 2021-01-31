@@ -114,25 +114,62 @@ function loadAppSched() {
     }
     var todayApps = document.querySelectorAll(".dash-appointment");
     var todayAppContainer = document.getElementById("todayAppContainer");
+    var slidesContainer = document.getElementsByClassName("slides");
     var appContainerContent = "";
+    var slideContainerContent = "";
     var dotContainer = document.getElementById("dot-container");
+    var slideNumberContainer = document.getElementById("slideNumbers");
     var dotContainerContent = "";
+    var slideNumberContainerContent = "";
     for (i = 1; i < todayApps.length; i++) {
-        appContainerContent += `<li class="flex-item">
+        if(i<=5){
+            appContainerContent += `<li class="flex-item">
+            <div class="card shadow" style="text-align: center;">
+                <span class="border border-light rounded">
+                    <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
+                        width="80px" alt="avatar" alt="Card image cap">
+                    <div class="card-body p-1">
+                        <div id="patient${i}">Patient ${i}</div>
+                    </div>
+                </span>
+            </div>
+        </li>`
+        slideContainerContent += `<div id="slide-${i}">
+        <li class="flex-item">
+            <div class="card shadow" style="text-align: center;">
+                <span class="border border-light rounded">
+                    <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
+                        width="80px" alt="avatar" alt="Card image cap">
+                    <div class="card-body p-1">
+                        <div id="patientSlide${i}">Patient ${i}</div>
+                    </div>
+                </span>
+            </div>
+        </li>
+        </div>`
+    todayAppContainer.innerHTML = appContainerContent;
+    slidesContainer[0].innerHTML = slideContainerContent;
+        }else{
+            slideContainerContent += `<div id="slide-${i}">
+            <li class="flex-item">
                 <div class="card shadow" style="text-align: center;">
                     <span class="border border-light rounded">
                         <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
                             width="80px" alt="avatar" alt="Card image cap">
                         <div class="card-body p-1">
-                            <div id="patient${i}">Patient ${i}</div>
+                            <div id="patientSlide${i}">Patient ${i}</div>
                         </div>
                     </span>
                 </div>
-            </li>`
+            </li>
+            </div>`
         todayAppContainer.innerHTML = appContainerContent;
-        if (i === 5) {
-            i = todayApps.length;
+        slidesContainer[0].innerHTML = slideContainerContent;
         }
+        
+        // if (i === 5) {
+        //     i = todayApps.length;
+        // }
     }
     for (i = 1; i < todayApps.length; i++) {
         if(i < 6){
@@ -142,6 +179,8 @@ function loadAppSched() {
             dotContainerContent += `<span class="dot"></span>`
             dotContainer.innerHTML = dotContainerContent;    
         }
+        slideNumberContainerContent+=`<a href="#slide-${i}">${i}</a>`;
+        slideNumberContainer.innerHTML = slideNumberContainerContent;
     }
     if (appSched.length > 0) {
         for (i = 1; i < todayApps.length; i++) {
@@ -151,6 +190,7 @@ function loadAppSched() {
             for (j = 1; j < listInfo.length; j++) {
                 console.log(listInfo[j].innerHTML);
                 var patient = document.getElementById("patient" + i);
+                var patientSlide = document.getElementById("patientSlide" + i);
                 console.log(patient);
                 if (listInfo[j].lang === "he") {
                     console.log(listInfo[j].innerHTML)
@@ -171,9 +211,38 @@ function loadAppSched() {
                 }
                 console.log(patientInfo);
                 patient.innerHTML = patientInfo;
+                patientSlide.innerHTML = patientInfo;
             }
             if (i === 5) {
                 i = todayApps.length;
+            }
+        }
+        for (i = 1; i < todayApps.length; i++) {
+            var listInfo = todayApps[i + patientNumber].getElementsByTagName("li");
+            console.log(listInfo[1].lang)
+            var patientInfo = "";
+            for (j = 1; j < listInfo.length; j++) {
+                console.log(listInfo[j].innerHTML);
+                var patientSlide = document.getElementById("patientSlide" + i);
+                if (listInfo[j].lang === "he") {
+                    console.log(listInfo[j].innerHTML)
+                    if (patt.test(listInfo[j].innerHTML)) {
+                        patientInfo += "<div lang='he'>" + listInfo[j].innerHTML + "</div>";
+                    } else {
+                        patientInfo += "<div lang='he' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+                    }
+                } else if (listInfo[j].lang === "en") {
+                    console.log(listInfo[j].innerHTML)
+                    if (patt.test(listInfo[j].innerHTML)) {
+                        patientInfo += "<div lang='en'>" + listInfo[j].innerHTML + "</div>";
+                    } else {
+                        patientInfo += "<div lang='en' dir='rtl'>" + listInfo[j].innerHTML + "</div>";
+                    }
+                } else {
+                    patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
+                }
+                console.log(patientInfo);
+                patientSlide.innerHTML = patientInfo;
             }
         }
     }
@@ -263,7 +332,7 @@ function prev() {
                 patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
             }
             patient.innerHTML = patientInfo;
-            patientNew.innerHTML = patientInfo;
+            //patientNew.innerHTML = patientInfo;
 
             // animation 
             var posit = patient.getBoundingClientRect();

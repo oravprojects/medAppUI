@@ -8,7 +8,8 @@
 .hide {display: none;}
 
 .slider {
-    width: 300px;
+    margin-left: 30%;
+    width: 810px;
     text-align: center;
     overflow: hidden;
   }
@@ -41,11 +42,12 @@
     background: transparent;
   }
   .slides > div {
+    list-style-type:none;
     scroll-snap-align: start;
     flex-shrink: 0;
-    width: 100px;
-    height: 100px;
-    margin-right: 50px;
+    width: 150px;
+    height: 200px;
+    margin-right: 15px;
     border-radius: 10px;
     background: #eee;
     transform-origin: center center;
@@ -72,7 +74,7 @@
   .author-info a {
     color: white;
   }
-  .slider > a {
+  #slideNumbers > a {
     display: inline-flex;
     width: 1.5rem;
     height: 1.5rem;
@@ -84,10 +86,10 @@
     margin: 0 0 0.5rem 0;
     position: relative;
   }
-  .slider > a:active {
+  #slideNumbers > a:active {
     top: 1px;
   }
-  .slider > a:focus {
+  #slideNumbers > a:focus {
     background: #000;
   }
 
