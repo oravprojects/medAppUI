@@ -8,8 +8,8 @@
 .hide {display: none;}
 
 .slider {
-    margin-left: 30%;
-    width: 810px;
+    margin-left: 10px;
+    width: 760px;
     text-align: center;
     overflow: hidden;
   }
@@ -45,9 +45,9 @@
     list-style-type:none;
     scroll-snap-align: start;
     flex-shrink: 0;
-    width: 150px;
-    height: 200px;
-    margin-right: 15px;
+    line-height: 50px;
+    margin: 1%;
+    margin-right: 6px;
     border-radius: 10px;
     background: #eee;
     transform-origin: center center;
@@ -241,7 +241,7 @@ div.card.shadow.open {
 #prev{
     position: absolute;
     left: 5px;
-    bottom: 295px;
+    bottom: 265px;
     font-weight: bolder;
     font-size: 20px;
 }
@@ -249,7 +249,7 @@ div.card.shadow.open {
 #next{
     position: absolute;
     right: 5px;
-    bottom: 295px;
+    bottom: 265px;
     font-weight: bolder;
     font-size: 20px;
 }

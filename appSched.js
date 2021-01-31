@@ -135,35 +135,31 @@ function loadAppSched() {
             </div>
         </li>`
         slideContainerContent += `<div id="slide-${i}">
-        <li class="flex-item">
             <div class="card shadow" style="text-align: center;">
                 <span class="border border-light rounded">
                     <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
                         width="80px" alt="avatar" alt="Card image cap">
-                    <div class="card-body p-1">
+                    <div class="card-body px-4 pt-1 pb-1">
                         <div id="patientSlide${i}">Patient ${i}</div>
                     </div>
                 </span>
             </div>
-        </li>
         </div>`
-    todayAppContainer.innerHTML = appContainerContent;
+    // todayAppContainer.innerHTML = appContainerContent;
     slidesContainer[0].innerHTML = slideContainerContent;
         }else{
             slideContainerContent += `<div id="slide-${i}">
-            <li class="flex-item">
                 <div class="card shadow" style="text-align: center;">
                     <span class="border border-light rounded">
                         <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
                             width="80px" alt="avatar" alt="Card image cap">
-                        <div class="card-body p-1">
+                        <div class="card-body px-4 pt-1 pb-1">
                             <div id="patientSlide${i}">Patient ${i}</div>
                         </div>
                     </span>
                 </div>
-            </li>
             </div>`
-        todayAppContainer.innerHTML = appContainerContent;
+        // todayAppContainer.innerHTML = appContainerContent;
         slidesContainer[0].innerHTML = slideContainerContent;
         }
         
@@ -174,10 +170,10 @@ function loadAppSched() {
     for (i = 1; i < todayApps.length; i++) {
         if(i < 6){
             dotContainerContent += `<span class="dot active"></span>`
-            dotContainer.innerHTML = dotContainerContent;    
+            // dotContainer.innerHTML = dotContainerContent;    
         }else{
             dotContainerContent += `<span class="dot"></span>`
-            dotContainer.innerHTML = dotContainerContent;    
+            // dotContainer.innerHTML = dotContainerContent;    
         }
         slideNumberContainerContent+=`<a href="#slide-${i}">${i}</a>`;
         slideNumberContainer.innerHTML = slideNumberContainerContent;
@@ -210,7 +206,7 @@ function loadAppSched() {
                     patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
                 }
                 console.log(patientInfo);
-                patient.innerHTML = patientInfo;
+                // patient.innerHTML = patientInfo;
                 patientSlide.innerHTML = patientInfo;
             }
             if (i === 5) {
@@ -286,17 +282,17 @@ function prev() {
             console.log("start over")
             if (i <= ((start+3)-(todayApps.length-1)) || i >= (start-1)){
                 dotContainerContent += `<span class="dot active"></span>`
-                dotContainer.innerHTML = dotContainerContent; 
+                // dotContainer.innerHTML = dotContainerContent; 
             } else{
                 dotContainerContent += `<span class="dot"></span>`
-                dotContainer.innerHTML = dotContainerContent;   
+                // dotContainer.innerHTML = dotContainerContent;   
             }
         }else if (i < (start-1) || i > (start+3)){
             dotContainerContent += `<span class="dot"></span>`
-            dotContainer.innerHTML = dotContainerContent;    
+            // dotContainer.innerHTML = dotContainerContent;    
         }else{
             dotContainerContent += `<span class="dot active"></span>`
-            dotContainer.innerHTML = dotContainerContent;       
+            // dotContainer.innerHTML = dotContainerContent;       
         }
     }
     for (i = 0; i < 5; i++) {
@@ -387,17 +383,17 @@ function next() {
             console.log("start over")
             if (i <= ((start+3)-(todayApps.length-1)) || i >= (start-1)){
                 dotContainerContent += `<span class="dot active"></span>`
-                dotContainer.innerHTML = dotContainerContent; 
+                // dotContainer.innerHTML = dotContainerContent; 
             } else{
                 dotContainerContent += `<span class="dot"></span>`
-                dotContainer.innerHTML = dotContainerContent;   
+                // dotContainer.innerHTML = dotContainerContent;   
             }
         }else if (i < (start-1) || i > (start+3)){
             dotContainerContent += `<span class="dot"></span>`
-            dotContainer.innerHTML = dotContainerContent;    
+            // dotContainer.innerHTML = dotContainerContent;    
         }else{
             dotContainerContent += `<span class="dot active"></span>`
-            dotContainer.innerHTML = dotContainerContent;       
+            // dotContainer.innerHTML = dotContainerContent;       
         }
     }
     for (i = 0; i < 5; i++) {

@@ -227,6 +227,34 @@
                             <h6 class="card-title secondary" lang="en">Today's Appointments</h6>
                             <h6 class="card-title secondary" lang="he" dir="rtl" style="text-align: right;">פגישות היום
                             </h6>
+                            <div class="slider">
+                                <div id="slideNumbers">
+                                    <a href="#slide-1">1</a>
+                                    <a href="#slide-2">2</a>
+                                    <a href="#slide-3">3</a>
+                                    <a href="#slide-4">4</a>
+                                    <a href="#slide-5">5</a>
+                                </div>
+                        
+                                <div class="slides">
+                                    <div id="slide-1">
+                                        1
+                                    </div>
+                                    <div id="slide-2">
+                                        2
+                                    </div>
+                                    <div id="slide-3">
+                                        3
+                                    </div>
+                                    <div id="slide-4">
+                                        4
+                                    </div>
+                                    <div id="slide-5">
+                                        5
+                                    </div>
+                                </div>
+                            </div>
+                        
                             <ul class="flex-container" id="todayAppContainer">
                                 <!-- <li class="flex-item">
                                     <div class="card shadow" style="text-align: center;">
@@ -287,11 +315,11 @@
                             <button class="direction" id="prev" onclick="prev()">&#8249;</button>
                             <button class="direction" id="next" onclick="next()">&#8250;</button>
                             <br />
-                            <div id="dot-container" style="text-align:center">
+                            <!-- <div id="dot-container" style="text-align:center">
                                 <span class="dot"></span>
                                 <span class="dot"></span>
                                 <span class="dot"></span>
-                            </div>
+                            </div> -->
                             <br />
 
                             <!-- monthly report -->
@@ -365,35 +393,6 @@
         </button>
     </div>
 
-    <div class="slider">
-        <div id="slideNumbers">
-        <a href="#slide-1">1</a>
-        <a href="#slide-2">2</a>
-        <a href="#slide-3">3</a>
-        <a href="#slide-4">4</a>
-        <a href="#slide-5">5</a>
-        </div>
-      
-        <div class="slides">
-          <div id="slide-1">
-            1
-          </div>
-          <div id="slide-2">
-            2
-          </div>
-          <div id="slide-3">
-            3
-          </div>
-          <div id="slide-4">
-            4
-          </div>
-          <div id="slide-5">
-            5
-          </div>
-        </div>
-      </div>
-
-
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -409,7 +408,8 @@
                     <form>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1" lang="en">Comments:</label>
-                            <label for="exampleFormControlTextarea1" lang="he" dir="rtl" id="repCommentLabel">הערות:</label>
+                            <label for="exampleFormControlTextarea1" lang="he" dir="rtl"
+                                id="repCommentLabel">הערות:</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                     </form>
@@ -417,9 +417,11 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="en">Close</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="he">סגור</button>
-                    <button type="button" class="btn btn-primary" id="saveChangesButton" lang="en" onclick="saveChanges()">Save
+                    <button type="button" class="btn btn-primary" id="saveChangesButton" lang="en"
+                        onclick="saveChanges()">Save
                         changes</button>
-                    <button type="button" class="btn btn-primary" id="saveChangesButtonHeb" lang="he" onclick="saveChanges()">שמור</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesButtonHeb" lang="he"
+                        onclick="saveChanges()">שמור</button>
                 </div>
             </div>
         </div>
@@ -443,47 +445,54 @@
                             <div id="app-sched-modal-time">
                                 <span>
                                     <label for="app-start-time" lang="en">start time:</label>
-                                    <label for="app-start-time-he" lang="he" dir="rtl" style="float: right;">התחלה:</label>
+                                    <label for="app-start-time-he" lang="he" dir="rtl"
+                                        style="float: right;">התחלה:</label>
                                     <input type="time" id="app-start-time" name="start-time" lang="en" required>
-                                    <input type="time" id="app-start-time-he" name="start-time-he"  lang="he" required 
-                                    style="float: right; margin-right: 5px;">
+                                    <input type="time" id="app-start-time-he" name="start-time-he" lang="he" required
+                                        style="float: right; margin-right: 5px;">
                                 </span>
                                 <span>
                                     <label for="app-end-time" id="label-end-time" lang="en">end time:</label>
-                                    <label for="app-end-time-he" id="label-end-time-he" lang="he" dir="rtl" 
-                                    style="float: right; margin-right: 100px;">סיום:</label>
-                                    <input type="time" id="app-end-time" name="end-time"  lang="en" required>
-                                    <input type="time" id="app-end-time-he" name="end-time-he"  lang="he" required 
-                                    style="float: right; margin-right: 5px;">
+                                    <label for="app-end-time-he" id="label-end-time-he" lang="he" dir="rtl"
+                                        style="float: right; margin-right: 100px;">סיום:</label>
+                                    <input type="time" id="app-end-time" name="end-time" lang="en" required>
+                                    <input type="time" id="app-end-time-he" name="end-time-he" lang="he" required
+                                        style="float: right; margin-right: 5px;">
                                 </span>
                             </div>
                             <br>
                             <label for="first-name" lang="en">first name:</label>
                             <br lang="he">
                             <label for="first-name-he" lang="he" dir="rtl" style="float: right;">שם פרטי:</label>
-                            <input type="text" id="first-name" name="first-name"  lang="en" required>
-                            <input type="text" id="first-name-he" name="first-name-he" dir="rtl" lang="he" required 
-                            style="float: right; margin-right: 5px;">
+                            <input type="text" id="first-name" name="first-name" lang="en" required>
+                            <input type="text" id="first-name-he" name="first-name-he" dir="rtl" lang="he" required
+                                style="float: right; margin-right: 5px;">
                             <br>
                             <br>
                             <label for="last-name" lang="en">last name:</label>
                             <label for="last-name-he" lang="he" dir="rtl" style="float: right;">שם משפחה:</label>
-                            <input type="text" id="last-name" name="last-name"  lang="en" required>
-                            <input type="text" id="last-name-he" name="last-name-he" dir="rtl" lang="he" required 
-                            style="float: right; margin-right: 5px;">
+                            <input type="text" id="last-name" name="last-name" lang="en" required>
+                            <input type="text" id="last-name-he" name="last-name-he" dir="rtl" lang="he" required
+                                style="float: right; margin-right: 5px;">
                             <br>
                             <br>
                             <label for="appSchedModalTextarea1" lang="en">Comments:</label>
-                            <label for="appSchedModalTextarea1-he"  lang="he" dir="rtl" style="float: right;">הערות:</label>
-                            <textarea class="form-control" id="appSchedModalTextarea1" rows="3"  lang="en" required></textarea>
-                            <textarea class="form-control" id="appSchedModalTextarea1-he" rows="3"  lang="he" required 
-                            dir="rtl" style="float: right;"></textarea>
+                            <label for="appSchedModalTextarea1-he" lang="he" dir="rtl"
+                                style="float: right;">הערות:</label>
+                            <textarea class="form-control" id="appSchedModalTextarea1" rows="3" lang="en"
+                                required></textarea>
+                            <textarea class="form-control" id="appSchedModalTextarea1-he" rows="3" lang="he" required
+                                dir="rtl" style="float: right;"></textarea>
                         </div>
                         <div class="modal-footer pr-0 pb-0">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="en">Close</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="he" dir="rtl">סגור</button>
-                            <button type="submit" class="btn btn-primary" id="saveAppSchedButton" lang="en">Save changes</button>
-                            <button type="submit" class="btn btn-primary" id="saveAppSchedButtonHe" lang="he">שמור</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                lang="en">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="he"
+                                dir="rtl">סגור</button>
+                            <button type="submit" class="btn btn-primary" id="saveAppSchedButton" lang="en">Save
+                                changes</button>
+                            <button type="submit" class="btn btn-primary" id="saveAppSchedButtonHe"
+                                lang="he">שמור</button>
                         </div>
                     </form>
 
@@ -536,16 +545,19 @@
                             <label for="reminder-time" lang="en">Reminder date and time:</label>
                             <label for="reminder-time-he" lang="he" dir="rtl" style="float: right;">שעה ותאריך:</label>
                             <input type="datetime-local" id="reminder-time" name="reminder-time" lang="en" required>
-                            <input type="datetime-local" id="reminder-time-he" name="reminder-time-he" lang="he" style="float: left;" required>
+                            <input type="datetime-local" id="reminder-time-he" name="reminder-time-he" lang="he"
+                                style="float: left;" required>
                             <label for="reminderText" lang="en">Reminder:</label>
                             <br>
                             <br>
                             <label for="reminderText-he" lang="he" dir="rtl" style="float: right;">תזכורת:</label>
                             <textarea class="form-control" id="reminderText" rows="3" lang="en" required></textarea>
-                            <textarea class="form-control" id="reminderText-he" rows="3" lang="he" required dir="rtl"></textarea>
+                            <textarea class="form-control" id="reminderText-he" rows="3" lang="he" required
+                                dir="rtl"></textarea>
                         </div>
                         <div class="modal-footer p-0">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="en">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                lang="en">Close</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="he">סגור</button>
                             <button type="submit" class="btn btn-primary" id="saveReminder" lang="en">Set
                                 Reminder</button>
