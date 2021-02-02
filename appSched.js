@@ -1,5 +1,7 @@
 var langSelect = "hebrew";
-localStorage.setItem("langSelect", langSelect);
+if (localStorage.getItem("langSelect") !="hebrew" && localStorage.getItem("langSelect") != "english"){
+    localStorage.setItem("langSelect", langSelect);
+}
 langSelect = localStorage.getItem("langSelect");
 var patt = /[A-Za-z]/
 var checkAgain = true;
@@ -168,7 +170,7 @@ function loadAppSched() {
                 </span>
             </div>
         </div>`
-    // todayAppContainer.innerHTML = appContainerContent;
+    todayAppContainer.innerHTML = appContainerContent;
     slidesContainer[0].innerHTML = slideContainerContent;
         }else{
             slideContainerContent += `<div id="slide-${i}">
@@ -182,7 +184,7 @@ function loadAppSched() {
                     </span>
                 </div>
             </div>`
-        // todayAppContainer.innerHTML = appContainerContent;
+        todayAppContainer.innerHTML = appContainerContent;
         slidesContainer[0].innerHTML = slideContainerContent;
         }
         
@@ -193,10 +195,10 @@ function loadAppSched() {
     for (i = 1; i < todayApps.length; i++) {
         if(i < 6){
             dotContainerContent += `<span class="dot active"></span>`
-            // dotContainer.innerHTML = dotContainerContent;    
+            dotContainer.innerHTML = dotContainerContent;    
         }else{
             dotContainerContent += `<span class="dot"></span>`
-            // dotContainer.innerHTML = dotContainerContent;    
+            dotContainer.innerHTML = dotContainerContent;    
         }
         slideNumberContainerContent+=`<button id="slideButton" onclick="scrollFunction(${i})">${i}</a>`;
         slideNumberContainer.innerHTML = slideNumberContainerContent;
@@ -305,17 +307,17 @@ function prev() {
             console.log("start over")
             if (i <= ((start+3)-(todayApps.length-1)) || i >= (start-1)){
                 dotContainerContent += `<span class="dot active"></span>`
-                // dotContainer.innerHTML = dotContainerContent; 
+                dotContainer.innerHTML = dotContainerContent; 
             } else{
                 dotContainerContent += `<span class="dot"></span>`
-                // dotContainer.innerHTML = dotContainerContent;   
+                dotContainer.innerHTML = dotContainerContent;   
             }
         }else if (i < (start-1) || i > (start+3)){
             dotContainerContent += `<span class="dot"></span>`
-            // dotContainer.innerHTML = dotContainerContent;    
+            dotContainer.innerHTML = dotContainerContent;    
         }else{
             dotContainerContent += `<span class="dot active"></span>`
-            // dotContainer.innerHTML = dotContainerContent;       
+            dotContainer.innerHTML = dotContainerContent;       
         }
     }
     for (i = 0; i < 5; i++) {
@@ -406,17 +408,17 @@ function next() {
             console.log("start over")
             if (i <= ((start+3)-(todayApps.length-1)) || i >= (start-1)){
                 dotContainerContent += `<span class="dot active"></span>`
-                // dotContainer.innerHTML = dotContainerContent; 
+                dotContainer.innerHTML = dotContainerContent; 
             } else{
                 dotContainerContent += `<span class="dot"></span>`
-                // dotContainer.innerHTML = dotContainerContent;   
+                dotContainer.innerHTML = dotContainerContent;   
             }
         }else if (i < (start-1) || i > (start+3)){
             dotContainerContent += `<span class="dot"></span>`
-            // dotContainer.innerHTML = dotContainerContent;    
+            dotContainer.innerHTML = dotContainerContent;    
         }else{
             dotContainerContent += `<span class="dot active"></span>`
-            // dotContainer.innerHTML = dotContainerContent;       
+            dotContainer.innerHTML = dotContainerContent;       
         }
     }
     for (i = 0; i < 5; i++) {
@@ -481,10 +483,16 @@ addLoadEvent(loadAppSched);
 
 // toggle languages
 addLoadEvent(function () {
-    $('[lang="en"]').hide();
+    var langSwitchButton = document.getElementById("switch-lang");
+    if (langSelect === "hebrew") {
+        $('[lang="en"]').hide();
+        langSwitchButton.innerText = "English";
+    }else{
+        $('[lang="he"]').hide();
+        langSwitchButton.innerText = "עברית";
+    }
 
     $('#switch-lang').click(function () {
-        var langSwitchButton = document.getElementById("switch-lang");
         if (langSelect === "hebrew") {
             langSelect = "english";
             localStorage.setItem("langSelect", langSelect);
@@ -498,7 +506,7 @@ addLoadEvent(function () {
             langSelect = localStorage.getItem("langSelect");
             $('[lang="en"]').hide();
             $('[lang="he"]').show();
-            langSwitchButton.innerText = "English"
+            langSwitchButton.innerText = "English";
         }
         console.log(langSelect)
         // $('[lang="en"]').toggle();

@@ -7,23 +7,32 @@
 .no-ptr {pointer-events: none;}
 .hide {display: none;}
 
+
+#switch-lang-container{
+    text-align: right;
+    /* margin-right: 9%;
+    margin-top: 2%;
+    margin-bottom: 1%; */
+}
+
+#todayAppContainer{
+    display: none;
+}
+#dot-container{
+    display: none;
+}
 .slider {
     margin-left: 10px;
-    width: 760px;
+    width: 97%;
     text-align: center;
     overflow: hidden;
   }
   .slides {
     display: flex;
-    
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    
-    
-    
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    
     /*
     scroll-snap-points-x: repeat(300px);
     scroll-snap-type: mandatory;
@@ -59,6 +68,9 @@
     justify-content: center;
     align-items: center;
     font-size: 16px;
+  }
+  .slides > div > div.card.shadow {
+      min-width: calc(690px / 5);
   }
   .author-info {
     background: rgba(0, 0, 0, 0.75);
@@ -395,6 +407,15 @@ div.card.shadow.open {
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
 
+    #todayAppContainer{
+        display: flex;
+    }
+    #dot-container{
+        display: block;
+    }
+    .slider{
+        display: none;
+    }
     #repCommentLabel{
         margin-left: 85%;
     }
@@ -469,12 +490,12 @@ div.card.shadow.open {
     #prev{
         position: absolute;
         left: 3px;
-        bottom: 455px;
+        bottom: 407px;
     }
     #next{
         position: absolute;
         right: 3px;
-        bottom: 455px;
+        bottom: 407px;
     }        
 }
 

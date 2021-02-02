@@ -2,6 +2,7 @@
 .calendar {
     width: 100%;
     height: 90%;
+    max-height: 228px;
     background-color: #222227;
     box-shadow: 0 0.5rem 3rem rgba(0, 0, 0, 0.4);
     color: #d6e9c6;
