@@ -84,19 +84,19 @@ window.onload = function onLoadFunction() {
       logReports = JSON.parse(dailyReport);
       reportsText = "";
       function compareAsc(a, b) {
-        if (new Date(a.date) < new Date(b.date)) {
+        if (new Date(a.date) > new Date(b.date)) {
           return -1;
         }
-        if (new Date(a.date) > new Date(b.date)) {
+        if (new Date(a.date) < new Date(b.date)) {
           return 1;
         }
         return 0;
       }
       function compareDesc(a, b) {
-        if (new Date(a.date) > new Date(b.date)) {
+        if (new Date(a.date) < new Date(b.date)) {
           return -1;
         }
-        if (new Date(a.date) < new Date(b.date)) {
+        if (new Date(a.date) > new Date(b.date)) {
           return 1;
         }
         return 0;
@@ -133,8 +133,15 @@ window.onload = function onLoadFunction() {
             `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
             `<div><b>---------------</b></div>`
         } else {
+          var dayName = new Date(logReports[i].date).toString().substr(0, 3);
+          var dayNum = new Date(logReports[i].date).getDay();
+          var month = new Date(logReports[i].date).getMonth();
+          dateToHebrew(dayName, month);
+          var repTime = new Date(logReports[i].date).toString().substr(16, 8)
+          var year = new Date(logReports[i].date).getFullYear();
+          var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
           reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
-            `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+            `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
             `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
             `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
             `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
@@ -249,8 +256,15 @@ window.onload = function onLoadFunction() {
           `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
           `<div><b>---------------</b></div>`
       } else {
+        var dayName = new Date(logReports[i].date).toString().substr(0, 3);
+        var dayNum = new Date(logReports[i].date).getDay(); 
+        var month = new Date(logReports[i].date).getMonth();
+        dateToHebrew(dayName, month);
+        var repTime = new Date(logReports[i].date).toString().substr(16, 8)
+        var year = new Date(logReports[i].date).getFullYear();
+        var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
         reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
-          `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+          `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
           `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
           `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
           `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
@@ -468,4 +482,30 @@ function editRepLog(num) {
     }
     setTimeout(function () { alertToast('success', message) }, 500);
     return;
+  }
+
+  var hebDayName = "";
+  var monthHebName = "";
+
+  function dateToHebrew(dayName, month){
+    if(dayName === "Sun"){hebDayName = "יום ראשון"};
+        if(dayName === "Mon"){hebDayName = "יום שני"};
+        if(dayName === "Tue"){hebDayName = "יום שלישי"};
+        if(dayName === "Wed"){hebDayName = "יום רביעי"};
+        if(dayName === "Thu"){hebDayName = "יום חמישי"};
+        if(dayName === "Fri"){hebDayName = "יום שישי"};
+        if(dayName === "Sat"){hebDayName = "יום שבת"};
+        
+        if (month === 0) { monthHebName = "ינואר" };
+        if (month === 1) { monthHebName = "פברואר" };
+        if (month === 2) { monthHebName = "מרץ" };
+        if (month === 3) { monthHebName = "אפריל" };
+        if (month === 4) { monthHebName = "מאי" };
+        if (month === 5) { monthHebName = "יוני" };
+        if (month === 6) { monthHebName = "יולי" };
+        if (month === 7) { monthHebName = "אוגוסט" };
+        if (month === 8) { monthHebName = "ספטמבר" };
+        if (month === 9) { monthHebName = "אוקטובר" };
+        if (month === 10) { monthHebName = "נובמבר" };
+        if (month === 11) { monthHebName = "דצמבר" };
   }
