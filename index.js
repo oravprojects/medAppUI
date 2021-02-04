@@ -408,13 +408,20 @@ function deleteRepLog(num) {
       `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
       `<div><b>---------------</b></div>`
     }else {
-        reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
-          `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-          `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
-          `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-          `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-          `<div dir="rtl"><b>---------------</b></div>`
-      }
+      var dayName = new Date(logReports[i].date).toString().substr(0, 3);
+      var dayNum = new Date(logReports[i].date).toString().substr(8, 2);
+      var month = new Date(logReports[i].date).getMonth();
+      dateToHebrew(dayName, month);
+      var repTime = new Date(logReports[i].date).toString().substr(16, 8)
+      var year = new Date(logReports[i].date).getFullYear();
+      var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
+      reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+        `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
+        `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
+        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+        `<div dir="rtl"><b>---------------</b></div>`
+    }
   }
   textArea.innerHTML = reportsText;
 
