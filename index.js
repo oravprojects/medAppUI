@@ -5,9 +5,8 @@ window.onload = function onLoadFunction() {
   var sortUserClick = document.querySelectorAll(".sortUser, .sortUserHeb");
   for (i = 0; i < sortUserClick.length; i++) {
     sortUserClick[i].addEventListener("click", () => {
-      textArea = document.getElementById("reportsLogModalBody");
-      logReports = JSON.parse(dailyReport);
-      reportsText = "";
+      var textArea = document.getElementById("reportsLogModalBody");
+      var logReports = JSON.parse(dailyReport);
       function compareAsc(a, b) {
         if (a.user.toUpperCase() < b.user.toUpperCase()) {
           return -1;
@@ -49,36 +48,7 @@ window.onload = function onLoadFunction() {
       dailyReport = JSON.stringify(logReports);
       localStorage.setItem("dailyReport", dailyReport);
 
-      for (i = 0; i < logReports.length; i++) {
-        if (localStorage.getItem("langSelect") === "english") {
-          reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-            `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-            `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-            `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-            `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-            `<div><b>---------------</b></div>`
-        } else {
-          var dayName = new Date(logReports[i].date).toString().substr(0, 3);
-          var dayNum = new Date(logReports[i].date).toString().substr(8, 2);
-          var month = new Date(logReports[i].date).getMonth();
-          dateToHebrew(dayName, month);
-          var repTime = new Date(logReports[i].date).toString().substr(16, 8)
-          var year = new Date(logReports[i].date).getFullYear();
-          var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
-          reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
-            `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
-            `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
-            `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-            `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-            `<div dir="rtl"><b>---------------</b></div>`
-        }
-      }
-      textArea.innerHTML = reportsText;
-      if (localStorage.getItem("langSelect") === "hebrew") {
-        textArea.style.textAlign = "right";
-      }else{
-        textArea.style.textAlign = "left";
-      }
+      reportLogTextContent(logReports);
     });
   }
 
@@ -89,7 +59,7 @@ window.onload = function onLoadFunction() {
     sortDateClick[i].addEventListener("click", () => {
       textArea = document.getElementById("reportsLogModalBody");
       logReports = JSON.parse(dailyReport);
-      reportsText = "";
+
       function compareAsc(a, b) {
         if (new Date(a.date) > new Date(b.date)) {
           return -1;
@@ -131,36 +101,7 @@ window.onload = function onLoadFunction() {
       dailyReport = JSON.stringify(logReports);
       localStorage.setItem("dailyReport", dailyReport);
 
-      for (i = 0; i < logReports.length; i++) {
-        if (localStorage.getItem("langSelect") === "english") {
-          reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-            `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-            `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-            `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-            `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-            `<div><b>---------------</b></div>`
-        } else {
-          var dayName = new Date(logReports[i].date).toString().substr(0, 3);
-          var dayNum = new Date(logReports[i].date).toString().substr(8, 2);
-          var month = new Date(logReports[i].date).getMonth();
-          dateToHebrew(dayName, month);
-          var repTime = new Date(logReports[i].date).toString().substr(16, 8)
-          var year = new Date(logReports[i].date).getFullYear();
-          var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
-          reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
-            `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
-            `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
-            `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-            `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-            `<div dir="rtl"><b>---------------</b></div>`
-        }
-      }
-      textArea.innerHTML = reportsText;
-      if (localStorage.getItem("langSelect") === "hebrew") {
-        textArea.style.textAlign = "right";
-      }else{
-        textArea.style.textAlign = "left";
-      }
+      reportLogTextContent(logReports);
     });
   }
 
@@ -192,38 +133,38 @@ window.onload = function onLoadFunction() {
     viewRepLog();
   })
 
-  async function viewRepLog() {
+  function viewRepLog() {
     sortUserButton = document.getElementsByClassName("sortUser");
     sortUserButton[0].className = "btn btn-info sortUser";
     console.log(localStorage.getItem("langSelect"))
     if (localStorage.getItem("langSelect") === "hebrew") {
       sortUserButton[0].innerText = "משתמש ↕"
-      } else{
-        sortUserButton[0].innerText = "user ↕"
-      }
+    } else {
+      sortUserButton[0].innerText = "user ↕"
+    }
     sortDateButton = document.getElementsByClassName("sortDate");
     sortDateButton[0].className = "btn btn-info sortDate";
     if (localStorage.getItem("langSelect") === "hebrew") {
-    sortDateButton[0].innerText = "תאריך ↕";
-    if(screen.width > 360){
-      sortDateButton[0].style.marginRight = "48%";
-    }else{ 
-      sortDateButton[0].style.marginRight = "23%";
-    }
-    } else{
+      sortDateButton[0].innerText = "תאריך ↕";
+      if (screen.width > 360) {
+        sortDateButton[0].style.marginRight = "48%";
+      } else {
+        sortDateButton[0].style.marginRight = "23%";
+      }
+    } else {
       sortDateButton[0].innerText = "date ↕";
-      if(screen.width > 360){
+      if (screen.width > 360) {
         sortDateButton[0].style.marginRight = "50%";
-      }else{ 
+      } else {
         sortDateButton[0].style.marginRight = "26%";
       }
     }
     saveEditButton = document.getElementById("saveEditButton");
     if (localStorage.getItem("langSelect") === "hebrew") {
       saveEditButton.innerText = "שמור"
-      } else{
-        saveEditButton.innerText = "Save changes"
-      }
+    } else {
+      saveEditButton.innerText = "Save changes"
+    }
 
     saveEditButton.className = "btn btn-primary hide";
     modalTitle = document.getElementById('reportsModalLongTitle');
@@ -252,38 +193,9 @@ window.onload = function onLoadFunction() {
     logReports = logReports.sort(compareDesc);
     dailyReport = JSON.stringify(logReports);
     localStorage.setItem("dailyReport", dailyReport);
-    reportsText = "";
     console.log(logReports[0].user)
-    for (i = 0; i < logReports.length; i++) {
-      if (localStorage.getItem("langSelect") === "english") {
-        reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-          `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-          `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-          `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-          `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-          `<div><b>---------------</b></div>`
-      } else {
-        var dayName = new Date(logReports[i].date).toString().substr(0, 3);
-        var dayNum = new Date(logReports[i].date).toString().substr(8, 2);
-        var month = new Date(logReports[i].date).getMonth();
-        const res = await dateToHebrew(dayName, month);
-            var repTime = new Date(logReports[i].date).toString().substr(16, 8)
-            var year = new Date(logReports[i].date).getFullYear();
-            var repDate = res[0] + ", ה-" + dayNum + " ל" + res[1] + ", " + year + ", בשעה " + repTime;
-            reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
-              `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
-              `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
-              `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-              `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-              `<div dir="rtl"><b>---------------</b></div>`
-      }
-    }
-    textArea.innerHTML = reportsText;
-    if (localStorage.getItem("langSelect") === "hebrew") {
-      textArea.style.textAlign = "right";
-    } else{
-      textArea.style.textAlign = "left";
-    }
+
+    reportLogTextContent(logReports);
   };
 
   // Dashboard appointment clicks.
@@ -309,24 +221,6 @@ window.onload = function onLoadFunction() {
   var helloUsrHeb = document.getElementById("helloUsrHeb");
   var usrHeb = "אורן"
   helloUsrHeb.innerHTML = "שלום, " + usrHeb + "!"
-
-  // Patient cards
-  // var patientNumber = 0;
-  // var patientCard1 = document.getElementById("patient1");
-  // var patientCard2 = document.getElementById("patient2");
-  // var patientCard3 = document.getElementById("patient3");
-  // var patientCard4 = document.getElementById("patient4");
-  // var patientCard5 = document.getElementById("patient5");
-
-  // patientCard1.innerHTML = `
-  // <div lang="en" style="height: 25px;">Oren Avni</div>
-  // <div lang="he" dir="rtl" style="height: 25px;">Oren Avni</div>
-  // <div class="sched-item">7:30 AM</div>
-  // `
-  // patientCard2.innerHTML = "Patient " + (2 + patientNumber);
-  // patientCard3.innerHTML = "Patient " + (3 + patientNumber);
-  // patientCard4.innerHTML = "Patient " + (4 + patientNumber);
-  // patientCard5.innerHTML = "Patient " + (5 + patientNumber);
 }
 // End of window onload
 
@@ -343,7 +237,7 @@ function alertToast(type, message) {
 
 // Create an empty daily report array if it doesn't exist yet.
 var dailyReport = localStorage.getItem("dailyReport");
-if (dailyReport === null) {
+if (dailyReport === null || dailyReport === "undefined") {
   console.log("no daily rep in storage");
   var dailyReportArray = [];
   dailyReportArray = JSON.stringify(dailyReportArray)
@@ -392,38 +286,13 @@ function saveChanges() {
 // Delete reports from report log.
 function deleteRepLog(num) {
   console.log("delete: " + num);
-  textArea = document.getElementById("reportsLogModalBody");
-  logReports = JSON.parse(dailyReport);
+  var logReports = JSON.parse(dailyReport);
   logReports.splice(num, 1);
   dailyReport = JSON.stringify(logReports);
   localStorage.setItem("dailyReport", dailyReport);
   console.log(logReports)
-  reportsText = "";
-  for (i = 0; i < logReports.length; i++) {
-    if(localStorage.getItem("langSelect") === "english"){
-      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-      `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-      `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-      `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-      `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-      `<div><b>---------------</b></div>`
-    }else {
-      var dayName = new Date(logReports[i].date).toString().substr(0, 3);
-      var dayNum = new Date(logReports[i].date).toString().substr(8, 2);
-      var month = new Date(logReports[i].date).getMonth();
-      dateToHebrew(dayName, month);
-      var repTime = new Date(logReports[i].date).toString().substr(16, 8)
-      var year = new Date(logReports[i].date).getFullYear();
-      var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
-      reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
-        `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
-        `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
-        `<div dir="rtl"><b>---------------</b></div>`
-    }
-  }
-  textArea.innerHTML = reportsText;
+
+  reportLogTextContent(logReports);
 
   if (localStorage.getItem("langSelect") === "english") {
     message = "Report deleted successfully!";
@@ -443,39 +312,46 @@ function editRepLog(num) {
   saveEditButton = document.getElementById("saveEditButton");
   if (localStorage.getItem("langSelect") === "hebrew") {
     saveEditButton.innerText = "שמור"
-    } else{
-      saveEditButton.innerText = "Save changes"
-    }
+  } else {
+    saveEditButton.innerText = "Save changes"
+  }
   saveEditButton.className = "btn btn-primary";
   textArea = document.getElementById("reportsLogModalBody");
   logReports = JSON.parse(dailyReport);
-  reportsText = "";
+  var reportsText = "";
   for (i = 0; i < logReports.length; i++) {
     if (i === num) {
       if (localStorage.getItem("langSelect") === "english") {
         reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
-        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-        `<div><b>Notes: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`;
+          `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+          `<div><b>Notes: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`;
       } else {
+        var dayName = new Date(logReports[i].date).toString().substr(0, 3);
+        var dayNum = new Date(logReports[i].date).toString().substr(8, 2);
+        var month = new Date(logReports[i].date).getMonth();
+        dateToHebrew(dayName, month);
+        var repTime = new Date(logReports[i].date).toString().substr(16, 8)
+        var year = new Date(logReports[i].date).getFullYear();
+        var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
         reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
-        `<div dir="rtl"><b>תאריך: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
-        `<div dir="rtl"><b>הערות: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`;
+          `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
+          `<div dir="rtl"><b>הערות: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`;
       }
     }
   }
   textArea.innerHTML = reportsText;
   if (localStorage.getItem("langSelect") === "hebrew") {
     textArea.style.textAlign = "right";
-  }else{
+  } else {
     textArea.style.textAlign = "left";
   }
 
-  saveEditButton.onclick = function(){saveEdit(num)};
+  saveEditButton.onclick = function () { saveEdit(num) };
   return;
 }
 
 // Save edited reports in report log.
-  function saveEdit(num) {
+function saveEdit(num) {
   console.log("this is the number: " + num)
   editReminderText = document.getElementById("editReminderText");
   console.log(editReminderText.value);
@@ -485,43 +361,80 @@ function editRepLog(num) {
   localStorage.setItem("dailyReport", dailyReport);
   if (localStorage.getItem("langSelect") === "english") {
     message = "report log edited successfully!";
-    } else {
-      message = '!הדו"ח נערך בהצלחה';
-    }
-    $("#reportsModal").modal('hide');
+  } else {
+    message = '!הדו"ח נערך בהצלחה';
+  }
+  $("#reportsModal").modal('hide');
+  if (localStorage.getItem("langSelect") === "english") {
+    setTimeout(function () { document.getElementById("viewReportsLog").click(); }, 500);
+  } else {
+    setTimeout(function () { document.getElementById("viewReportsLogHeb").click(); }, 500);
+  }
+  setTimeout(function () { alertToast('success', message) }, 500);
+  return;
+}
+
+// global variables for Hebrew names for days and months
+var hebDayName = "";
+var monthHebName = "";
+
+function dateToHebrew(dayName, month) {
+  if (dayName === "Sun") { hebDayName = "יום ראשון" };
+  if (dayName === "Mon") { hebDayName = "יום שני" };
+  if (dayName === "Tue") { hebDayName = "יום שלישי" };
+  if (dayName === "Wed") { hebDayName = "יום רביעי" };
+  if (dayName === "Thu") { hebDayName = "יום חמישי" };
+  if (dayName === "Fri") { hebDayName = "יום שישי" };
+  if (dayName === "Sat") { hebDayName = "יום שבת" };
+
+  if (month === 0) { monthHebName = "ינואר" };
+  if (month === 1) { monthHebName = "פברואר" };
+  if (month === 2) { monthHebName = "מרץ" };
+  if (month === 3) { monthHebName = "אפריל" };
+  if (month === 4) { monthHebName = "מאי" };
+  if (month === 5) { monthHebName = "יוני" };
+  if (month === 6) { monthHebName = "יולי" };
+  if (month === 7) { monthHebName = "אוגוסט" };
+  if (month === 8) { monthHebName = "ספטמבר" };
+  if (month === 9) { monthHebName = "אוקטובר" };
+  if (month === 10) { monthHebName = "נובמבר" };
+  if (month === 11) { monthHebName = "דצמבר" };
+
+  return ([hebDayName, monthHebName]);
+}
+
+// insert content in the reports log
+function reportLogTextContent(logReports) {
+  var reportsText = "";
+  var textArea = document.getElementById("reportsLogModalBody");
+  for (i = 0; i < logReports.length; i++) {
     if (localStorage.getItem("langSelect") === "english") {
-      setTimeout(function () { document.getElementById("viewReportsLog").click(); }, 500);
+      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+        `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
+        `<div><b>Notes: </b>${logReports[i].notes}</div>` +
+        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+        `<div><b>---------------</b></div>`
     } else {
-      setTimeout(function () { document.getElementById("viewReportsLogHeb").click(); }, 500);
+      var dayName = new Date(logReports[i].date).toString().substr(0, 3);
+      var dayNum = new Date(logReports[i].date).toString().substr(8, 2);
+      var month = new Date(logReports[i].date).getMonth();
+      dateToHebrew(dayName, month);
+      var repTime = new Date(logReports[i].date).toString().substr(16, 8)
+      var year = new Date(logReports[i].date).getFullYear();
+      var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
+      reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+        `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
+        `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
+        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+        `<div dir="rtl"><b>---------------</b></div>`
     }
-    setTimeout(function () { alertToast('success', message) }, 500);
-    return;
   }
-
-  var hebDayName = "";
-  var monthHebName = "";
-
-  function dateToHebrew(dayName, month){
-    if(dayName === "Sun"){hebDayName = "יום ראשון"};
-        if(dayName === "Mon"){hebDayName = "יום שני"};
-        if(dayName === "Tue"){hebDayName = "יום שלישי"};
-        if(dayName === "Wed"){hebDayName = "יום רביעי"};
-        if(dayName === "Thu"){hebDayName = "יום חמישי"};
-        if(dayName === "Fri"){hebDayName = "יום שישי"};
-        if(dayName === "Sat"){hebDayName = "יום שבת"};
-        
-        if (month === 0) { monthHebName = "ינואר" };
-        if (month === 1) { monthHebName = "פברואר" };
-        if (month === 2) { monthHebName = "מרץ" };
-        if (month === 3) { monthHebName = "אפריל" };
-        if (month === 4) { monthHebName = "מאי" };
-        if (month === 5) { monthHebName = "יוני" };
-        if (month === 6) { monthHebName = "יולי" };
-        if (month === 7) { monthHebName = "אוגוסט" };
-        if (month === 8) { monthHebName = "ספטמבר" };
-        if (month === 9) { monthHebName = "אוקטובר" };
-        if (month === 10) { monthHebName = "נובמבר" };
-        if (month === 11) { monthHebName = "דצמבר" };
-
-        return([hebDayName, monthHebName]);
+  textArea.innerHTML = reportsText;
+  if (localStorage.getItem("langSelect") === "hebrew") {
+    textArea.style.textAlign = "right";
+  } else {
+    textArea.style.textAlign = "left";
   }
+}
