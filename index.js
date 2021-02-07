@@ -1,6 +1,6 @@
 window.onload = function onLoadFunction() {
 
-  // Sort report log messages by user name.
+  // Define click function to sort report log messages by username.
   var sortUserDir = "";
   var sortUserClick = document.querySelectorAll(".sortUser, .sortUserHeb");
   for (i = 0; i < sortUserClick.length; i++) {
@@ -31,7 +31,10 @@ window.onload = function onLoadFunction() {
           textArea.innerHTML = reportsText;
           return;
         }
+        sortContent("desc", "user", logReports);
         console.log(sortUserDir, " sort user desc")
+        var logTest = sortContent("desc", "user", logReports);
+        console.log(logTest);
         logReports = logReports.sort(compareDesc);
         sortUserDir = "asc"
       } else {
@@ -40,6 +43,7 @@ window.onload = function onLoadFunction() {
           textArea.innerHTML = reportsText;
           return;
         }
+        sortContent("asc", "user", logReports);
         console.log(sortUserDir, "sort user asc")
         logReports = logReports.sort(compareAsc);
         sortUserDir = "desc"
@@ -84,6 +88,7 @@ window.onload = function onLoadFunction() {
           textArea.innerHTML = reportsText;
           return;
         }
+        sortContent("asc", "date", logReports);
         console.log(sortDateDir, " sort date desc")
         logReports = logReports.sort(compareAsc);
         sortDateDir = "asc"
@@ -93,6 +98,7 @@ window.onload = function onLoadFunction() {
           textArea.innerHTML = reportsText;
           return;
         }
+        sortContent("desc", "date", logReports);
         console.log(sortDateDir, "sort date asc")
         logReports = logReports.sort(compareDesc);
         sortDateDir = "desc"
@@ -260,7 +266,7 @@ function saveDailyReport() {
     alertToast('failure', message);
     return;
   }
-  dailyReportArray.push({ "date": new Date, "user": "Oren", "notes": notes });
+  dailyReportArray.push({ "date": new Date, "user": "Tammy", "notes": notes });
   console.log(dailyReportArray);
   dailyReportArray = JSON.stringify(dailyReportArray)
   localStorage.setItem("dailyReport", dailyReportArray);
@@ -437,4 +443,56 @@ function reportLogTextContent(logReports) {
   } else {
     textArea.style.textAlign = "left";
   }
+}
+
+function sortContent(dir, field, arr) {
+  if (field === "date") {
+    if (dir === "asc") {
+      arr = arr.sort(function (a, b) {
+        if (new Date(a.date) > new Date(b.date)) {
+          return -1;
+        }
+        if (new Date(a.date) < new Date(b.date)) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      arr = arr.sort(function (a, b) {
+        if (new Date(a.date) < new Date(b.date)) {
+          return -1;
+        }
+        if (new Date(a.date) > new Date(b.date)) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+  } else {
+    if (dir === "asc") {
+      arr = arr.sort(function (a, b) {
+        if (a[field].toUpperCase() < b[field].toUpperCase()) {
+          return -1;
+        }
+        if (a[field].toUpperCase() > b[field].toUpperCase()) {
+          return 1;
+        }
+        return 0;
+      });
+    } else {
+      arr = arr.sort(function (a, b) {
+        if (a[field].toUpperCase() > b[field].toUpperCase()) {
+          return -1;
+        }
+        if (a[field].toUpperCase() < b[field].toUpperCase()) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+  }
+
+  arr = JSON.stringify(arr);
+  console.log("This is the sorted array: " + " direction: " + dir + " "  + arr);
+  return arr;
 }
