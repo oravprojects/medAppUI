@@ -1,236 +1,3 @@
-window.onload = function onLoadFunction() {
-
-  // Define click function to sort report log messages by username.
-  var sortUserDir = "";
-  var sortUserClick = document.querySelectorAll(".sortUser, .sortUserHeb");
-  for (i = 0; i < sortUserClick.length; i++) {
-    sortUserClick[i].addEventListener("click", () => {
-      var textArea = document.getElementById("reportsLogModalBody");
-      var logReports = JSON.parse(dailyReport);
-      function compareAsc(a, b) {
-        if (a.user.toUpperCase() < b.user.toUpperCase()) {
-          return -1;
-        }
-        if (a.user.toUpperCase() > b.user.toUpperCase()) {
-          return 1;
-        }
-        return 0;
-      }
-      function compareDesc(a, b) {
-        if (a.user.toUpperCase() > b.user.toUpperCase()) {
-          return -1;
-        }
-        if (a.user.toUpperCase() < b.user.toUpperCase()) {
-          return 1;
-        }
-        return 0;
-      }
-      if (sortUserDir === "desc") {
-        if (logReports.length === 0) {
-          reportsText = "No reports in log.";
-          textArea.innerHTML = reportsText;
-          return;
-        }
-        sortContent("desc", "user", logReports);
-        console.log(sortUserDir, " sort user desc")
-        var logTest = sortContent("desc", "user", logReports);
-        console.log(logTest);
-        logReports = logReports.sort(compareDesc);
-        sortUserDir = "asc"
-      } else {
-        if (logReports.length === 0) {
-          reportsText = "No reports in log.";
-          textArea.innerHTML = reportsText;
-          return;
-        }
-        sortContent("asc", "user", logReports);
-        console.log(sortUserDir, "sort user asc")
-        logReports = logReports.sort(compareAsc);
-        sortUserDir = "desc"
-      }
-      console.log(logReports)
-      dailyReport = JSON.stringify(logReports);
-      localStorage.setItem("dailyReport", dailyReport);
-
-      reportLogTextContent(logReports);
-    });
-  }
-
-  // Sort report log messages by date.
-  var sortDateDir = "";
-  var sortDateClick = document.querySelectorAll(".sortDate, .sortDateHeb");
-  for (i = 0; i < sortDateClick.length; i++) {
-    sortDateClick[i].addEventListener("click", () => {
-      textArea = document.getElementById("reportsLogModalBody");
-      logReports = JSON.parse(dailyReport);
-
-      function compareAsc(a, b) {
-        if (new Date(a.date) > new Date(b.date)) {
-          return -1;
-        }
-        if (new Date(a.date) < new Date(b.date)) {
-          return 1;
-        }
-        return 0;
-      }
-      function compareDesc(a, b) {
-        if (new Date(a.date) < new Date(b.date)) {
-          return -1;
-        }
-        if (new Date(a.date) > new Date(b.date)) {
-          return 1;
-        }
-        return 0;
-      }
-      if (sortDateDir === "desc") {
-        if (logReports.length === 0) {
-          reportsText = "No reports in log.";
-          textArea.innerHTML = reportsText;
-          return;
-        }
-        sortContent("asc", "date", logReports);
-        console.log(sortDateDir, " sort date desc")
-        logReports = logReports.sort(compareAsc);
-        sortDateDir = "asc"
-      } else {
-        if (logReports.length === 0) {
-          reportsText = "No reports in log.";
-          textArea.innerHTML = reportsText;
-          return;
-        }
-        sortContent("desc", "date", logReports);
-        console.log(sortDateDir, "sort date asc")
-        logReports = logReports.sort(compareDesc);
-        sortDateDir = "desc"
-      }
-      console.log(logReports)
-      dailyReport = JSON.stringify(logReports);
-      localStorage.setItem("dailyReport", dailyReport);
-
-      reportLogTextContent(logReports);
-    });
-  }
-
-  // Complete report for report log.
-  document.querySelector("#completeReport").addEventListener("click", () => {
-    var date = new Date().toString();
-    modalTitle = document.getElementById('exampleModalLongTitle');
-    modalTitle.innerText = date.substr(0, 15) + " Daily Report";
-    textArea = document.getElementById('exampleFormControlTextarea1');
-    textArea.value = "";
-    textArea.dir = "ltr";
-  });
-
-  document.querySelector("#completeReportHe").addEventListener("click", () => {
-    var dateHeb = document.getElementById("dateHeb").innerText;
-    modalTitle = document.getElementById('exampleModalLongTitle');
-    modalTitle.innerText = 'דו"ח ' + dateHeb;
-    textArea = document.getElementById('exampleFormControlTextarea1');
-    textArea.value = "";
-    textArea.dir = "rtl";
-  });
-
-  // View reports log.
-  document.querySelector("#viewReportsLogHeb").addEventListener("click", () => {
-    viewRepLog();
-  })
-
-  document.querySelector("#viewReportsLog").addEventListener("click", () => {
-    viewRepLog();
-  })
-
-  function viewRepLog() {
-    sortUserButton = document.getElementsByClassName("sortUser");
-    sortUserButton[0].className = "btn btn-info sortUser";
-    console.log(localStorage.getItem("langSelect"))
-    if (localStorage.getItem("langSelect") === "hebrew") {
-      sortUserButton[0].innerText = "משתמש ↕"
-    } else {
-      sortUserButton[0].innerText = "user ↕"
-    }
-    sortDateButton = document.getElementsByClassName("sortDate");
-    sortDateButton[0].className = "btn btn-info sortDate";
-    if (localStorage.getItem("langSelect") === "hebrew") {
-      sortDateButton[0].innerText = "תאריך ↕";
-      if (screen.width > 360) {
-        sortDateButton[0].style.marginRight = "48%";
-      } else {
-        sortDateButton[0].style.marginRight = "23%";
-      }
-    } else {
-      sortDateButton[0].innerText = "date ↕";
-      if (screen.width > 360) {
-        sortDateButton[0].style.marginRight = "50%";
-      } else {
-        sortDateButton[0].style.marginRight = "26%";
-      }
-    }
-    saveEditButton = document.getElementById("saveEditButton");
-    if (localStorage.getItem("langSelect") === "hebrew") {
-      saveEditButton.innerText = "שמור"
-    } else {
-      saveEditButton.innerText = "Save changes"
-    }
-
-    saveEditButton.className = "btn btn-primary hide";
-    modalTitle = document.getElementById('reportsModalLongTitle');
-    modalTitleHeb = document.getElementById('reportsModalLongTitleHeb');
-    modalTitle.innerText = "Reports Log";
-    modalTitleHeb.innerText = 'יומן דו"חות';
-    textArea = document.getElementById("reportsLogModalBody");
-    logReports = JSON.parse(dailyReport);
-    if (logReports.length === 0) {
-      reportsText = "No reports in log.";
-      textArea.innerHTML = reportsText;
-      return;
-    }
-    function compareDesc(a, b) {
-      if (logReports.length === 0) {
-        return;
-      }
-      if (new Date(a.date) > new Date(b.date)) {
-        return -1;
-      }
-      if (new Date(a.date) < new Date(b.date)) {
-        return 1;
-      }
-      return 0;
-    }
-    logReports = logReports.sort(compareDesc);
-    dailyReport = JSON.stringify(logReports);
-    localStorage.setItem("dailyReport", dailyReport);
-    console.log(logReports[0].user)
-
-    reportLogTextContent(logReports);
-  };
-
-  // Dashboard appointment clicks.
-  document.querySelectorAll('.dash-appointment').forEach(item => {
-    item.addEventListener('click', e => {
-      e = e || window.event;
-      var target = e.target,
-        // text = target.textContent || target.innerText;
-        text = target.innerText;
-      modalTitle = document.getElementById('exampleModalLongTitle');
-      modalTitle.innerText = text;
-      textArea = document.getElementById('exampleFormControlTextarea1');
-      textArea.value = "";
-    }, false)
-  })
-
-
-  // Hello User
-  var helloUsr = document.getElementById("helloUsr");
-  var usr = "John"
-  helloUsr.innerHTML = "Hello, " + usr + "!"
-
-  var helloUsrHeb = document.getElementById("helloUsrHeb");
-  var usrHeb = "אורן"
-  helloUsrHeb.innerHTML = "שלום, " + usrHeb + "!"
-}
-// End of window onload
-
-
 // Display alert messages.
 function alertToast(type, message) {
   var alertType = document.getElementById(type);
@@ -447,22 +214,22 @@ function reportLogTextContent(logReports) {
 
 function sortContent(dir, field, arr) {
   if (field === "date") {
-    if (dir === "asc") {
+    if (dir === "desc") {
       arr = arr.sort(function (a, b) {
-        if (new Date(a.date) > new Date(b.date)) {
+        if (new Date(a[field]) > new Date(b[field])) {
           return -1;
         }
-        if (new Date(a.date) < new Date(b.date)) {
+        if (new Date(a[field]) < new Date(b[field])) {
           return 1;
         }
         return 0;
       });
     } else {
       arr = arr.sort(function (a, b) {
-        if (new Date(a.date) < new Date(b.date)) {
+        if (new Date(a[field]) < new Date(b[field])) {
           return -1;
         }
-        if (new Date(a.date) > new Date(b.date)) {
+        if (new Date(a[field]) > new Date(b[field])) {
           return 1;
         }
         return 0;
@@ -496,3 +263,245 @@ function sortContent(dir, field, arr) {
   console.log("This is the sorted array: " + " direction: " + dir + " "  + arr);
   return arr;
 }
+
+window.onload = function onLoadFunction() {
+  // Define click function to sort report log messages by username.
+  var sortUserDir = "";
+  var sortUserClick = document.querySelectorAll(".sortUser, .sortUserHeb");
+  
+  for (i = 0; i < sortUserClick.length; i++) {
+    sortUserClick[i].addEventListener("click", () => {
+      var textArea = document.getElementById("reportsLogModalBody");
+      var logReports = JSON.parse(dailyReport);
+      // function compareAsc(a, b) {
+      //   if (a.user.toUpperCase() < b.user.toUpperCase()) {
+      //     return -1;
+      //   }
+      //   if (a.user.toUpperCase() > b.user.toUpperCase()) {
+      //     return 1;
+      //   }
+      //   return 0;
+      // }
+      // function compareDesc(a, b) {
+      //   if (a.user.toUpperCase() > b.user.toUpperCase()) {
+      //     return -1;
+      //   }
+      //   if (a.user.toUpperCase() < b.user.toUpperCase()) {
+      //     return 1;
+      //   }
+      //   return 0;
+      // }
+      if (sortUserDir === "desc") {
+        if (logReports.length === 0) {
+          var reportsText = "No reports in log.";
+          textArea.innerHTML = reportsText;
+          return;
+        }
+        // sortContent("desc", "user", logReports);
+        // console.log(sortUserDir, " sort user desc")
+        logReports = sortContent("desc", "user", logReports);
+        console.log(logReports);
+        // logReports = logReports.sort(compareDesc);
+        sortUserDir = "asc"
+      } else {
+        if (logReports.length === 0) {
+          reportsText = "No reports in log.";
+          textArea.innerHTML = reportsText;
+          return;
+        }
+        // sortContent("asc", "user", logReports);
+        // console.log(sortUserDir, "sort user asc")
+        logReports = sortContent("asc", "user", logReports);
+        console.log(logReports);
+        // logReports = logReports.sort(compareAsc);
+        sortUserDir = "desc"
+      }
+      console.log(logReports)
+      // dailyReport = JSON.stringify(logReports);
+      dailyReport = logReports;
+      console.log("This is the daily report: " + dailyReport)
+      localStorage.setItem("dailyReport", dailyReport);
+      logReports = JSON.parse(logReports);
+      reportLogTextContent(logReports);
+    });
+  }
+
+  // Sort report log messages by date.
+  var sortDateDir = "";
+  var sortDateClick = document.querySelectorAll(".sortDate, .sortDateHeb");
+  for (i = 0; i < sortDateClick.length; i++) {
+    sortDateClick[i].addEventListener("click", () => {
+      var textArea = document.getElementById("reportsLogModalBody");
+      var logReports = JSON.parse(dailyReport);
+
+      // function compareAsc(a, b) {
+      //   if (new Date(a.date) > new Date(b.date)) {
+      //     return -1;
+      //   }
+      //   if (new Date(a.date) < new Date(b.date)) {
+      //     return 1;
+      //   }
+      //   return 0;
+      // }
+      // function compareDesc(a, b) {
+      //   if (new Date(a.date) < new Date(b.date)) {
+      //     return -1;
+      //   }
+      //   if (new Date(a.date) > new Date(b.date)) {
+      //     return 1;
+      //   }
+      //   return 0;
+      // }
+      if (sortDateDir === "desc") {
+        if (logReports.length === 0) {
+          var reportsText = "No reports in log.";
+          textArea.innerHTML = reportsText;
+          return;
+        }
+        // sortContent("asc", "date", logReports);
+        // console.log(sortDateDir, " sort date desc")
+        // logReports = logReports.sort(compareAsc);
+        logReports = sortContent("desc", "date", logReports);
+        sortDateDir = "asc"
+      } else {
+        if (logReports.length === 0) {
+          reportsText = "No reports in log.";
+          textArea.innerHTML = reportsText;
+          return;
+        }
+        // sortContent("desc", "date", logReports);
+        // console.log(sortDateDir, "sort date asc")
+        // logReports = logReports.sort(compareDesc);
+        logReports = sortContent("asc", "date", logReports);
+        sortDateDir = "desc"
+      }
+      console.log(logReports)
+      // dailyReport = JSON.stringify(logReports);
+      dailyReport = logReports;
+      localStorage.setItem("dailyReport", dailyReport);
+      logReports = JSON.parse(logReports);
+      reportLogTextContent(logReports);
+    });
+  }
+
+  // Complete report for report log.
+  document.querySelector("#completeReport").addEventListener("click", () => {
+    var date = new Date().toString();
+    var modalTitle = document.getElementById('exampleModalLongTitle');
+    modalTitle.innerText = date.substr(0, 15) + " Daily Report";
+    var textArea = document.getElementById('exampleFormControlTextarea1');
+    textArea.value = "";
+    textArea.dir = "ltr";
+  });
+
+  document.querySelector("#completeReportHe").addEventListener("click", () => {
+    var dateHeb = document.getElementById("dateHeb").innerText;
+    var modalTitle = document.getElementById('exampleModalLongTitle');
+    modalTitle.innerText = 'דו"ח ' + dateHeb;
+    var textArea = document.getElementById('exampleFormControlTextarea1');
+    textArea.value = "";
+    textArea.dir = "rtl";
+  });
+
+  // View reports log.
+  document.querySelector("#viewReportsLogHeb").addEventListener("click", () => {
+    viewRepLog();
+  })
+
+  document.querySelector("#viewReportsLog").addEventListener("click", () => {
+    viewRepLog();
+  })
+
+  function viewRepLog() {
+    sortUserButton = document.getElementsByClassName("sortUser");
+    sortUserButton[0].className = "btn btn-info sortUser";
+    console.log(localStorage.getItem("langSelect"))
+    if (localStorage.getItem("langSelect") === "hebrew") {
+      sortUserButton[0].innerText = "משתמש ↕"
+    } else {
+      sortUserButton[0].innerText = "user ↕"
+    }
+    sortDateButton = document.getElementsByClassName("sortDate");
+    sortDateButton[0].className = "btn btn-info sortDate";
+    if (localStorage.getItem("langSelect") === "hebrew") {
+      sortDateButton[0].innerText = "תאריך ↕";
+      if (screen.width > 360) {
+        sortDateButton[0].style.marginRight = "48%";
+      } else {
+        sortDateButton[0].style.marginRight = "23%";
+      }
+    } else {
+      sortDateButton[0].innerText = "date ↕";
+      if (screen.width > 360) {
+        sortDateButton[0].style.marginRight = "50%";
+      } else {
+        sortDateButton[0].style.marginRight = "26%";
+      }
+    }
+    saveEditButton = document.getElementById("saveEditButton");
+    if (localStorage.getItem("langSelect") === "hebrew") {
+      saveEditButton.innerText = "שמור"
+    } else {
+      saveEditButton.innerText = "Save changes"
+    }
+
+    saveEditButton.className = "btn btn-primary hide";
+    modalTitle = document.getElementById('reportsModalLongTitle');
+    modalTitleHeb = document.getElementById('reportsModalLongTitleHeb');
+    modalTitle.innerText = "Reports Log";
+    modalTitleHeb.innerText = 'יומן דו"חות';
+    textArea = document.getElementById("reportsLogModalBody");
+    logReports = JSON.parse(dailyReport);
+    if (logReports.length === 0) {
+      reportsText = "No reports in log.";
+      textArea.innerHTML = reportsText;
+      return;
+    }
+    // function compareDesc(a, b) {
+    //   if (logReports.length === 0) {
+    //     return;
+    //   }
+    //   if (new Date(a.date) > new Date(b.date)) {
+    //     return -1;
+    //   }
+    //   if (new Date(a.date) < new Date(b.date)) {
+    //     return 1;
+    //   }
+    //   return 0;
+    // }
+    // logReports = logReports.sort(compareDesc);
+    logReports = sortContent("desc", "date", logReports);
+    // dailyReport = JSON.stringify(logReports);
+    dailyReport = logReports;
+    localStorage.setItem("dailyReport", dailyReport);
+    // console.log(logReports[0].user)
+    logReports = JSON.parse(logReports);
+    reportLogTextContent(logReports);
+    console.log(logReports[0].user)
+  };
+
+  // Dashboard appointment clicks.
+  document.querySelectorAll('.dash-appointment').forEach(item => {
+    item.addEventListener('click', e => {
+      e = e || window.event;
+      var target = e.target,
+        // text = target.textContent || target.innerText;
+        text = target.innerText;
+      modalTitle = document.getElementById('exampleModalLongTitle');
+      modalTitle.innerText = text;
+      textArea = document.getElementById('exampleFormControlTextarea1');
+      textArea.value = "";
+    }, false)
+  })
+
+
+  // Hello User
+  var helloUsr = document.getElementById("helloUsr");
+  var usr = "John"
+  helloUsr.innerHTML = "Hello, " + usr + "!"
+
+  var helloUsrHeb = document.getElementById("helloUsrHeb");
+  var usrHeb = "אורן"
+  helloUsrHeb.innerHTML = "שלום, " + usrHeb + "!"
+}
+// End of window onload
