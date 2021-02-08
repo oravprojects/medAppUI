@@ -7,6 +7,11 @@
 .no-ptr {pointer-events: none;}
 .hide {display: none;}
 
+/* to prevent shifting of elements on modal closing */
+.modal-open{
+    padding:0 !important;
+    overflow-y: auto;
+}
 
 #switch-lang-container{
     text-align: right;

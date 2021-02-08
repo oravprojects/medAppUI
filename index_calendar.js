@@ -267,7 +267,9 @@ const appointmentSchedFunction = () => {
 }
 
 function saveAppSchedChanges(e) {
-  alert("save appointment schedule changes");
+  var storeAlert = [{"type": "success", "message": "appointment saved successfully!"}]
+  storeAlert = JSON.stringify(storeAlert);
+  localStorage.setItem("alert", storeAlert);
   modalTitle = document.getElementById('appSchedModalLongTitle');
   console.log(modalTitle.innerText);
   if(localStorage.getItem("langSelect")==="english"){
