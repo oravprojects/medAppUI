@@ -147,7 +147,7 @@ function loadAppSched() {
     var dotContainerContent = "";
     var slideNumberContainerContent = "";
     for (i = 1; i < todayApps.length; i++) {
-        if(i<=5){
+        if(i<=5){ //appContainer only shows 5 patient cards for mobile view;
             appContainerContent += `<li class="flex-item">
             <div class="card shadow" style="text-align: center;">
                 <span class="border border-light rounded">
@@ -193,7 +193,7 @@ function loadAppSched() {
         // }
     }
     for (i = 1; i < todayApps.length; i++) {
-        if(i < 6){
+        if(i < 6){ // show 5 active dots at a time in mobile view;
             dotContainerContent += `<span class="dot active"></span>`
             dotContainer.innerHTML = dotContainerContent;    
         }else{
@@ -203,7 +203,7 @@ function loadAppSched() {
         slideNumberContainerContent+=`<button id="slideButton" onclick="scrollFunction(${i})">${i}</a>`;
         slideNumberContainer.innerHTML = slideNumberContainerContent;
     }
-    if (appSched.length > 0) {
+    if (todayApps.length > 0) {
         for (i = 1; i < todayApps.length; i++) {
             var listInfo = todayApps[i + patientNumber].getElementsByTagName("li");
             console.log(listInfo[1].lang)
@@ -231,7 +231,7 @@ function loadAppSched() {
                     patientInfo += "<div>" + listInfo[j].innerHTML + "</div>";
                 }
                 console.log(patientInfo);
-                // patient.innerHTML = patientInfo;
+                patient.innerHTML = patientInfo;
                 patientSlide.innerHTML = patientInfo;
             }
             if (i === 5) {
@@ -265,6 +265,20 @@ function loadAppSched() {
                 console.log(patientInfo);
                 patientSlide.innerHTML = patientInfo;
             }
+        }
+    }
+    if(todayApps.length < 7){
+        console.log("hiding prev and next")
+        document.getElementById("prev").style.display = "none"
+        document.getElementById("next").style.display = "none"
+    }else{
+        console.log("showing prev and next")
+        if (screen.width > 360) {
+            document.getElementById("prev").style.display = "none"
+            document.getElementById("next").style.display = "none"
+        }else{
+            document.getElementById("prev").style.display = "inline"
+            document.getElementById("next").style.display = "inline"    
         }
     }
     console.log("today app: " + todayApps.length)

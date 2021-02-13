@@ -185,9 +185,12 @@ function reportLogTextContent(logReports) {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+        `<div><i class='fa fa-pencil-square-o' style="color: red;" onclick="editRepLog(${i})"></i>` +
+        `<i class="fa fa-trash" style="color: red;" onclick="deleteRepLog(${i})"></i></div>` +
         `<div><b>---------------</b></div>`
+        // optional fontawesome icons (update css on change): 
+        // <div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
+        // `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>`
     } else {
       var dayName = new Date(logReports[i].date).toString().substr(0, 3);
       var dayNum = new Date(logReports[i].date).toString().substr(8, 2);
@@ -199,8 +202,8 @@ function reportLogTextContent(logReports) {
       reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
         `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
         `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
-        `<div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
-        `<i class="far fa-trash-alt" onclick="deleteRepLog(${i})"></i></div>` +
+        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i})"></i>` +
+        `<i class="fa fa-trash" onclick="deleteRepLog(${i})"></i></div>` +
         `<div dir="rtl"><b>---------------</b></div>`
     }
   }
