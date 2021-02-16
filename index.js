@@ -185,7 +185,7 @@ function reportLogTextContent(logReports) {
       reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='fa fa-pencil-square-o' style="color: red;" onclick="editRepLog(${i})"></i>` +
+        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i})"></i>` +
         `<i class="fa fa-trash" style="color: red;" onclick="deleteRepLog(${i})"></i></div>` +
         `<div><b>---------------</b></div>`
         // optional fontawesome icons (update css on change): 
