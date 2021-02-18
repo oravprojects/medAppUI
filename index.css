@@ -43,6 +43,20 @@
 }
 
 #switch-lang-container{
+    text-align: left;
+    /* float: right; */
+    /* margin-right: 9%;
+    margin-top: 2%;
+    margin-bottom: 1%; */
+}
+#switch-user-container{
+    text-align: right;
+    /* float: right; */
+    margin-right: 15%;
+    /* margin-top: 2%;
+    margin-bottom: 1%; */
+}
+.lang-user{
     text-align: right;
     /* margin-right: 9%;
     margin-top: 2%;

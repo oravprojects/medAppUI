@@ -266,6 +266,9 @@ function sortContent(dir, field, arr) {
   console.log("This is the sorted array: " + " direction: " + dir + " "  + arr);
   return arr;
 }
+function switchUser(event){
+  console.log("change user")
+}
 
 window.onload = function onLoadFunction() {
   // Define click function to sort report log messages by username.

@@ -562,10 +562,27 @@ addLoadEvent(function () {
         // $('[lang="he"]').toggle();
         setReminderForm();
         setAppSchedForm();
+        setChangeUserForm();
     });
     setReminderForm();
     setAppSchedForm();
+    setChangeUserForm();
 })
+
+function setChangeUserForm() {
+    console.log("setChangeUserForm")
+    if (localStorage.getItem("langSelect") === "hebrew") {
+        document.getElementById("username").required = false;
+        document.getElementById("username-he").required = true;
+        document.getElementById("pwd").required = false;
+        document.getElementById("pwd-he").required = true;
+    } else {
+        document.getElementById("username").required = true;
+        document.getElementById("username-he").required = false;
+        document.getElementById("pwd").required = true;
+        document.getElementById("pwd-he").required = false;
+    }
+}
 
 function setReminderForm() {
     console.log("setRemFunction")

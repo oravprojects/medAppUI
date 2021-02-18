@@ -41,9 +41,9 @@
             <button type="button" id="switch-lang" class="btn btn-info mb-2 border-0 shadow">
                 English
             </button>
-            </div>
-        <div class="row">
+        </div>
 
+        <div class="row">
             <!-- dashboard shift schedule -->
             <div class="col-md-3 col-sm-12">
                 <div class="card dashboard">
@@ -225,6 +225,18 @@
                                                     דוחות</a>
                                             </td>
                                             <td>
+                                                <div id="switch-user-container">
+                                                    <button type="button" id="switch-user"
+                                                        class="btn btn-info mb-2 border-0 shadow" onclick="switchUser()"
+                                                        data-toggle="modal" data-target="#userModal" lang="en">
+                                                        switch user
+                                                    </button>
+                                                    <button type="button" id="switch-user-heb"
+                                                        class="btn btn-info mb-2 border-0 shadow" onclick="switchUser()"
+                                                        data-toggle="modal" data-target="#userModal" lang="he">
+                                                        החלף משתמש
+                                                    </button>
+                                                </div>
                                                 <div class="text-center">
                                                     <img src="./assets/subReport.png" class="rounded" alt="subReport"
                                                         width="100%">
@@ -253,7 +265,7 @@
                                     <a href="#slide-4">4</a>
                                     <a href="#slide-5">5</a>
                                 </div>
-                        
+
                                 <div class="slides">
                                     <div id="slide-1">
                                         1
@@ -272,7 +284,7 @@
                                     </div>
                                 </div>
                             </div>
-                        
+
                             <ul class="flex-container" id="todayAppContainer">
                                 <!-- <li class="flex-item">
                                     <div class="card shadow" style="text-align: center;">
@@ -511,6 +523,55 @@
                                 changes</button>
                             <button type="submit" class="btn btn-primary" id="saveAppSchedButtonHe"
                                 lang="he">שמור</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" lang="en">Login</h5>
+                    <h5 class="modal-title" lang="he">החלף משתמש</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="switchUser(event)">
+                        <div class="form-group">
+                            <label for="username" lang="en">username:</label>
+                            <label for="username-he" lang="he" dir="rtl" style="float: right;  margin: 0;">שם
+                                משתמש:</label>
+                            <br>
+                            <input type="text" id="username" name="username" placeholder="user@email.com" lang="en"
+                                required>
+                            <input type="text" id="username-he" name="username-he" placeholder="user@email.com"
+                                lang="he" required style="float: right;">
+                            <br>
+                            <br>
+                            <label for="pwd" lang="en">password:</label>
+                            <label for="pwd-he" lang="he" dir="rtl" style="float: right; margin: 0;">סיסמה:</label>
+                            <br>
+                            <input type="password" id="pwd" name="pwd" placeholder="enter password" lang="en" required>
+                            <input type="password" id="pwd-he" name="pwd-he" placeholder="אותיות לועזיות וסימנים" lang="he"
+                                required style="float: right;">
+                            <br>
+                            <br>
+                        </div>
+                        <div class="modal-footer pr-0 pb-0">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                lang="en">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" lang="he"
+                                dir="rtl">סגור</button>
+                            <button type="submit" class="btn btn-primary" lang="en">switch user</button>
+                            <button type="submit" class="btn btn-primary"
+                                lang="he">החלף משתמש</button>
                         </div>
                     </form>
 
