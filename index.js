@@ -267,7 +267,16 @@ function sortContent(dir, field, arr) {
   return arr;
 }
 function switchUser(event){
-  console.log("change user")
+  console.log("change user");
+  if (localStorage.getItem("langSelect") === "hebrew") {
+    var username = document.getElementById("username-he").value;
+    var pwd = document.getElementById("pwd-he").value;
+  } else {
+    var username = document.getElementById("username").value;
+    var pwd = document.getElementById("pwd").value;
+  }
+  console.log("username: " + username + " pwd: " + pwd);
+  event.preventDefault();
 }
 
 window.onload = function onLoadFunction() {
