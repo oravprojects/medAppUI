@@ -275,8 +275,11 @@ function switchUser(event){
     var username = document.getElementById("username").value;
     var pwd = document.getElementById("pwd").value;
   }
-  console.log("username: " + username + " pwd: " + pwd);
-  event.preventDefault();
+  var res = username.split("@", 1);
+  var name = res[0].charAt(0).toUpperCase() + res[0].slice(1);
+  localStorage.setItem("user", name)
+  
+  // event.preventDefault();
 }
 
 window.onload = function onLoadFunction() {
@@ -512,7 +515,8 @@ window.onload = function onLoadFunction() {
 
   // Hello User
   var helloUsr = document.getElementById("helloUsr");
-  var usr = "John"
+  // var usr = "John"
+  var usr = localStorage.getItem("user");
   helloUsr.innerHTML = "Hello, " + usr + "!"
 
   var helloUsrHeb = document.getElementById("helloUsrHeb");
