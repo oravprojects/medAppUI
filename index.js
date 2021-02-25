@@ -20,6 +20,7 @@ if (dailyReport === null || dailyReport === "undefined") {
 
 // Save report in daily report log.
 function saveDailyReport() {
+  var usr = localStorage.getItem("user");
   console.log("function saveDaily report");
   console.log(dailyReport);
   dailyReportArray = JSON.parse(dailyReport);
@@ -33,7 +34,7 @@ function saveDailyReport() {
     alertToast('failure', message);
     return;
   }
-  dailyReportArray.push({ "date": new Date, "user": "Tammy", "notes": notes });
+  dailyReportArray.push({ "date": new Date, "user": usr, "notes": notes });
   console.log(dailyReportArray);
   dailyReportArray = JSON.stringify(dailyReportArray)
   localStorage.setItem("dailyReport", dailyReportArray);
@@ -271,14 +272,30 @@ function switchUser(event){
   if (localStorage.getItem("langSelect") === "hebrew") {
     var username = document.getElementById("username-he").value;
     var pwd = document.getElementById("pwd-he").value;
+    var res = username.split("@", 1);
+    var name = res[0].charAt(0).toUpperCase() + res[0].slice(1);
+    if(name === "Roni"){
+      name = "רוני"
+    }else if(name === "Sara"){
+      name = "שרה"
+    }else if(name === "Oren"){ 
+      name = "אורן"
+    }
+    localStorage.setItem("user", name)
   } else {
     var username = document.getElementById("username").value;
     var pwd = document.getElementById("pwd").value;
+    var res = username.split("@", 1);
+    var name = res[0].charAt(0).toUpperCase() + res[0].slice(1);
+    if(name === "Roni"){
+      name = "רוני"
+    }else if(name === "Sara"){
+      name = "שרה"
+    }else if(name === "Oren"){ 
+      name = "אורן"
+    }
+    localStorage.setItem("user", name)
   }
-  var res = username.split("@", 1);
-  var name = res[0].charAt(0).toUpperCase() + res[0].slice(1);
-  localStorage.setItem("user", name)
-  
   // event.preventDefault();
 }
 
@@ -515,12 +532,12 @@ window.onload = function onLoadFunction() {
 
   // Hello User
   var helloUsr = document.getElementById("helloUsr");
-  // var usr = "John"
-  var usr = localStorage.getItem("user");
-  helloUsr.innerHTML = "Hello, " + usr + "!"
-
   var helloUsrHeb = document.getElementById("helloUsrHeb");
-  var usrHeb = "אורן"
-  helloUsrHeb.innerHTML = "שלום, " + usrHeb + "!"
+  var usr = localStorage.getItem("user");
+  if(usr === null || usr === ""){
+    usr = "John"
+  }
+  helloUsr.innerHTML = "Hello, " + usr + "!"
+  helloUsrHeb.innerHTML = "שלום, " + usr + "!"
 }
 // End of window onload
