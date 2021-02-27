@@ -7,6 +7,10 @@
 .no-ptr {pointer-events: none;}
 .hide {display: none;}
 
+.current-card {
+    border: 2px solid rgb(151, 192, 250, 0.9);
+    box-shadow: 0px 10px 10px 5px #c3e6fd !important;
+}
 .image-dot {
     height: 15px;
     width: 15px;
@@ -472,6 +476,7 @@ div.card.shadow.open {
     }
     #dot-container{
         display: block;
+        pointer-events:none;
     }
     .slider{
         display: none;

@@ -109,6 +109,11 @@ function loadAppSched() {
                         setTimeout(function () { loadAppSched(); }, ((appSchedDate.getTime() + endHour * 60 * 60 * 1000 + endMin * 60 * 1000) - currDate.getTime()));
                     }
                 }
+                if (currDate.getTime() >= (appSchedDate.getTime() + hour * 60 * 60 * 1000 + min * 60 * 1000)
+                && currDate.getTime() < (appSchedDate.getTime() + endHour * 60 * 60 * 1000 + endMin * 60 * 1000)) {
+                    checkAgain = false;
+                    setTimeout(function () { loadAppSched(); }, ((appSchedDate.getTime() + endHour * 60 * 60 * 1000 + endMin * 60 * 1000) - currDate.getTime()));
+                }
             }
 
             if (currDate.getTime() >= (appSchedDate.getTime() + hour * 60 * 60 * 1000 + min * 60 * 1000)
@@ -137,6 +142,7 @@ function loadAppSched() {
             schedContainer.appendChild(node);
         }
     }
+    
     var todayApps = document.querySelectorAll(".dash-appointment");
     var todayAppContainer = document.getElementById("todayAppContainer");
     var slidesContainer = document.getElementsByClassName("slides");
@@ -147,8 +153,34 @@ function loadAppSched() {
     var dotContainerContent = "";
     var slideNumberContainerContent = "";
     for (i = 1; i < todayApps.length; i++) {
+        var checkCurrent = todayApps[i].firstElementChild.className;
         if(i<=5){ //appContainer only shows 5 patient cards for mobile view;
-            appContainerContent += `<li class="flex-item">
+            console.log("This is todayApps: " + todayApps[i].firstElementChild.className);
+            if(checkCurrent.includes("current")){
+                appContainerContent += `<li class="flex-item">
+                    <div class="card shadow-lg current-card" style="text-align: center;">
+                        <span class="border border-light rounded">
+                            <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
+                            width="80px" alt="avatar" alt="Card image cap">
+                            <div class="card-body p-1">
+                                <div id="patient${i}">Patient ${i}</div>
+                            </div>
+                        </span>
+                    </div>
+                </li>`
+                slideContainerContent += `<div id="slide-${i}">
+                    <div class="card shadow-lg current-card" style="text-align: center;">
+                        <span class="border border-light rounded">
+                            <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
+                            width="80px" alt="avatar" alt="Card image cap">
+                            <div class="card-body px-4 pt-1 pb-1">
+                                <div id="patientSlide${i}">Patient ${i}</div>
+                            </div>
+                        </span>
+                    </div>
+                </div>`
+            }else{
+                appContainerContent += `<li class="flex-item">
             <div class="card shadow" style="text-align: center;">
                 <span class="border border-light rounded">
                     <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
@@ -170,10 +202,24 @@ function loadAppSched() {
                 </span>
             </div>
         </div>`
+            }
     todayAppContainer.innerHTML = appContainerContent;
     slidesContainer[0].innerHTML = slideContainerContent;
         }else{
-            slideContainerContent += `<div id="slide-${i}">
+            if(checkCurrent.includes("current")){
+                slideContainerContent += `<div id="slide-${i}">
+                    <div class="card shadow current-card" style="text-align: center;">
+                        <span class="border border-light rounded">
+                            <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
+                            width="80px" alt="avatar" alt="Card image cap">
+                            <div class="card-body px-4 pt-1 pb-1">
+                                <div id="patientSlide${i}">Patient ${i}</div>
+                            </div>
+                        </span>
+                    </div>
+                </div>`
+            }else{
+                slideContainerContent += `<div id="slide-${i}">
                 <div class="card shadow" style="text-align: center;">
                     <span class="border border-light rounded">
                         <img class="card-body p-1" src="./assets/personIcon.png" height="80px"
@@ -184,6 +230,7 @@ function loadAppSched() {
                     </span>
                 </div>
             </div>`
+            }
         todayAppContainer.innerHTML = appContainerContent;
         slidesContainer[0].innerHTML = slideContainerContent;
         }
@@ -281,7 +328,23 @@ function loadAppSched() {
             document.getElementById("next").style.display = "inline"    
         }
     }
-    console.log("today app: " + todayApps.length)
+    console.log("today app: " + todayApps.length);
+    if (langSelect === "hebrew") {
+        $('[lang="he"]').show();
+        $('[lang="en"]').hide();
+    } else {
+        $('[lang="en"]').show();
+        $('[lang="he"]').hide();
+    }
+    var todayAppContainerSize = document.getElementById("todayAppContainer").scrollHeight;
+    console.log("height of element: " + todayAppContainerSize); 
+    if(todayAppContainerSize < 500){
+        document.getElementById("prev").style.bottom = "455px";
+        document.getElementById("next").style.bottom = "455px";
+    }else{
+        document.getElementById("prev").style.bottom = "652px";
+        document.getElementById("next").style.bottom = "652px";
+    } 
 }
 
 function prev() {
@@ -384,6 +447,16 @@ function prev() {
             console.log("ho")
             $(parent).removeClass('open').addClass('m');
         }
+    }
+
+    var todayAppContainerSize = document.getElementById("todayAppContainer").scrollHeight;
+    console.log("height of element: " + todayAppContainerSize);
+    if(todayAppContainerSize < 500){
+        document.getElementById("prev").style.bottom = "455px";
+        document.getElementById("next").style.bottom = "455px";
+    }else{
+        document.getElementById("prev").style.bottom = "652px";
+        document.getElementById("next").style.bottom = "652px";
     }
 
     if (langSelect === "hebrew") {
@@ -501,6 +574,16 @@ function next() {
             console.log("ho")
             $(parent).removeClass('open').addClass('o');
         }
+    }
+
+    var todayAppContainerSize = document.getElementById("todayAppContainer").scrollHeight;
+    console.log("height of element: " + todayAppContainerSize);
+    if(todayAppContainerSize < 500){
+        document.getElementById("prev").style.bottom = "455px";
+        document.getElementById("next").style.bottom = "455px";
+    }else{
+        document.getElementById("prev").style.bottom = "652px";
+        document.getElementById("next").style.bottom = "652px";
     }
 
     if (langSelect === "hebrew") {
