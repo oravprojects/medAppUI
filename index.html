@@ -471,7 +471,7 @@
                 <div class="modal-body">
                     <form onsubmit="saveAppSchedChanges(event)">
                         <div class="form-group">
-                            <br>
+                            <br class="mobile-hide">
                             <div id="app-sched-modal-time">
                                 <span>
                                     <label for="app-start-time" lang="en">start time:</label>
@@ -482,10 +482,12 @@
                                         style="float: right; margin-right: 5px;">
                                 </span>
                                 <br>
+                                <br class="mobile-hide" lang="he">
                                 <span>
-                                    <label for="app-end-time" id="label-end-time" lang="en">end time:</label>
+                                    <label for="app-end-time" id="label-end-time" lang="en" 
+                                    style="margin: 0; margin-right: 6px;">end time:</label>
                                     <label for="app-end-time-he" id="label-end-time-he" lang="he" dir="rtl"
-                                        style="float: right;">סיום:</label>
+                                        style="float: right; margin: 0px;">סיום:</label>
                                     <input type="time" id="app-end-time" name="end-time" lang="en" required
                                         style="margin-top: 5px;">
                                     <input type="time" id="app-end-time-he" name="end-time-he" lang="he" required

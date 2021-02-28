@@ -55,8 +55,14 @@ function saveChanges() {
   if (modalTitle.includes("Daily Report") || modalTitle.includes('דו"ח')) {
     saveDailyReport();
   }
+  if (modalTitle.includes("Appointment") || modalTitle.includes("פגישה")) {
+    saveMeetingNotes();
+  }
 }
 
+function saveMeetingNotes(){
+  console.log("save meeting notes")
+}
 // Delete reports from report log.
 function deleteRepLog(num) {
   console.log("delete: " + num);
@@ -526,7 +532,11 @@ window.onload = function onLoadFunction() {
       modalTitle.innerText = text;
       textArea = document.getElementById('exampleFormControlTextarea1');
       textArea.value = "";
-    }, false)
+      if (localStorage.getItem("langSelect") === "hebrew") {
+        textArea.dir = "rtl"
+      } else {
+        textArea.dir = "ltr"      }
+      }, false)
   })
 
 
