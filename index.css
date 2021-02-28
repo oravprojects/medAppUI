@@ -456,9 +456,6 @@ div.card.shadow.open {
 #app-start-time, #app-end-time{
     margin-left: 5px;
 }
-#label-end-time{
-    margin-left: 50px;
-}
 #first-name{
     margin-left: 2px;
 }
@@ -501,9 +498,6 @@ div.card.shadow.open {
     #app-sched-modal-time span::before {
         content: "\a";
         white-space: pre;
-    }
-    #label-end-time{
-        margin-left: 0px;
     }
     #app-end-time{
         margin-left: 11px;

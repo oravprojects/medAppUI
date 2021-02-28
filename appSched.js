@@ -344,7 +344,8 @@ function loadAppSched() {
     }else{
         document.getElementById("prev").style.bottom = "652px";
         document.getElementById("next").style.bottom = "652px";
-    } 
+    }
+    appointmentClicks(); 
 }
 
 function prev() {

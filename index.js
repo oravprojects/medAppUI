@@ -1,3 +1,25 @@
+// Dashboard appointment clicks.
+function appointmentClicks(){
+  document.querySelectorAll('.dash-appointment').forEach(item => {
+    item.addEventListener('click', e => {
+      e = e || window.event;
+      var target = e.target,
+        // text = target.textContent || target.innerText;
+        text = target.innerText;
+        console.log("text: " + text);
+      modalTitle = document.getElementById('exampleModalLongTitle');
+      modalTitle.innerText = text;
+      textArea = document.getElementById('exampleFormControlTextarea1');
+      textArea.value = "";
+      if (localStorage.getItem("langSelect") === "hebrew") {
+        textArea.dir = "rtl"
+      } else {
+        textArea.dir = "ltr"
+      }
+      }, false)
+  })
+}
+
 // Display alert messages.
 function alertToast(type, message) {
   var alertType = document.getElementById(type);
@@ -61,7 +83,8 @@ function saveChanges() {
 }
 
 function saveMeetingNotes(){
-  console.log("save meeting notes")
+  var patientName = document.getElementById('exampleModalLongTitle').innerText;
+  console.log("save meeting notes: " + patientName)
 }
 // Delete reports from report log.
 function deleteRepLog(num) {
@@ -522,22 +545,7 @@ window.onload = function onLoadFunction() {
   };
 
   // Dashboard appointment clicks.
-  document.querySelectorAll('.dash-appointment').forEach(item => {
-    item.addEventListener('click', e => {
-      e = e || window.event;
-      var target = e.target,
-        // text = target.textContent || target.innerText;
-        text = target.innerText;
-      modalTitle = document.getElementById('exampleModalLongTitle');
-      modalTitle.innerText = text;
-      textArea = document.getElementById('exampleFormControlTextarea1');
-      textArea.value = "";
-      if (localStorage.getItem("langSelect") === "hebrew") {
-        textArea.dir = "rtl"
-      } else {
-        textArea.dir = "ltr"      }
-      }, false)
-  })
+  appointmentClicks();
 
 
   // Hello User
