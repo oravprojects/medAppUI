@@ -315,18 +315,19 @@ function saveAppSchedChanges(e) {
   var end = appSchedArray.length - 1;
   var mid = Math.floor((start + end) / 2);
   var existDateTime = 0;
+  var meetingId = (dateTime - (n * 60 * 60 * 1000))
   for (i = 0; i < appSchedArray.length; i++) {
     if (mid === start) {
       i = appSchedArray.length;
       if (dateTime > existDateTime) {
         existDateTime = new Date(appSchedArray[end].date.substr(0, 11) + appSchedArray[end].start + ":00.000Z").getTime();
         if (dateTime > existDateTime) {
-          appSchedArray.splice(end + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+          appSchedArray.splice(end + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
         } else {
-          appSchedArray.splice(mid + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+          appSchedArray.splice(mid + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
         }
       } else {
-        appSchedArray.splice(mid, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+        appSchedArray.splice(mid, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
       }
     }
     else if (dateTime > existDateTime) {

@@ -6,19 +6,37 @@ function appointmentClicks(){
       var target = e.target,
         // text = target.textContent || target.innerText;
         text = target.innerText;
-        console.log("text: " + text);
+        console.log("text: " + text + " click id: " + target.id);
+      modalButtonHeb = document.getElementById("saveChangesButtonHeb");
+      modalButton = document.getElementById("saveChangesButton");
+      modalButton.name = target.id;
+      modalButtonHeb.name = target.id;
       modalTitle = document.getElementById('exampleModalLongTitle');
       modalTitle.innerText = text;
       textArea = document.getElementById('exampleFormControlTextarea1');
       textArea.value = "";
       if (localStorage.getItem("langSelect") === "hebrew") {
         textArea.dir = "rtl"
+        modalTitle.dir = "rtl"
       } else {
         textArea.dir = "ltr"
+        modalTitle.dir = "ltr"
       }
       }, false)
   })
 }
+
+// create meeting notes array in local storage if it doesn't exist
+var meetingNotesArray = localStorage.getItem("meetingNotes");
+
+if (meetingNotesArray === null) {
+    console.log("no meeting notes in storage");
+    meetingNotesArray = [];
+    meetingNotesArray = JSON.stringify(meetingNotesArray);
+    localStorage.setItem("meetingNotes", meetingNotesArray);
+}
+
+meetingNotesArray = JSON.parse(meetingNotesArray);
 
 // Display alert messages.
 function alertToast(type, message) {
@@ -71,20 +89,50 @@ function saveDailyReport() {
 }
 
 // Multi-purpose save button; for now it activates the saveDailyReport function.
-function saveChanges() {
+function saveChanges(e) {
   var modalTitle = document.getElementById('exampleModalLongTitle').innerText;
   console.log(modalTitle);
   if (modalTitle.includes("Daily Report") || modalTitle.includes('דו"ח')) {
     saveDailyReport();
   }
-  if (modalTitle.includes("Appointment") || modalTitle.includes("פגישה")) {
-    saveMeetingNotes();
+  if (modalTitle.includes(" AM") || modalTitle.includes(" PM")) {
+    saveMeetingNotes(e);
   }
 }
 
-function saveMeetingNotes(){
+function saveMeetingNotes(e){
+  meetingId = e.target.name;
+  console.log("button name: " + meetingId)
   var patientName = document.getElementById('exampleModalLongTitle').innerText;
-  console.log("save meeting notes: " + patientName)
+  var user = localStorage.getItem('user');
+  var notes = document.getElementById("exampleFormControlTextarea1").value;
+  var currDate = new Date();
+  console.log("save meeting notes: " + patientName + " user: " + user + " notes: " + notes + " date: " + currDate.getTime());
+  
+  // if arr is empty push obj into array; if array exists find object with meetingId and set the notes field;
+  
+  if(meetingNotesArray.length === 0){
+    console.log("empty array")
+  }
+  if (notes === "") {
+    if (localStorage.getItem("langSelect") === "english") {
+      message = "Please, fill out the comments section.";
+    } else {
+      message = ".נא למלא את חלק ההערות";
+    }
+    alertToast('failure', message);
+    return;
+  }
+
+
+
+  if (localStorage.getItem("langSelect") === "english") {
+    message = "Report submitted successfully!";
+  } else {
+    message = '!הדו"ח נשמר בהצלחה';
+  }
+  $("#exampleModalCenter").modal('hide');
+  setTimeout(function () { alertToast('success', message) }, 500);
 }
 // Delete reports from report log.
 function deleteRepLog(num) {

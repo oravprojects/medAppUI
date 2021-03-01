@@ -71,6 +71,7 @@ function loadAppSched() {
             var startTime = appSchedTemp[i].start;
             var endTime = appSchedTemp[i].end;
             var appSchedDate = new Date(appSchedTemp[i].date);
+            var meetingId = appSchedTemp[i].meetingId;
             var currDate = new Date();
             if (patt.test(firstName)) {
                 langDir = 'ltr'
@@ -118,7 +119,7 @@ function loadAppSched() {
 
             if (currDate.getTime() >= (appSchedDate.getTime() + hour * 60 * 60 * 1000 + min * 60 * 1000)
                 && currDate.getTime() < (appSchedDate.getTime() + endHour * 60 * 60 * 1000 + endMin * 60 * 1000)) {
-                var content = `<div class="dash-appointment" data-toggle="modal" data-target="#exampleModalCenter">
+                var content = `<div class="dash-appointment" id=${meetingId} data-toggle="modal" data-target="#exampleModalCenter">
             <a href="#" class="btn btn-outline-primary w-100 p-2  mb-1 no-ptr current" style="font-size: 14px">
             <ul class="flex-container">
             <li class="sched-item-icon"><i class="fa fa-user"></i></li>
@@ -128,7 +129,7 @@ function loadAppSched() {
             </ul>
             </a></div>`
             } else {
-                var content = `<div class="dash-appointment" data-toggle="modal" data-target="#exampleModalCenter">
+                var content = `<div class="dash-appointment" id=${meetingId} data-toggle="modal" data-target="#exampleModalCenter">
         <a href="#" class="btn btn-light w-100 p-2 mb-1 no-ptr dashboard" style="font-size: 14px">
         <ul class="flex-container">
         <li class="sched-item-icon"><i class="fa fa-user"></i></li>
