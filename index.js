@@ -26,18 +26,6 @@ function appointmentClicks(){
   })
 }
 
-// create meeting notes array in local storage if it doesn't exist
-var meetingNotesArray = localStorage.getItem("meetingNotes");
-
-if (meetingNotesArray === null) {
-    console.log("no meeting notes in storage");
-    meetingNotesArray = [];
-    meetingNotesArray = JSON.stringify(meetingNotesArray);
-    localStorage.setItem("meetingNotes", meetingNotesArray);
-}
-
-meetingNotesArray = JSON.parse(meetingNotesArray);
-
 // Display alert messages.
 function alertToast(type, message) {
   var alertType = document.getElementById(type);
@@ -107,13 +95,10 @@ function saveMeetingNotes(e){
   var user = localStorage.getItem('user');
   var notes = document.getElementById("exampleFormControlTextarea1").value;
   var currDate = new Date();
+  var appSched = localStorage.getItem("appSched");
+  appSched = JSON.parse(appSched);
   console.log("save meeting notes: " + patientName + " user: " + user + " notes: " + notes + " date: " + currDate.getTime());
   
-  // if arr is empty push obj into array; if array exists find object with meetingId and set the notes field;
-  
-  if(meetingNotesArray.length === 0){
-    console.log("empty array")
-  }
   if (notes === "") {
     if (localStorage.getItem("langSelect") === "english") {
       message = "Please, fill out the comments section.";
@@ -124,7 +109,17 @@ function saveMeetingNotes(e){
     return;
   }
 
-
+  for (i=0; i<appSched.length; i++){
+    console.log("this meetingId: " + meetingId + " array meeting id: " + appSched[i].meetingId)
+    if(appSched[i].meetingId == meetingId){
+      appSched[i].meetingNotes = notes;
+      appSched = JSON.stringify(appSched);
+      localStorage.setItem("appSched", appSched);
+      appSched = localStorage.getItem("appSched");
+      appSched = JSON.parse(appSched);
+      console.log(appSched[i]);
+    }
+  }
 
   if (localStorage.getItem("langSelect") === "english") {
     message = "Report submitted successfully!";
