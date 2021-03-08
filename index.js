@@ -7,14 +7,25 @@ function appointmentClicks(){
         // text = target.textContent || target.innerText;
         text = target.innerText;
         console.log("text: " + text + " click id: " + target.id);
-      modalButtonHeb = document.getElementById("saveChangesButtonHeb");
-      modalButton = document.getElementById("saveChangesButton");
+      var modalButtonHeb = document.getElementById("saveChangesButtonHeb");
+      var modalButton = document.getElementById("saveChangesButton");
       modalButton.name = target.id;
       modalButtonHeb.name = target.id;
-      modalTitle = document.getElementById('exampleModalLongTitle');
+      var modalTitle = document.getElementById('exampleModalLongTitle');
       modalTitle.innerText = text;
-      textArea = document.getElementById('exampleFormControlTextarea1');
+      var textArea = document.getElementById('exampleFormControlTextarea1');
       textArea.value = "";
+      if (text.includes(" AM") || text.includes(" PM")) {
+        var appSched = localStorage.getItem("appSched");
+        appSched = JSON.parse(appSched);
+        for(i=0; i<appSched.length; i++){
+          if(appSched[i].meetingId == modalButton.name){
+            var existingNotes = appSched[i].meetingNotes;
+            i=appSched.length;
+          }
+        }
+        textArea.value = existingNotes;
+      }
       if (localStorage.getItem("langSelect") === "hebrew") {
         textArea.dir = "rtl"
         modalTitle.dir = "rtl"
