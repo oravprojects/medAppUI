@@ -383,6 +383,43 @@ function switchUser(event){
 }
 
 window.onload = function onLoadFunction() {
+  // get dailyReport from the database
+  var year = new Date().getFullYear();
+  var month = new Date().getMonth();
+  month = (month + 1);
+  var day = new Date().getDate();
+  var queryDate = year + "-" + month + "-" + day;
+
+  $.ajax({
+    type: "POST",
+    // url: "http://localhost/process.php",
+    url: "http://localhost/healthcareProvider/fetchData.php",
+    data: { table: "reports", curr_date: queryDate},
+    success: function (res) {
+      res = JSON.parse(res);
+      for(i=0; i<res.length; i++){
+        console.log("this is the result: ", i, " ", res);
+      }
+      // var dailyReport = response;
+    }
+  });
+
+
+  $("#user-info-form").on("submit", function (e) {
+    var dataString = $(this).serialize();
+    console.log("dataString: " + dataString);
+    $.ajax({
+      type: "POST",
+      // url: "http://localhost/process.php",
+      url: "http://localhost/healthcareProvider/create_user.php",
+      data: dataString,
+      success: function (response) {
+        console.log("submitted successfully to php function: " + response);
+      }
+    });
+    e.preventDefault();
+  });
+
   // Define click function to sort report log messages by username.
   var sortUserDir = "";
   var sortUserClick = document.querySelectorAll(".sortUser, .sortUserHeb");
