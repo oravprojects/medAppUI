@@ -73,6 +73,25 @@ function saveDailyReport() {
     alertToast('failure', message);
     return;
   }
+
+  // send daily rep to database
+  var user_id = 16;
+  var year = new Date().getFullYear();
+  var month = new Date().getMonth();
+  month = (month + 1);
+  var day = new Date().getDate();
+  var queryDate = year + "-" + month + "-" + day;
+  $.ajax({
+    type: "POST",
+    // url: "http://localhost/process.php",
+    url: "http://localhost/healthcareProvider/fetchData.php",
+    data: { table: "reports_add", curr_date: queryDate, user_id: user_id, notes: notes, type: "daily_report" },
+    success: function (res) {
+        console.log(res);
+      // var dailyReport = response;
+    }
+  });
+
   dailyReportArray.push({ "date": new Date, "user": usr, "notes": notes });
   console.log(dailyReportArray);
   dailyReportArray = JSON.stringify(dailyReportArray)
