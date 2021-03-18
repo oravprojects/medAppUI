@@ -76,16 +76,16 @@ function saveDailyReport() {
 
   // send daily rep to database
   var user_id = 16;
-  var year = new Date().getFullYear();
-  var month = new Date().getMonth();
-  month = (month + 1);
-  var day = new Date().getDate();
-  var queryDate = year + "-" + month + "-" + day;
+  
+  var currDate = new Date();
+  var timeOffset = currDate.getTimezoneOffset();
+  timeOffset = timeOffset/(-60);
+
   $.ajax({
     type: "POST",
     // url: "http://localhost/process.php",
     url: "http://localhost/healthcareProvider/fetchData.php",
-    data: { table: "reports_add", curr_date: queryDate, user_id: user_id, notes: notes, type: "daily_report" },
+    data: { table: "reports_add", curr_date: timeOffset, user_id: user_id, notes: notes, type: "daily_report" },
     success: function (res) {
         console.log(res);
       // var dailyReport = response;
@@ -285,7 +285,7 @@ function reportLogTextContent(logReports) {
   var textArea = document.getElementById("reportsLogModalBody");
   for (i = 0; i < logReports.length; i++) {
     if (localStorage.getItem("langSelect") === "english") {
-      reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+      reportsText += `<div><b>User: </b>${logReports[i].fname} ${logReports[i].lname}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
         `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i})"></i>` +
@@ -365,8 +365,8 @@ function sortContent(dir, field, arr) {
     }
   }
 
-  arr = JSON.stringify(arr);
-  console.log("This is the sorted array: " + " direction: " + dir + " "  + arr);
+  // arr = JSON.stringify(arr);
+  console.log("This is the sorted array: " + " direction: " + dir + " "  + JSON.stringify(arr));
   return arr;
 }
 function switchUser(event){
@@ -408,6 +408,7 @@ window.onload = function onLoadFunction() {
   month = (month + 1);
   var day = new Date().getDate();
   var queryDate = year + "-" + month + "-" + day;
+  var dailyReport = [];
 
   $.ajax({
     type: "POST",
@@ -419,11 +420,11 @@ window.onload = function onLoadFunction() {
       for(i=0; i<res.length; i++){
         console.log("this is the result: ", i, " ", res);
       }
-      // var dailyReport = response;
+      dailyReport = res;
     }
   });
 
-
+  // create user
   $("#user-info-form").on("submit", function (e) {
     var dataString = $(this).serialize();
     console.log("dataString: " + dataString);
@@ -446,36 +447,16 @@ window.onload = function onLoadFunction() {
   for (i = 0; i < sortUserClick.length; i++) {
     sortUserClick[i].addEventListener("click", () => {
       var textArea = document.getElementById("reportsLogModalBody");
-      var logReports = JSON.parse(dailyReport);
-      // function compareAsc(a, b) {
-      //   if (a.user.toUpperCase() < b.user.toUpperCase()) {
-      //     return -1;
-      //   }
-      //   if (a.user.toUpperCase() > b.user.toUpperCase()) {
-      //     return 1;
-      //   }
-      //   return 0;
-      // }
-      // function compareDesc(a, b) {
-      //   if (a.user.toUpperCase() > b.user.toUpperCase()) {
-      //     return -1;
-      //   }
-      //   if (a.user.toUpperCase() < b.user.toUpperCase()) {
-      //     return 1;
-      //   }
-      //   return 0;
-      // }
+      // var logReports = JSON.parse(dailyReport);
+      var logReports = dailyReport;
       if (sortUserDir === "desc") {
         if (logReports.length === 0) {
           var reportsText = "No reports in log.";
           textArea.innerHTML = reportsText;
           return;
         }
-        // sortContent("desc", "user", logReports);
-        // console.log(sortUserDir, " sort user desc")
         logReports = sortContent("desc", "user", logReports);
         console.log(logReports);
-        // logReports = logReports.sort(compareDesc);
         sortUserDir = "asc"
       } else {
         if (logReports.length === 0) {
@@ -483,19 +464,15 @@ window.onload = function onLoadFunction() {
           textArea.innerHTML = reportsText;
           return;
         }
-        // sortContent("asc", "user", logReports);
-        // console.log(sortUserDir, "sort user asc")
         logReports = sortContent("asc", "user", logReports);
         console.log(logReports);
-        // logReports = logReports.sort(compareAsc);
         sortUserDir = "desc"
       }
       console.log(logReports)
-      // dailyReport = JSON.stringify(logReports);
-      dailyReport = logReports;
-      console.log("This is the daily report: " + dailyReport)
-      localStorage.setItem("dailyReport", dailyReport);
-      logReports = JSON.parse(logReports);
+      // dailyReport = logReports;
+      // console.log("This is the daily report: " + dailyReport)
+      // localStorage.setItem("dailyReport", dailyReport);
+      // logReports = JSON.parse(logReports);
       reportLogTextContent(logReports);
     });
   }
@@ -551,9 +528,9 @@ window.onload = function onLoadFunction() {
       }
       console.log(logReports)
       // dailyReport = JSON.stringify(logReports);
-      dailyReport = logReports;
-      localStorage.setItem("dailyReport", dailyReport);
-      logReports = JSON.parse(logReports);
+      // dailyReport = logReports;
+      // localStorage.setItem("dailyReport", dailyReport);
+      // logReports = JSON.parse(logReports);
       reportLogTextContent(logReports);
     });
   }
@@ -625,33 +602,20 @@ window.onload = function onLoadFunction() {
     modalTitle.innerText = "Reports Log";
     modalTitleHeb.innerText = 'יומן דו"חות';
     textArea = document.getElementById("reportsLogModalBody");
-    logReports = JSON.parse(dailyReport);
+    // logReports = JSON.parse(dailyReport);
+    logReports = dailyReport;
+    console.log("log rep: ", logReports)
     if (logReports.length === 0) {
       reportsText = "No reports in log.";
       textArea.innerHTML = reportsText;
       return;
     }
-    // function compareDesc(a, b) {
-    //   if (logReports.length === 0) {
-    //     return;
-    //   }
-    //   if (new Date(a.date) > new Date(b.date)) {
-    //     return -1;
-    //   }
-    //   if (new Date(a.date) < new Date(b.date)) {
-    //     return 1;
-    //   }
-    //   return 0;
-    // }
-    // logReports = logReports.sort(compareDesc);
     logReports = sortContent("desc", "date", logReports);
-    // dailyReport = JSON.stringify(logReports);
-    dailyReport = logReports;
-    localStorage.setItem("dailyReport", dailyReport);
-    // console.log(logReports[0].user)
-    logReports = JSON.parse(logReports);
+    // dailyReport = logReports;
+    // localStorage.setItem("dailyReport", dailyReport);
+    // logReports = JSON.parse(logReports);
     reportLogTextContent(logReports);
-    console.log(logReports[0].user)
+    console.log(logReports[0].fname)
   };
 
   // Dashboard appointment clicks.
