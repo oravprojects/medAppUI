@@ -1,3 +1,28 @@
+  var year = new Date().getFullYear();
+  var month = new Date().getMonth();
+  month = (month + 1);
+  var day = new Date().getDate();
+  var queryDate = year + "-" + month + "-" + day;
+  var dailyReport = [];
+
+function getDailyRep(){
+  $.ajax({
+    type: "POST",
+    // url: "http://localhost/process.php",
+    url: "http://localhost/healthcareProvider/fetchData.php",
+    data: { table: "reports", curr_date: queryDate},
+    success: function (res) {
+      res = JSON.parse(res);
+      for(i=0; i<res.length; i++){
+        console.log("this is the result: ", i, " ", res);
+      }
+      dailyReport = res;
+      console.log("This is daily rep again: ", dailyReport);
+      reportLogTextContent(dailyReport);
+    }
+  });  
+}
+
 // Dashboard appointment clicks.
 function appointmentClicks(){
   document.querySelectorAll('.dash-appointment').forEach(item => {
@@ -48,21 +73,21 @@ function alertToast(type, message) {
 }
 
 // Create an empty daily report array if it doesn't exist yet.
-var dailyReport = localStorage.getItem("dailyReport");
-if (dailyReport === null || dailyReport === "undefined") {
-  console.log("no daily rep in storage");
-  var dailyReportArray = [];
-  dailyReportArray = JSON.stringify(dailyReportArray)
-  localStorage.setItem("dailyReport", dailyReportArray);
-  dailyReport = localStorage.getItem("dailyReport");
-};
+// var dailyReport = localStorage.getItem("dailyReport");
+// if (dailyReport === null || dailyReport === "undefined") {
+//   console.log("no daily rep in storage");
+//   var dailyReportArray = [];
+//   dailyReportArray = JSON.stringify(dailyReportArray)
+//   localStorage.setItem("dailyReport", dailyReportArray);
+//   dailyReport = localStorage.getItem("dailyReport");
+// };
 
 // Save report in daily report log.
 function saveDailyReport() {
   var usr = localStorage.getItem("user");
   console.log("function saveDaily report");
   console.log(dailyReport);
-  dailyReportArray = JSON.parse(dailyReport);
+  dailyReportArray = dailyReport;
   var notes = document.getElementById("exampleFormControlTextarea1").value;
   if (notes === "") {
     if (localStorage.getItem("langSelect") === "english") {
@@ -88,7 +113,7 @@ function saveDailyReport() {
     data: { table: "reports_add", curr_date: timeOffset, user_id: user_id, notes: notes, type: "daily_report" },
     success: function (res) {
         console.log(res);
-      // var dailyReport = response;
+        dailyReport = getDailyRep();
     }
   });
 
@@ -161,14 +186,27 @@ function saveMeetingNotes(e){
 }
 // Delete reports from report log.
 function deleteRepLog(num) {
-  console.log("delete: " + num);
-  var logReports = JSON.parse(dailyReport);
-  logReports.splice(num, 1);
-  dailyReport = JSON.stringify(logReports);
-  localStorage.setItem("dailyReport", dailyReport);
-  console.log(logReports)
-
-  reportLogTextContent(logReports);
+  // console.log("delete: " + num);
+  // var logReports = JSON.parse(dailyReport);
+  // logReports.splice(num, 1);
+  // dailyReport = JSON.stringify(logReports);
+  // localStorage.setItem("dailyReport", dailyReport);
+  // console.log(logReports)
+  console.log("this is num: ", num);
+  $.ajax({
+    type: "POST",
+    // url: "http://localhost/process.php",
+    url: "http://localhost/healthcareProvider/fetchData.php",
+    data: { table: "reports_del", id: num},
+    success: function (res) {
+      // res = JSON.parse(res);
+      // dailyReport = res;
+      console.log(res);
+      getDailyRep();
+    }
+  });
+  
+  // reportLogTextContent(logReports);
 
   if (localStorage.getItem("langSelect") === "english") {
     message = "Report deleted successfully!";
@@ -282,6 +320,7 @@ function dateToHebrew(dayName, month) {
 // insert content in the reports log
 function reportLogTextContent(logReports) {
   var reportsText = "";
+  console.log("This is log rep from report log function: ", logReports);
   var textArea = document.getElementById("reportsLogModalBody");
   for (i = 0; i < logReports.length; i++) {
     if (localStorage.getItem("langSelect") === "english") {
@@ -289,7 +328,7 @@ function reportLogTextContent(logReports) {
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
         `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i})"></i>` +
-        `<i class="fa fa-trash" style="color: red;" onclick="deleteRepLog(${i})"></i></div>` +
+        `<i class="fa fa-trash" style="color: red;" onclick="deleteRepLog(${logReports[i].idreport})"></i></div>` +
         `<div><b>---------------</b></div>`
         // optional fontawesome icons (update css on change): 
         // <div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
@@ -306,7 +345,7 @@ function reportLogTextContent(logReports) {
         `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
         `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
         `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i})"></i>` +
-        `<i class="fa fa-trash" onclick="deleteRepLog(${i})"></i></div>` +
+        `<i class="fa fa-trash" onclick="deleteRepLog(${logReports[i].idreport})"></i></div>` +
         `<div dir="rtl"><b>---------------</b></div>`
     }
   }
@@ -403,26 +442,27 @@ function switchUser(event){
 
 window.onload = function onLoadFunction() {
   // get dailyReport from the database
-  var year = new Date().getFullYear();
-  var month = new Date().getMonth();
-  month = (month + 1);
-  var day = new Date().getDate();
-  var queryDate = year + "-" + month + "-" + day;
-  var dailyReport = [];
+  // var year = new Date().getFullYear();
+  // var month = new Date().getMonth();
+  // month = (month + 1);
+  // var day = new Date().getDate();
+  // var queryDate = year + "-" + month + "-" + day;
+  // var dailyReport = [];
 
-  $.ajax({
-    type: "POST",
-    // url: "http://localhost/process.php",
-    url: "http://localhost/healthcareProvider/fetchData.php",
-    data: { table: "reports", curr_date: queryDate},
-    success: function (res) {
-      res = JSON.parse(res);
-      for(i=0; i<res.length; i++){
-        console.log("this is the result: ", i, " ", res);
-      }
-      dailyReport = res;
-    }
-  });
+  // $.ajax({
+  //   type: "POST",
+  //   // url: "http://localhost/process.php",
+  //   url: "http://localhost/healthcareProvider/fetchData.php",
+  //   data: { table: "reports", curr_date: queryDate},
+  //   success: function (res) {
+  //     res = JSON.parse(res);
+  //     for(i=0; i<res.length; i++){
+  //       console.log("this is the result: ", i, " ", res);
+  //     }
+  //     dailyReport = res;
+  //   }
+  // });
+  getDailyRep();
 
   // create user
   $("#user-info-form").on("submit", function (e) {
