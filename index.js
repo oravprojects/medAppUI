@@ -8,7 +8,6 @@
 function getDailyRep(){
   $.ajax({
     type: "POST",
-    // url: "http://localhost/process.php",
     url: "http://localhost/healthcareProvider/fetchData.php",
     data: { table: "reports", curr_date: queryDate},
     success: function (res) {
@@ -72,22 +71,9 @@ function alertToast(type, message) {
   setTimeout(function () { alertType.className = "alert-off"; }, 4900);
 }
 
-// Create an empty daily report array if it doesn't exist yet.
-// var dailyReport = localStorage.getItem("dailyReport");
-// if (dailyReport === null || dailyReport === "undefined") {
-//   console.log("no daily rep in storage");
-//   var dailyReportArray = [];
-//   dailyReportArray = JSON.stringify(dailyReportArray)
-//   localStorage.setItem("dailyReport", dailyReportArray);
-//   dailyReport = localStorage.getItem("dailyReport");
-// };
-
 // Save report in daily report log.
 function saveDailyReport() {
   var usr = localStorage.getItem("user");
-  console.log("function saveDaily report");
-  console.log(dailyReport);
-  dailyReportArray = dailyReport;
   var notes = document.getElementById("exampleFormControlTextarea1").value;
   if (notes === "") {
     if (localStorage.getItem("langSelect") === "english") {
@@ -108,20 +94,14 @@ function saveDailyReport() {
 
   $.ajax({
     type: "POST",
-    // url: "http://localhost/process.php",
     url: "http://localhost/healthcareProvider/fetchData.php",
     data: { table: "reports_add", curr_date: timeOffset, user_id: user_id, notes: notes, type: "daily_report" },
     success: function (res) {
         console.log(res);
-        dailyReport = getDailyRep();
+        getDailyRep();
     }
   });
 
-  dailyReportArray.push({ "date": new Date, "user": usr, "notes": notes });
-  console.log(dailyReportArray);
-  dailyReportArray = JSON.stringify(dailyReportArray)
-  localStorage.setItem("dailyReport", dailyReportArray);
-  dailyReport = localStorage.getItem("dailyReport");
   if (localStorage.getItem("langSelect") === "english") {
     message = "Report submitted successfully!";
   } else {
@@ -186,28 +166,16 @@ function saveMeetingNotes(e){
 }
 // Delete reports from report log.
 function deleteRepLog(num) {
-  // console.log("delete: " + num);
-  // var logReports = JSON.parse(dailyReport);
-  // logReports.splice(num, 1);
-  // dailyReport = JSON.stringify(logReports);
-  // localStorage.setItem("dailyReport", dailyReport);
-  // console.log(logReports)
-  console.log("this is num: ", num);
   $.ajax({
     type: "POST",
-    // url: "http://localhost/process.php",
     url: "http://localhost/healthcareProvider/fetchData.php",
     data: { table: "reports_del", id: num},
     success: function (res) {
-      // res = JSON.parse(res);
-      // dailyReport = res;
       console.log(res);
       getDailyRep();
     }
   });
   
-  // reportLogTextContent(logReports);
-
   if (localStorage.getItem("langSelect") === "english") {
     message = "Report deleted successfully!";
   } else {
@@ -217,8 +185,8 @@ function deleteRepLog(num) {
 }
 
 // Edit reports in report log.
-function editRepLog(num) {
-  console.log(num);
+function editRepLog(num, id) {
+  console.log(num, " ", id);
   sortUserButton = document.getElementsByClassName("sortUser");
   sortUserButton[0].className = "btn btn-info sortUser hide";
   sortDateButton = document.getElementsByClassName("sortDate");
@@ -231,12 +199,12 @@ function editRepLog(num) {
   }
   saveEditButton.className = "btn btn-primary";
   textArea = document.getElementById("reportsLogModalBody");
-  logReports = JSON.parse(dailyReport);
+  logReports = dailyReport;
   var reportsText = "";
   for (i = 0; i < logReports.length; i++) {
     if (i === num) {
       if (localStorage.getItem("langSelect") === "english") {
-        reportsText += `<div><b>User: </b>${logReports[i].user}</div>` +
+        reportsText += `<div><b>User: </b>${logReports[i].fname} ${logReports[i].lname}</div>` +
           `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
           `<div><b>Notes: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`;
       } else {
@@ -247,7 +215,7 @@ function editRepLog(num) {
         var repTime = new Date(logReports[i].date).toString().substr(16, 8)
         var year = new Date(logReports[i].date).getFullYear();
         var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
-        reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+        reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].fname} ${logReports[i].lname}</div>` +
           `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
           `<div dir="rtl"><b>הערות: </b><textarea class="form-control" id="editReminderText" rows="3">${logReports[i].notes}</textarea></div>`;
       }
@@ -260,19 +228,26 @@ function editRepLog(num) {
     textArea.style.textAlign = "left";
   }
 
-  saveEditButton.onclick = function () { saveEdit(num) };
+  saveEditButton.onclick = function () { saveEdit(id) };
   return;
 }
 
 // Save edited reports in report log.
-function saveEdit(num) {
-  console.log("this is the number: " + num)
+function saveEdit(id) {
+  console.log("this is the number: " + id)
   editReminderText = document.getElementById("editReminderText");
   console.log(editReminderText.value);
-  logReports = JSON.parse(dailyReport);
-  logReports[num].notes = editReminderText.value;
-  dailyReport = JSON.stringify(logReports);
-  localStorage.setItem("dailyReport", dailyReport);
+  var notes = editReminderText.value;
+  $.ajax({
+    type: "POST",
+    url: "http://localhost/healthcareProvider/fetchData.php",
+    data: { table: "reports_edit", notes: notes, id: id },
+    success: function (res) {
+        console.log(res);
+        getDailyRep();
+    }
+  });
+  
   if (localStorage.getItem("langSelect") === "english") {
     message = "report log edited successfully!";
   } else {
@@ -327,7 +302,7 @@ function reportLogTextContent(logReports) {
       reportsText += `<div><b>User: </b>${logReports[i].fname} ${logReports[i].lname}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i})"></i>` +
+        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i}, ${logReports[i].idreport})"></i>` +
         `<i class="fa fa-trash" style="color: red;" onclick="deleteRepLog(${logReports[i].idreport})"></i></div>` +
         `<div><b>---------------</b></div>`
         // optional fontawesome icons (update css on change): 
@@ -344,7 +319,7 @@ function reportLogTextContent(logReports) {
       reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
         `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
         `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
-        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i})"></i>` +
+        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i}, ${logReports[i].idreport})"></i>` +
         `<i class="fa fa-trash" onclick="deleteRepLog(${logReports[i].idreport})"></i></div>` +
         `<div dir="rtl"><b>---------------</b></div>`
     }
@@ -441,27 +416,6 @@ function switchUser(event){
 }
 
 window.onload = function onLoadFunction() {
-  // get dailyReport from the database
-  // var year = new Date().getFullYear();
-  // var month = new Date().getMonth();
-  // month = (month + 1);
-  // var day = new Date().getDate();
-  // var queryDate = year + "-" + month + "-" + day;
-  // var dailyReport = [];
-
-  // $.ajax({
-  //   type: "POST",
-  //   // url: "http://localhost/process.php",
-  //   url: "http://localhost/healthcareProvider/fetchData.php",
-  //   data: { table: "reports", curr_date: queryDate},
-  //   success: function (res) {
-  //     res = JSON.parse(res);
-  //     for(i=0; i<res.length; i++){
-  //       console.log("this is the result: ", i, " ", res);
-  //     }
-  //     dailyReport = res;
-  //   }
-  // });
   getDailyRep();
 
   // create user
@@ -470,7 +424,6 @@ window.onload = function onLoadFunction() {
     console.log("dataString: " + dataString);
     $.ajax({
       type: "POST",
-      // url: "http://localhost/process.php",
       url: "http://localhost/healthcareProvider/create_user.php",
       data: dataString,
       success: function (response) {
