@@ -11,6 +11,7 @@ function getDailyRep(){
     url: "http://localhost/healthcareProvider/fetchData.php",
     data: { table: "reports", curr_date: queryDate},
     success: function (res) {
+      console.log("res is: ", res);
       res = JSON.parse(res);
       for(i=0; i<res.length; i++){
         console.log("this is the result: ", i, " ", res);
@@ -166,6 +167,7 @@ function saveMeetingNotes(e){
 }
 // Delete reports from report log.
 function deleteRepLog(num) {
+  console.log("del")
   $.ajax({
     type: "POST",
     url: "http://localhost/healthcareProvider/fetchData.php",
@@ -302,8 +304,8 @@ function reportLogTextContent(logReports) {
       reportsText += `<div><b>User: </b>${logReports[i].fname} ${logReports[i].lname}</div>` +
         `<div><b>Date: </b>${new Date(logReports[i].date).toString().substr(0, 24)}</div>` +
         `<div><b>Notes: </b>${logReports[i].notes}</div>` +
-        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i}, ${logReports[i].idreport})"></i>` +
-        `<i class="fa fa-trash" style="color: red;" onclick="deleteRepLog(${logReports[i].idreport})"></i></div>` +
+        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i}, '${logReports[i].idreport}')"></i>` +
+        `<i class="fa fa-trash" style="color: red;" onclick="deleteRepLog('${logReports[i].idreport}')"></i></div>` +
         `<div><b>---------------</b></div>`
         // optional fontawesome icons (update css on change): 
         // <div><i class='far fa-edit' onclick="editRepLog(${i})"></i>` +
@@ -319,8 +321,8 @@ function reportLogTextContent(logReports) {
       reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
         `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
         `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
-        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i}, ${logReports[i].idreport})"></i>` +
-        `<i class="fa fa-trash" onclick="deleteRepLog(${logReports[i].idreport})"></i></div>` +
+        `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i}, '${logReports[i].idreport}')"></i>` +
+        `<i class="fa fa-trash" onclick="deleteRepLog('${logReports[i].idreport}')"></i></div>` +
         `<div dir="rtl"><b>---------------</b></div>`
     }
   }
@@ -440,7 +442,6 @@ window.onload = function onLoadFunction() {
   for (i = 0; i < sortUserClick.length; i++) {
     sortUserClick[i].addEventListener("click", () => {
       var textArea = document.getElementById("reportsLogModalBody");
-      // var logReports = JSON.parse(dailyReport);
       var logReports = dailyReport;
       if (sortUserDir === "desc") {
         if (logReports.length === 0) {
@@ -462,10 +463,6 @@ window.onload = function onLoadFunction() {
         sortUserDir = "desc"
       }
       console.log(logReports)
-      // dailyReport = logReports;
-      // console.log("This is the daily report: " + dailyReport)
-      // localStorage.setItem("dailyReport", dailyReport);
-      // logReports = JSON.parse(logReports);
       reportLogTextContent(logReports);
     });
   }
@@ -478,33 +475,12 @@ window.onload = function onLoadFunction() {
       var textArea = document.getElementById("reportsLogModalBody");
       var logReports = JSON.parse(dailyReport);
 
-      // function compareAsc(a, b) {
-      //   if (new Date(a.date) > new Date(b.date)) {
-      //     return -1;
-      //   }
-      //   if (new Date(a.date) < new Date(b.date)) {
-      //     return 1;
-      //   }
-      //   return 0;
-      // }
-      // function compareDesc(a, b) {
-      //   if (new Date(a.date) < new Date(b.date)) {
-      //     return -1;
-      //   }
-      //   if (new Date(a.date) > new Date(b.date)) {
-      //     return 1;
-      //   }
-      //   return 0;
-      // }
       if (sortDateDir === "desc") {
         if (logReports.length === 0) {
           var reportsText = "No reports in log.";
           textArea.innerHTML = reportsText;
           return;
         }
-        // sortContent("asc", "date", logReports);
-        // console.log(sortDateDir, " sort date desc")
-        // logReports = logReports.sort(compareAsc);
         logReports = sortContent("desc", "date", logReports);
         sortDateDir = "asc"
       } else {
@@ -513,17 +489,10 @@ window.onload = function onLoadFunction() {
           textArea.innerHTML = reportsText;
           return;
         }
-        // sortContent("desc", "date", logReports);
-        // console.log(sortDateDir, "sort date asc")
-        // logReports = logReports.sort(compareDesc);
         logReports = sortContent("asc", "date", logReports);
         sortDateDir = "desc"
       }
       console.log(logReports)
-      // dailyReport = JSON.stringify(logReports);
-      // dailyReport = logReports;
-      // localStorage.setItem("dailyReport", dailyReport);
-      // logReports = JSON.parse(logReports);
       reportLogTextContent(logReports);
     });
   }
@@ -595,7 +564,6 @@ window.onload = function onLoadFunction() {
     modalTitle.innerText = "Reports Log";
     modalTitleHeb.innerText = 'יומן דו"חות';
     textArea = document.getElementById("reportsLogModalBody");
-    // logReports = JSON.parse(dailyReport);
     logReports = dailyReport;
     console.log("log rep: ", logReports)
     if (logReports.length === 0) {
@@ -604,9 +572,6 @@ window.onload = function onLoadFunction() {
       return;
     }
     logReports = sortContent("desc", "date", logReports);
-    // dailyReport = logReports;
-    // localStorage.setItem("dailyReport", dailyReport);
-    // logReports = JSON.parse(logReports);
     reportLogTextContent(logReports);
     console.log(logReports[0].fname)
   };
