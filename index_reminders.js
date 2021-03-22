@@ -235,14 +235,19 @@ function func1() {
     });
 
     var storeAlert = localStorage.getItem("alert");
-    storeAlert = JSON.parse(storeAlert);
-    if (storeAlert.length > 0){
-        alertToast(storeAlert[0].type, storeAlert[0].message);
-        storeAlert = [];
-        storeAlert = JSON.stringify(storeAlert);
-        localStorage.setItem("alert", storeAlert);
-        return;
+    if (storeAlert === null) {
+        storeAlert = []
+    } else {
+        storeAlert = JSON.parse(storeAlert);
+        if (storeAlert.length > 0) {
+            alertToast(storeAlert[0].type, storeAlert[0].message);
+            storeAlert = [];
+            storeAlert = JSON.stringify(storeAlert);
+            localStorage.setItem("alert", storeAlert);
+            return;
+        }
     }
+
     // call reminderFunction to check for reminders
     setTimeout(function () {
         reminderFunction();

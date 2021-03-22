@@ -1,9 +1,27 @@
-  var year = new Date().getFullYear();
-  var month = new Date().getMonth();
-  month = (month + 1);
-  var day = new Date().getDate();
-  var queryDate = year + "-" + month + "-" + day;
-  var dailyReport = [];
+function checkSession(){
+
+  $.get("http://localhost/healthcareProvider/checksession.php", function(data, status){
+    console.log("Data: " + data + "\nStatus: " + status);
+  });
+    // $.ajax({
+    //     type: "POST",
+    //     url: "http://localhost/healthcareProvider/checksession.php",
+    //     success: function (data) {
+    //       console.log("check this: ", data);
+    //         // data = JSON.parse(data);
+    //         // if(data.response != "true")
+    //         // {   
+    //         //     window.location.href = 'http://127.0.0.1:5500/login.html';  
+    //         // }
+    //     }
+    // });
+}
+var year = new Date().getFullYear();
+var month = new Date().getMonth();
+month = (month + 1);
+var day = new Date().getDate();
+var queryDate = year + "-" + month + "-" + day;
+var dailyReport = [];
 
 function getDailyRep(){
   $.ajax({
@@ -418,6 +436,7 @@ function switchUser(event){
 }
 
 window.onload = function onLoadFunction() {
+  checkSession();
   getDailyRep();
 
   // create user
