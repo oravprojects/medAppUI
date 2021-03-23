@@ -10,9 +10,9 @@ window.onload = function onLoadFunction() {
           success: function (res) {
             console.log(res);
             if(res == "success"){
-                location.href = 'http://127.0.0.1:5500/index.html';
+              location.href="http://localhost:5500";
             }else{
-                console.log("login failure");
+              console.log("login failure");
             }
           }
         });

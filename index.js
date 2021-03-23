@@ -1,20 +1,22 @@
 function checkSession(){
 
-  $.get("http://localhost/healthcareProvider/checksession.php", function(data, status){
-    console.log("Data: " + data + "\nStatus: " + status);
-  });
-    // $.ajax({
-    //     type: "POST",
-    //     url: "http://localhost/healthcareProvider/checksession.php",
-    //     success: function (data) {
-    //       console.log("check this: ", data);
-    //         // data = JSON.parse(data);
-    //         // if(data.response != "true")
-    //         // {   
-    //         //     window.location.href = 'http://127.0.0.1:5500/login.html';  
-    //         // }
-    //     }
-    // });
+  // $.get("http://localhost/healthcareProvider/checksession.php", function(data, status){
+  //   console.log("Data: " + data + "\nStatus: " + status);
+  // });
+    $.ajax({
+        url: "http://localhost/healthcareProvider/checksession.php",
+        type: "GET",
+        xhrFields:{
+          withCredentials: true
+        },
+        success: function (data) {
+          if(data === "success"){
+            console.log("success");
+          }else{
+            location.href = "http://localhost:5500/login.html";
+          }
+        }
+    });
 }
 var year = new Date().getFullYear();
 var month = new Date().getMonth();
