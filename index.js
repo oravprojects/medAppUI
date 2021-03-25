@@ -335,7 +335,7 @@ function reportLogTextContent(logReports) {
       var repTime = new Date(logReports[i].date).toString().substr(16, 8)
       var year = new Date(logReports[i].date).getFullYear();
       var repDate = hebDayName + ", ה-" + dayNum + " ל" + monthHebName + ", " + year + ", בשעה " + repTime;
-      reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].user}</div>` +
+      reportsText += `<div dir="rtl"><b>משתמש: </b>${logReports[i].fname} ${logReports[i].lname}</div>` +
         `<div dir="rtl"><b>תאריך: </b>${repDate}</div>` +
         `<div dir="rtl"><b>הערות: </b>${logReports[i].notes}</div>` +
         `<div><i class='fa fa-pencil-square-o' onclick="editRepLog(${i}, '${logReports[i].idreport}')"></i>` +
@@ -439,19 +439,19 @@ window.onload = function onLoadFunction() {
   getDailyRep();
 
   // create user
-  $("#user-info-form").on("submit", function (e) {
-    var dataString = $(this).serialize();
-    console.log("dataString: " + dataString);
-    $.ajax({
-      type: "POST",
-      url: "http://localhost/healthcareProvider/create_user.php",
-      data: dataString,
-      success: function (response) {
-        console.log("submitted successfully to php function: " + response);
-      }
-    });
-    e.preventDefault();
-  });
+  // $("#user-info-form").on("submit", function (e) {
+  //   var dataString = $(this).serialize();
+  //   console.log("dataString: " + dataString);
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "http://localhost/healthcareProvider/create_user.php",
+  //     data: dataString,
+  //     success: function (response) {
+  //       console.log("submitted successfully to php function: " + response);
+  //     }
+  //   });
+  //   e.preventDefault();
+  // });
 
   // Define click function to sort report log messages by username.
   var sortUserDir = "";
@@ -601,11 +601,12 @@ window.onload = function onLoadFunction() {
   // Hello User
   var helloUsr = document.getElementById("helloUsr");
   var helloUsrHeb = document.getElementById("helloUsrHeb");
-  var usr = localStorage.getItem("user");
-  if(usr === null || usr === ""){
-    usr = "John"
-  }
-  helloUsr.innerHTML = "Hello, " + usr + "!"
-  helloUsrHeb.innerHTML = "שלום, " + usr + "!"
+  var usrFname = JSON.parse(sessionStorage.getItem("fname"));
+  var usrLname = JSON.parse(sessionStorage.getItem("lname"));
+  // if(usr === null || usr === ""){
+  //   usr = "John"
+  // }
+  helloUsr.innerHTML = "Hello, " + usrFname + "!"
+  helloUsrHeb.innerHTML = "שלום, " + usrFname + "!"
 }
 // End of window onload

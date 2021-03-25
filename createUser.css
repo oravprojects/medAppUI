@@ -1,0 +1,30 @@
+body{
+    background-color: rgba(20, 121, 255, 0.1);
+}
+div#user-info{
+    width: 400px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-evenly;
+    /* border: 2px solid black; */
+    padding: 10px;
+    margin-left: 120px;
+    margin-top: 10px;
+}
+div.input-box{
+    display: flex;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+div.input-box label{
+    display: inline-block;
+    min-width: 100px;
+    margin: 10px 10px 10px 0;
+    width: 20%;
+}
+div.input-box input{
+    font-size: 1.5 rem;
+    /* border: 1px solid #ccc; */
+    padding: 4px 8px;
+    flex: 1;
+}

@@ -11,8 +11,10 @@ window.onload = function onLoadFunction() {
             withCredentials: true
           },
           success: function (res) {
-            console.log(res);
-            if(res == "success"){
+            res = JSON.parse(res);
+            if(res["login"] == "success"){
+              sessionStorage.setItem("fname", JSON.stringify(res["fname"]));
+              sessionStorage.setItem("lname", JSON.stringify(res["lname"]));
               window.location="http://127.0.0.1:5500";
             }else{
               console.log("login failure");

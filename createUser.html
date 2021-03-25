@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="UiPracIcon.png">
+    <link rel="stylesheet" href="createUser.css">
+    <script type="text/javascript" src="createUser.js"></script>
+    <title>Create User</title>
+</head>
+<body>
+    <div id="user-info">
+        <!-- id, fname, lname, username, password, phone -->
+        <form name="user" action="" id="user-info-form">
+            <fieldset>
+                <div class="input-box">
+                    <label for="fname" id="fname_label">first name</label>
+                    <input type="text" name="fname" id="fname" minlength="3" placeholder="John" class="text-input" required/>
+                </div>
+                <div class="input-box">
+                    <label for="lname" id="lname_label">last name</label>
+                    <input type="text" name="lname" id="lname" minlength="3" placeholder="Doe" class="text-input" required/>
+                </div>
+                <div class="input-box">
+                    <label for="email" id="email_label">email</label>
+                    <input type="email" name="email" id="email" placeholder="example@mail.com" class="text-input" required/>
+                </div>
+                <div class="input-box">
+                    <label for="password" id="password_label">password</label>
+                    <input type="password" name="password" id="password" placeholder="" class="text-input" required/>
+                </div>
+                <div class="input-box">
+                    <label for="phone" id="phone_label">phone</label>
+                    <input type="text" name="phone" id="phone" placeholder="enter phone number" class="text-input" required/>
+                </div>
+                <input type="submit" name="submit" class="button" id="submit_btn" value="send" />
+            </fieldset>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</body>
+</html>
