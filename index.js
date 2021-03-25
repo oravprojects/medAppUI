@@ -1,10 +1,6 @@
 function checkSession(){
-
-  // $.get("http://localhost/healthcareProvider/checksession.php", function(data, status){
-  //   console.log("Data: " + data + "\nStatus: " + status);
-  // });
     $.ajax({
-        url: "http://localhost/healthcareProvider/checksession.php",
+        url: "http://127.0.0.1/healthcareProvider/checksession.php",
         type: "GET",
         xhrFields:{
           withCredentials: true
@@ -14,6 +10,7 @@ function checkSession(){
             console.log("success");
           }else{
             location.href = "http://localhost:5500/login.html";
+            // console.log("failure: ", data);
           }
         }
     });
