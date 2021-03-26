@@ -9,7 +9,7 @@ function checkSession(){
           if(data === "success"){
             console.log("success");
           }else{
-            location.href = "http://localhost:5500/login.html";
+            location.href = "http://127.0.0.1:5500/login.html";
             // console.log("failure: ", data);
           }
         }
@@ -25,13 +25,18 @@ var dailyReport = [];
 function getDailyRep(){
   $.ajax({
     type: "POST",
-    url: "http://localhost/healthcareProvider/fetchData.php",
+    url: "http://127.0.0.1/healthcareProvider/fetchData.php",
     data: { table: "reports", curr_date: queryDate},
+    xhrFields:{
+      withCredentials: true
+    },
     success: function (res) {
-      console.log("res is: ", res);
-      res = JSON.parse(res);
-      for(i=0; i<res.length; i++){
-        console.log("this is the result: ", i, " ", res);
+      console.log("res is: ", res.length);
+      if (res.length > 0) {
+        res = JSON.parse(res);
+        for (i = 0; i < res.length; i++) {
+          console.log("this is the result: ", i, " ", res);
+        }
       }
       dailyReport = res;
       console.log("This is daily rep again: ", dailyReport);
@@ -104,29 +109,29 @@ function saveDailyReport() {
   }
 
   // send daily rep to database
-  var user_id = 16;
-  
   var currDate = new Date();
   var timeOffset = currDate.getTimezoneOffset();
   timeOffset = timeOffset/(-60);
 
   $.ajax({
     type: "POST",
-    url: "http://localhost/healthcareProvider/fetchData.php",
-    data: { table: "reports_add", curr_date: timeOffset, user_id: user_id, notes: notes, type: "daily_report" },
+    url: "http://127.0.0.1/healthcareProvider/fetchData.php",
+    data: { table: "reports_add", curr_date: timeOffset, notes: notes, type: "daily_report" },
+    xhrFields: {
+      withCredentials: true
+    },
     success: function (res) {
-        console.log(res);
-        getDailyRep();
+      console.log("this is the add rep res: ", res);
+      getDailyRep();
+      if (localStorage.getItem("langSelect") === "english") {
+        message = "Report submitted successfully!";
+      } else {
+        message = '!הדו"ח נשמר בהצלחה';
+      }
+      $("#exampleModalCenter").modal('hide');
+      setTimeout(function () { alertToast('success', message) }, 500);
     }
   });
-
-  if (localStorage.getItem("langSelect") === "english") {
-    message = "Report submitted successfully!";
-  } else {
-    message = '!הדו"ח נשמר בהצלחה';
-  }
-  $("#exampleModalCenter").modal('hide');
-  setTimeout(function () { alertToast('success', message) }, 500);
 }
 
 // Multi-purpose save button; for now it activates the saveDailyReport function.
@@ -187,7 +192,7 @@ function deleteRepLog(num) {
   console.log("del")
   $.ajax({
     type: "POST",
-    url: "http://localhost/healthcareProvider/fetchData.php",
+    url: "http://127.0.0.1/healthcareProvider/fetchData.php",
     data: { table: "reports_del", id: num},
     success: function (res) {
       console.log(res);
@@ -259,7 +264,7 @@ function saveEdit(id) {
   var notes = editReminderText.value;
   $.ajax({
     type: "POST",
-    url: "http://localhost/healthcareProvider/fetchData.php",
+    url: "http://127.0.0.1/healthcareProvider/fetchData.php",
     data: { table: "reports_edit", notes: notes, id: id },
     success: function (res) {
         console.log(res);
@@ -352,6 +357,8 @@ function reportLogTextContent(logReports) {
 }
 
 function sortContent(dir, field, arr) {
+  console.log(arr);
+  // return;
   if (field === "date") {
     if (dir === "desc") {
       arr = arr.sort(function (a, b) {
@@ -375,22 +382,24 @@ function sortContent(dir, field, arr) {
       });
     }
   } else {
+    fieldF = "fname";
+    fieldL = "lname";
     if (dir === "asc") {
       arr = arr.sort(function (a, b) {
-        if (a[field].toUpperCase() < b[field].toUpperCase()) {
+        if (a[fieldF].toUpperCase() + a[fieldL].toUpperCase() < b[fieldF].toUpperCase() + b[fieldL].toUpperCase()) {
           return -1;
         }
-        if (a[field].toUpperCase() > b[field].toUpperCase()) {
+        if (a[fieldF].toUpperCase() + a[fieldL].toUpperCase() > b[fieldF].toUpperCase() + b[fieldL].toUpperCase()) {
           return 1;
         }
         return 0;
       });
     } else {
       arr = arr.sort(function (a, b) {
-        if (a[field].toUpperCase() > b[field].toUpperCase()) {
+        if (a[fieldF].toUpperCase() + a[fieldL].toUpperCase() > b[fieldF].toUpperCase() + b[fieldL].toUpperCase()) {
           return -1;
         }
-        if (a[field].toUpperCase() < b[field].toUpperCase()) {
+        if (a[fieldF].toUpperCase() + a[fieldL].toUpperCase() < b[fieldF].toUpperCase() + b[fieldL].toUpperCase()) {
           return 1;
         }
         return 0;
@@ -491,7 +500,7 @@ window.onload = function onLoadFunction() {
   for (i = 0; i < sortDateClick.length; i++) {
     sortDateClick[i].addEventListener("click", () => {
       var textArea = document.getElementById("reportsLogModalBody");
-      var logReports = JSON.parse(dailyReport);
+      var logReports = dailyReport;
 
       if (sortDateDir === "desc") {
         if (logReports.length === 0) {
@@ -544,6 +553,7 @@ window.onload = function onLoadFunction() {
   })
 
   function viewRepLog() {
+    console.log("view rep log: ", dailyReport);
     sortUserButton = document.getElementsByClassName("sortUser");
     sortUserButton[0].className = "btn btn-info sortUser";
     console.log(localStorage.getItem("langSelect"))
