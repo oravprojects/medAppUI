@@ -1,14 +1,23 @@
 body{
     background-color: rgba(20, 121, 255, 0.1);
 }
-div#user-info{
+.container{
+    display: flex;
+}
+.fixed{
+    width: 45%;
+}
+.flex-item{
+    flex-grow: 1;
+}
+div#user-info, div#patient-info{
     width: 400px;
     display: flex;
     align-items: stretch;
     justify-content: space-evenly;
     /* border: 2px solid black; */
     padding: 10px;
-    margin-left: 120px;
+    margin-left: 10%;
     margin-top: 10px;
 }
 div.input-box{
@@ -17,6 +26,7 @@ div.input-box{
     flex-wrap: wrap;
 }
 div.input-box label{
+    text-align: left;
     display: inline-block;
     min-width: 100px;
     margin: 10px 10px 10px 0;
@@ -27,4 +37,16 @@ div.input-box input{
     /* border: 1px solid #ccc; */
     padding: 4px 8px;
     flex: 1;
+}
+@media only screen and (max-width: 768px) {
+    .container{
+        display: inline-block;
+        text-align: center;
+    }
+    .fixed{
+        width: 50%;
+    }
+    .flex-item{
+        width: 50%;
+    } 
 }

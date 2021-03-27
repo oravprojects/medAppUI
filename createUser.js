@@ -12,4 +12,18 @@ $("#user-info-form").on("submit", function (e) {
     });
     e.preventDefault();
   });
+
+  $("#patient-info-form").on("submit", function (e) {
+    var dataString = $(this).serialize();
+    console.log("dataString: " + dataString);
+    $.ajax({
+      type: "POST",
+      url: "http://localhost/healthcareProvider/create_patient.php",
+      data: dataString,
+      success: function (response) {
+        console.log(response);
+      }
+    });
+    e.preventDefault();
+  });
 }

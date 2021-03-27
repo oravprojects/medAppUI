@@ -263,13 +263,13 @@
                                                 <div id="switch-user-container">
                                                     <button type="button" id="switch-user"
                                                         class="btn btn-info mb-2 border-0 shadow"
-                                                        data-toggle="modal" data-target="#userModal" lang="en">
-                                                        switch user
+                                                        onclick="logout(event)" lang="en">
+                                                        log out
                                                     </button>
                                                     <button type="button" id="switch-user-heb"
                                                         class="btn btn-info mb-2 border-0 shadow"
-                                                        data-toggle="modal" data-target="#userModal" lang="he">
-                                                        החלף משתמש
+                                                        onclick="logout(event)" lang="he">
+                                                        יציאה
                                                     </button>
                                                 </div>
                                                 <div class="text-center">
@@ -568,7 +568,7 @@
     </div>
 
     <!-- User Modal -->
-    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalTitle"
+    <!-- <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
@@ -616,7 +616,7 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Reports Log Modal -->
     <div class="modal fade" id="reportsModal" tabindex="-1" role="dialog" aria-labelledby="reportsModalTitle"

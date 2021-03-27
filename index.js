@@ -411,35 +411,52 @@ function sortContent(dir, field, arr) {
   console.log("This is the sorted array: " + " direction: " + dir + " "  + JSON.stringify(arr));
   return arr;
 }
-function switchUser(event){
-  console.log("change user");
-  if (localStorage.getItem("langSelect") === "hebrew") {
-    var username = document.getElementById("username-he").value;
-    var pwd = document.getElementById("pwd-he").value;
-    var res = username.split("@", 1);
-    var name = res[0].charAt(0).toUpperCase() + res[0].slice(1);
-    if(name === "Roni"){
-      name = "רוני"
-    }else if(name === "Sara"){
-      name = "שרה"
-    }else if(name === "Oren"){ 
-      name = "אורן"
+
+// log out
+function logout(event){
+  console.log("loggin out");
+  $.ajax({
+    url: "http://127.0.0.1/healthcareProvider/logout.php",
+    type: "GET",
+    xhrFields:{
+      withCredentials: true
+    },
+    success: function (data) {
+      if(data === "success"){
+        location.href = "http://127.0.0.1:5500/login.html";
+      }else{
+        console.log("failure to log out: ", data);
+      }
     }
-    localStorage.setItem("user", name)
-  } else {
-    var username = document.getElementById("username").value;
-    var pwd = document.getElementById("pwd").value;
-    var res = username.split("@", 1);
-    var name = res[0].charAt(0).toUpperCase() + res[0].slice(1);
-    if(name === "Roni"){
-      name = "רוני"
-    }else if(name === "Sara"){
-      name = "שרה"
-    }else if(name === "Oren"){ 
-      name = "אורן"
-    }
-    localStorage.setItem("user", name)
-  }
+});
+  // console.log("change user");
+  // if (localStorage.getItem("langSelect") === "hebrew") {
+  //   var username = document.getElementById("username-he").value;
+  //   var pwd = document.getElementById("pwd-he").value;
+  //   var res = username.split("@", 1);
+  //   var name = res[0].charAt(0).toUpperCase() + res[0].slice(1);
+  //   if(name === "Roni"){
+  //     name = "רוני"
+  //   }else if(name === "Sara"){
+  //     name = "שרה"
+  //   }else if(name === "Oren"){ 
+  //     name = "אורן"
+  //   }
+  //   localStorage.setItem("user", name)
+  // } else {
+  //   var username = document.getElementById("username").value;
+  //   var pwd = document.getElementById("pwd").value;
+  //   var res = username.split("@", 1);
+  //   var name = res[0].charAt(0).toUpperCase() + res[0].slice(1);
+  //   if(name === "Roni"){
+  //     name = "רוני"
+  //   }else if(name === "Sara"){
+  //     name = "שרה"
+  //   }else if(name === "Oren"){ 
+  //     name = "אורן"
+  //   }
+  //   localStorage.setItem("user", name)
+  // }
   // event.preventDefault();
 }
 

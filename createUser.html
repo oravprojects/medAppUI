@@ -10,33 +10,65 @@
     <title>Create User</title>
 </head>
 <body>
-    <div id="user-info">
-        <!-- id, fname, lname, username, password, phone -->
-        <form name="user" action="" id="user-info-form">
-            <fieldset>
-                <div class="input-box">
-                    <label for="fname" id="fname_label">first name</label>
-                    <input type="text" name="fname" id="fname" minlength="3" placeholder="John" class="text-input" required/>
-                </div>
-                <div class="input-box">
-                    <label for="lname" id="lname_label">last name</label>
-                    <input type="text" name="lname" id="lname" minlength="3" placeholder="Doe" class="text-input" required/>
-                </div>
-                <div class="input-box">
-                    <label for="email" id="email_label">email</label>
-                    <input type="email" name="email" id="email" placeholder="example@mail.com" class="text-input" required/>
-                </div>
-                <div class="input-box">
-                    <label for="password" id="password_label">password</label>
-                    <input type="password" name="password" id="password" placeholder="" class="text-input" required/>
-                </div>
-                <div class="input-box">
-                    <label for="phone" id="phone_label">phone</label>
-                    <input type="text" name="phone" id="phone" placeholder="enter phone number" class="text-input" required/>
-                </div>
-                <input type="submit" name="submit" class="button" id="submit_btn" value="send" />
-            </fieldset>
-        </form>
+    <div class="container">
+        <div class="fixed">
+            <div id="user-info">
+                <!-- id, fname, lname, username, password, phone -->
+                <form name="user" action="" id="user-info-form">
+                    <h3>Create User</h3>
+                    <fieldset>
+                        <div class="input-box">
+                            <label for="fname" id="fname_label">first name</label>
+                            <input type="text" name="fname" id="fname" minlength="3" placeholder="John" class="text-input" required/>
+                        </div>
+                        <div class="input-box">
+                            <label for="lname" id="lname_label">last name</label>
+                            <input type="text" name="lname" id="lname" minlength="3" placeholder="Doe" class="text-input" required/>
+                        </div>
+                        <div class="input-box">
+                            <label for="email" id="email_label">email</label>
+                            <input type="email" name="email" id="email" placeholder="example@mail.com" class="text-input" required/>
+                        </div>
+                        <div class="input-box">
+                            <label for="password" id="password_label">password</label>
+                            <input type="password" name="password" id="password" placeholder="" class="text-input" required/>
+                        </div>
+                        <div class="input-box">
+                            <label for="phone" id="phone_label">phone</label>
+                            <input type="text" name="phone" id="phone" placeholder="enter phone number" class="text-input" required/>
+                        </div>
+                        <input type="submit" name="submit" class="button" id="submit_btn" value="send" />
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="flex-item">
+            <div id="patient-info">
+                <!-- id, fname, lname, username, password, phone -->
+                <form name="patient" action="" id="patient-info-form">
+                    <h3>Create Patient</h3>
+                    <fieldset>
+                        <div class="input-box">
+                            <label for="patient-fname" id="patient_fname_label">first name</label>
+                            <input type="text" name="patient_fname" id="patient_fname" minlength="3" placeholder="John" class="text-input" required/>
+                        </div>
+                        <div class="input-box">
+                            <label for="patient-lname" id="patient_lname_label">last name</label>
+                            <input type="text" name="patient_lname" id="patient_lname" minlength="3" placeholder="Doe" class="text-input" required/>
+                        </div>
+                        <div class="input-box">
+                            <label for="patient-email" id="patient_email_label">email</label>
+                            <input type="email" name="patient_email" id="patient_email" placeholder="example@mail.com" class="text-input" required/>
+                        </div>
+                        <div class="input-box">
+                            <label for="patient-phone" id="patient_phone_label">phone</label>
+                            <input type="text" name="patient_phone" id="patient_phone" placeholder="enter phone number" class="text-input" required/>
+                        </div>
+                        <input type="submit" name="submit" class="button" id="patient_submit_btn" value="send" />
+                    </fieldset>
+                </form>
+            </div>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
