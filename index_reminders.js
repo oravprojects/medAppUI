@@ -25,125 +25,159 @@ function displayReminder(subject, user, date, text) {
     $('#reminderTextModal').modal('show');
 }
 
+function getReminders(timeOffset) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1/healthcareProvider/fetchData.php",
+            data: { table: "getReminders", curr_date: timeOffset },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (res) {
+                console.log("this is the reminder res: ", res);
+                res = JSON.parse(res);
+                console.log("this is the reminder res again: ", res);
+                resolve(res);
+            }
+        });
+    })
+}
+
 const reminderFunction = () => {
-    var reminderArray = localStorage.getItem("reminders");
+    var timeOffset = getTimeOffset();
+    var reminderArray = [];
 
-    // create a reminders array if it doesn't exist
-    if (reminderArray === null) {
-        console.log("no reminders in storage");
-        reminderArray = [];
-        reminderArray = JSON.stringify(reminderArray)
-        localStorage.setItem("reminders", reminderArray);
-    } else {
-        counter = 0;
-        reminderArray = JSON.parse(reminderArray);
-        console.log(reminderArray);
-        if (reminderArray.length === 0) {
-            if (localStorage.getItem("langSelect") === "english") {
-                remAlert = "No reminders for the next 24 hours";
-            } else {
-                remAlert = "אין תזכורות ל-24 שעות הקרובות";
-            }
-            reminderAlert(remAlert);
-            return;
-        }
-        var now = Date.now();
-        for (var i = 0; i < reminderArray.length; i++) {
-            console.log("array length: ", reminderArray.length)
-            alarmTime = new Date(reminderArray[i].dateTime);
-            alarmTime = alarmTime.getTime();
-            console.log("alarm time: ", alarmTime);
-            console.log("now: ", now);
 
-            // check for missed reminders, show them to the user, and remove them from the reminders array
-            if (alarmTime < now) {
-                var subject = "Missed Reminder";
-                var setFor = reminderArray[i].dateTime;
-                var text = reminderArray[i].text;
-                var setBy = reminderArray[i].user;
-                
-                displayReminder(subject, setBy, setFor, text);
-                reminderArray.splice(i, 1);
-                reminderArray = JSON.stringify(reminderArray);
-                localStorage.setItem("reminders", reminderArray);
-                reminderArray = JSON.parse(reminderArray);
-                i--;
-                
-            }
+    const promises = [
+        getReminders(timeOffset)
+    ];
 
-            // check if there are reminders set for the next 24 hours and set a timeout to notify user 
-            // when reminder is due
-            else if (alarmTime <= now + 24 * 60 * 60 * 1000) {
-                var number = i;
-                if(localStorage.getItem("langSelect")==="hebrew"){
-                    var subject = "תזכורת";    
-                }else{
-                    var subject = "Reminder";
-                }
-                var setFor = reminderArray[i].dateTime;
-                var text = reminderArray[i].text;
-                var setBy = reminderArray[i].user;
-                
-                setTimeout(function () {
-                    reminderArray.splice(number, 1);
-                    reminderArray = JSON.stringify(reminderArray);
-                    localStorage.setItem("reminders", reminderArray);
-                    reminderArray = JSON.parse(reminderArray);
-                    displayReminder(subject, setBy, setFor, text);
-                    
-                }, (alarmTime - now))
-                if (Math.floor((alarmTime - now) / 1000 / 60 / 60) === 1) {
-                    if (localStorage.getItem("langSelect") === "english") {
-                        remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
-                    } else {
-                        remAlert = "ההתרעה הקרובה היא לעוד " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + "שעה ו-" +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
-                    
-                    }
-                    reminderAlert(remAlert);
-                }
-                if (Math.floor((alarmTime - now) / 1000 / 60 / 60) > 1) {
-                    if (localStorage.getItem("langSelect") === "english") {
-                        remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
-                    } else {
-                        remAlert = "ההתרעה הקרובה היא לעוד " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + "שעות ו-" +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
-                    
-                    }
-                    reminderAlert(remAlert);
-                }
-                if (Math.floor((alarmTime - now) / 1000 / 60 / 60) < 1) {
-                    if (localStorage.getItem("langSelect") === "english") {
-                        remAlert = "The next reminder is in " +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
-                    } else {
-                        remAlert = "ההתרעה הקרובה היא לעוד " +
-                        Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
-                    }
-                    reminderAlert(remAlert);
-                }
-                counter++;
-                i = reminderArray.length;
-            }
+    Promise.all(promises).then(result => {
+        console.log("Hello result", result);
+        reminderArray = result[0];
 
-            // notify the user that there are no reminders set for the next 24 hours
-            else if (alarmTime > now + 24 * 60 * 60 * 1000) {
-                if (counter === 0) {
-                    if (localStorage.getItem("langSelect") === "english") {
-                        remAlert = "No reminders for the next 24 hours";
-                    } else {
-                        remAlert = "אין תזכורות ל-24 שעות הקרובות";
-                    }
-                    reminderAlert(remAlert);
-                    i = reminderArray.length;
+        console.log("end of test rem function: ", reminderArray);
+
+        // var reminderArray = localStorage.getItem("reminders");
+
+        // create a reminders array if it doesn't exist
+        if (reminderArray === null) {
+            console.log("no reminders in storage");
+            reminderArray = [];
+            reminderArray = JSON.stringify(reminderArray)
+            localStorage.setItem("reminders", reminderArray);
+        } else {
+            counter = 0;
+            // reminderArray = JSON.parse(reminderArray);
+            console.log(reminderArray);
+            if (reminderArray.length === 0) {
+                if (localStorage.getItem("langSelect") === "english") {
+                    remAlert = "No reminders for the next 24 hours";
                 } else {
+                    remAlert = "אין תזכורות ל-24 שעות הקרובות";
+                }
+                reminderAlert(remAlert);
+                return;
+            }
+            var now = Date.now();
+            for (var i = 0; i < reminderArray.length; i++) {
+                console.log("array length: ", reminderArray.length)
+                alarmTime = new Date(reminderArray[i].due);
+                alarmTime = alarmTime.getTime();
+                console.log("alarm time: ", alarmTime);
+                console.log("now: ", now);
+
+                // check for missed reminders, show them to the user, and remove them from the reminders array
+                if (alarmTime < now) {
+                    var subject = "Missed Reminder";
+                    var setFor = reminderArray[i].due;
+                    var text = reminderArray[i].text;
+                    var setBy = reminderArray[i].fname + " " + reminderArray[i].lname;
+
+                    displayReminder(subject, setBy, setFor, text);
+                    // reminderArray.splice(i, 1);
+                    // reminderArray = JSON.stringify(reminderArray);
+                    // localStorage.setItem("reminders", reminderArray);
+                    // reminderArray = JSON.parse(reminderArray);
+                    // i--;
+
+                }
+
+                // check if there are reminders set for the next 24 hours and set a timeout to notify user 
+                // when reminder is due
+                else if (alarmTime <= now + 24 * 60 * 60 * 1000) {
+                    var number = i;
+                    if (localStorage.getItem("langSelect") === "hebrew") {
+                        var subject = "תזכורת";
+                    } else {
+                        var subject = "Reminder";
+                    }
+                    var setFor = reminderArray[i].due;
+                    var text = reminderArray[i].text;
+                    var setBy = reminderArray[i].fname + " " + reminderArray[i].lname;
+
+                    setTimeout(function () {
+                        // reminderArray.splice(number, 1);
+                        // reminderArray = JSON.stringify(reminderArray);
+                        // localStorage.setItem("reminders", reminderArray);
+                        // reminderArray = JSON.parse(reminderArray);
+                        displayReminder(subject, setBy, setFor, text);
+
+                    }, (alarmTime - now))
+                    if (Math.floor((alarmTime - now) / 1000 / 60 / 60) === 1) {
+                        if (localStorage.getItem("langSelect") === "english") {
+                            remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hour and " +
+                                Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
+                        } else {
+                            remAlert = "ההתרעה הקרובה היא לעוד " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + "שעה ו-" +
+                                Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
+
+                        }
+                        reminderAlert(remAlert);
+                    }
+                    if (Math.floor((alarmTime - now) / 1000 / 60 / 60) > 1) {
+                        if (localStorage.getItem("langSelect") === "english") {
+                            remAlert = "The next reminder is in " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " hours and " +
+                                Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
+                        } else {
+                            remAlert = "ההתרעה הקרובה היא לעוד " + Math.floor((alarmTime - now) / 1000 / 60 / 60) + " שעות ו-" +
+                                Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
+
+                        }
+                        reminderAlert(remAlert);
+                    }
+                    if (Math.floor((alarmTime - now) / 1000 / 60 / 60) < 1) {
+                        if (localStorage.getItem("langSelect") === "english") {
+                            remAlert = "The next reminder is in " +
+                                Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " minutes."
+                        } else {
+                            remAlert = "ההתרעה הקרובה היא לעוד " +
+                                Math.floor(((alarmTime - now) / 1000 / 60 / 60 - Math.floor((alarmTime - now) / 1000 / 60 / 60)) * 60) + " דקות"
+                        }
+                        reminderAlert(remAlert);
+                    }
+                    counter++;
                     i = reminderArray.length;
+                }
+
+                // notify the user that there are no reminders set for the next 24 hours
+                else if (alarmTime > now + 24 * 60 * 60 * 1000) {
+                    if (counter === 0) {
+                        if (localStorage.getItem("langSelect") === "english") {
+                            remAlert = "No reminders for the next 24 hours";
+                        } else {
+                            remAlert = "אין תזכורות ל-24 שעות הקרובות";
+                        }
+                        reminderAlert(remAlert);
+                        i = reminderArray.length;
+                    } else {
+                        i = reminderArray.length;
+                    }
                 }
             }
         }
-    }
+    })
 }
 
 // displays the message sent by reminderFunction to notify user of whether there are 

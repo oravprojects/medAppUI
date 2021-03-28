@@ -94,6 +94,13 @@ function alertToast(type, message) {
   setTimeout(function () { alertType.className = "alert-off"; }, 4900);
 }
 
+function getTimeOffset(){
+  var currDate = new Date();
+  var timeOffset = currDate.getTimezoneOffset();
+  timeOffset = timeOffset/(-60);
+  return timeOffset;
+}
+
 // Save report in daily report log.
 function saveDailyReport() {
   var usr = localStorage.getItem("user");
@@ -109,9 +116,8 @@ function saveDailyReport() {
   }
 
   // send daily rep to database
-  var currDate = new Date();
-  var timeOffset = currDate.getTimezoneOffset();
-  timeOffset = timeOffset/(-60);
+  
+  var timeOffset = getTimeOffset();
 
   $.ajax({
     type: "POST",
