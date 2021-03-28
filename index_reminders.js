@@ -44,6 +44,20 @@ function getReminders(timeOffset) {
     })
 }
 
+function reminderViewed(id) {
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1/healthcareProvider/fetchData.php",
+            data: { table: "reminderViewed", id: id },
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (res) {
+                console.log("reminder ", id, " marked as viewed: ", res);
+            }
+        });
+}
+
 const reminderFunction = () => {
     var timeOffset = getTimeOffset();
     var reminderArray = [];
@@ -62,12 +76,12 @@ const reminderFunction = () => {
         // var reminderArray = localStorage.getItem("reminders");
 
         // create a reminders array if it doesn't exist
-        if (reminderArray === null) {
-            console.log("no reminders in storage");
-            reminderArray = [];
-            reminderArray = JSON.stringify(reminderArray)
-            localStorage.setItem("reminders", reminderArray);
-        } else {
+        // if (reminderArray === null) {
+        //     console.log("no reminders in storage");
+        //     reminderArray = [];
+        //     reminderArray = JSON.stringify(reminderArray)
+        //     localStorage.setItem("reminders", reminderArray);
+        // } else {
             counter = 0;
             // reminderArray = JSON.parse(reminderArray);
             console.log(reminderArray);
@@ -96,6 +110,7 @@ const reminderFunction = () => {
                     var setBy = reminderArray[i].fname + " " + reminderArray[i].lname;
 
                     displayReminder(subject, setBy, setFor, text);
+                    reminderViewed(reminderArray[i].idreminder);
                     // reminderArray.splice(i, 1);
                     // reminderArray = JSON.stringify(reminderArray);
                     // localStorage.setItem("reminders", reminderArray);
@@ -176,7 +191,7 @@ const reminderFunction = () => {
                     }
                 }
             }
-        }
+        // }
     })
 }
 
@@ -192,7 +207,7 @@ function reminderAlert(message) {
 }
 
 // allows user to set a new reminder
-function setReminder() {
+function setReminder(e) {
     if(localStorage.getItem("langSelect") === "hebrew"){
         var reminderTime = document.getElementById("reminder-time-he").value;
         var reminderText = document.getElementById("reminderText-he").value;
@@ -200,62 +215,83 @@ function setReminder() {
         var reminderTime = document.getElementById("reminder-time").value;
         var reminderText = document.getElementById("reminderText").value;
     }
-    var reminderArray = localStorage.getItem("reminders");
-    var reminderTimeMilli = new Date(reminderTime);
-    reminderTimeMilli = reminderTimeMilli.getTime();
-    console.log(reminderTime);
-    reminderArray = JSON.parse(reminderArray);
-    console.log(reminderText);
-    if(reminderArray.length === 0){
-        reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
-        reminderArray = JSON.stringify(reminderArray)
-        localStorage.setItem("reminders", reminderArray);
-        reminderArray = localStorage.getItem("reminders");
-        return;
-    }
-    var mid = Math.floor(reminderArray.length / 2);
-    var start = 0;
-    var end = reminderArray.length - 1;
-    var mid = Math.floor((start + end) / 2);
-    for (i = 0; i < reminderArray.length; i++) {
-        var dateTimeMilli = new Date(reminderArray[mid].dateTime);
-        dateTimeMilli = dateTimeMilli.getTime();
-        if (mid === start) {
-            i = reminderArray.length;
-            if (reminderTimeMilli > dateTimeMilli) {
-                dateTimeMilli = new Date(reminderArray[end].dateTime);
-                if (reminderTimeMilli > dateTimeMilli) {
-                    reminderArray.splice(end + 1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
-                } else { 
-                    reminderArray.splice(mid + 1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
-                }   
-            } else {
-                reminderArray.splice(mid, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
-                console.log("remTime: " + reminderTimeMilli + " dateTime: " + dateTimeMilli + " placed in place: " + (mid))
+    var timeOffset = getTimeOffset();
+    $.ajax({
+        type: "POST",
+        url: "http://127.0.0.1/healthcareProvider/fetchData.php",
+        data: { table: "setReminder", curr_date: timeOffset, due: reminderTime, text: reminderText },
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (res) {
+            console.log("this is the set reminder res: ", res);
+            if(res === "success"){
+                if(localStorage.getItem("langSelect")==="hebrew"){
+                    message = ".התזכורת נשמרה בהצלחה"
+                }else{
+                    message = "Reminder saved successfully!"
+                }
+                $("#setReminderModal").modal('hide');
+                setTimeout(function () { alertToast('success', message) }, 500);
+            }else {
+                message = "Something went wrong . . .";
+                $("#setReminderModal").modal('hide');
+                setTimeout(function () { alertToast('failure', message) }, 500);
             }
         }
-        else if (reminderTimeMilli > dateTimeMilli) {
-            start = mid;
-            mid = Math.floor((start + end) / 2);
-        } else {
-            end = mid;
-            mid = Math.floor((start + end) / 2);
-        }
-    }
+    });
+    e.preventDefault();
+    // var reminderArray = localStorage.getItem("reminders");
+    // var reminderTimeMilli = new Date(reminderTime);
+    // reminderTimeMilli = reminderTimeMilli.getTime();
+    // console.log(reminderTime);
+    // reminderArray = JSON.parse(reminderArray);
+    // console.log(reminderText);
+    // if(reminderArray.length === 0){
+    //     reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
+    //     reminderArray = JSON.stringify(reminderArray)
+    //     localStorage.setItem("reminders", reminderArray);
+    //     reminderArray = localStorage.getItem("reminders");
+    //     return;
+    // }
+    // var mid = Math.floor(reminderArray.length / 2);
+    // var start = 0;
+    // var end = reminderArray.length - 1;
+    // var mid = Math.floor((start + end) / 2);
+    // for (i = 0; i < reminderArray.length; i++) {
+    //     var dateTimeMilli = new Date(reminderArray[mid].dateTime);
+    //     dateTimeMilli = dateTimeMilli.getTime();
+    //     if (mid === start) {
+    //         i = reminderArray.length;
+    //         if (reminderTimeMilli > dateTimeMilli) {
+    //             dateTimeMilli = new Date(reminderArray[end].dateTime);
+    //             if (reminderTimeMilli > dateTimeMilli) {
+    //                 reminderArray.splice(end + 1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
+    //             } else { 
+    //                 reminderArray.splice(mid + 1, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
+    //             }   
+    //         } else {
+    //             reminderArray.splice(mid, 0, { "dateTime": reminderTime, "user": "Oren", "text": reminderText })
+    //             console.log("remTime: " + reminderTimeMilli + " dateTime: " + dateTimeMilli + " placed in place: " + (mid))
+    //         }
+    //     }
+    //     else if (reminderTimeMilli > dateTimeMilli) {
+    //         start = mid;
+    //         mid = Math.floor((start + end) / 2);
+    //     } else {
+    //         end = mid;
+    //         mid = Math.floor((start + end) / 2);
+    //     }
+    // }
     // reminderArray.push({ "dateTime": reminderTime, "user": "Oren", "text": reminderText });
-    if(localStorage.getItem("langSelect")==="hebrew"){
-        reminderAlert(".התזכורת נשמרה בהצלחה")
-    }else{
-        reminderAlert("Reminder saved successfully!")
-    }
-    console.log(reminderArray);
-    reminderArray = JSON.stringify(reminderArray)
-    localStorage.setItem("reminders", reminderArray);
-    reminderArray = localStorage.getItem("reminders");
+    // console.log(reminderArray);
+    // reminderArray = JSON.stringify(reminderArray)
+    // localStorage.setItem("reminders", reminderArray);
+    // reminderArray = localStorage.getItem("reminders");
 
-    const when = Date.now(reminderText);
+    // const when = Date.now(reminderText);
 
-    console.log(when);
+    // console.log(when);
 }
 
 // add window.load function
