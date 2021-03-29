@@ -693,6 +693,8 @@ function setAppSchedForm() {
         document.getElementById("app-end-time-he").required = true;
         document.getElementById("first-name").required = false;
         document.getElementById("first-name-he").required = true;
+        document.getElementById("pId").required = false;
+        document.getElementById("pId-he").required = true;
         document.getElementById("last-name").required = false;
         document.getElementById("last-name-he").required = true;
         document.getElementById("appSchedModalTextarea1").required = false;
@@ -704,6 +706,8 @@ function setAppSchedForm() {
         document.getElementById("app-end-time-he").required = false;
         document.getElementById("first-name").required = true;
         document.getElementById("first-name-he").required = false;
+        document.getElementById("pId").required = true;
+        document.getElementById("pId-he").required = false;
         document.getElementById("last-name").required = true;
         document.getElementById("last-name-he").required = false;
         document.getElementById("appSchedModalTextarea1").required = true;

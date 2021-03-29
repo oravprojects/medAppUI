@@ -487,6 +487,10 @@ div.card.shadow.open {
 #app-start-time, #app-end-time{
     margin-left: 5px;
 }
+#pId{
+    margin-left: 5px;
+    margin-top: 5px;
+}
 #first-name{
     margin-left: 2px;
 }

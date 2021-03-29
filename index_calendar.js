@@ -129,6 +129,8 @@ function loadCalendar() {
     modalTitle.innerText = title.substr(0, 15) + " Appointments";
     textArea = document.getElementById('appSchedModalTextarea1');
     textArea.value = "";
+    modalpId = document.getElementById("pId");
+    modalpId.value = "";
     modalFirstName = document.getElementById("first-name");
     modalFirstName.value = "";
     modalLastName = document.getElementById("last-name");
@@ -183,6 +185,8 @@ function loadCalendar() {
     textArea.value = "";
     modalFirstName = document.getElementById("first-name-he");
     modalFirstName.value = "";
+    modalpId = document.getElementById("pId-he");
+    modalpId.value = "";
     modalLastName = document.getElementById("last-name-he");
     modalLastName.value = "";
     modalStartTime = document.getElementById("app-start-time-he");
@@ -267,11 +271,12 @@ const appointmentSchedFunction = () => {
 }
 
 function saveAppSchedChanges(e) {
-  var storeAlert = [{"type": "success", "message": "appointment saved successfully!"}]
-  storeAlert = JSON.stringify(storeAlert);
-  localStorage.setItem("alert", storeAlert);
+  e.preventDefault();
+  // var storeAlert = [{"type": "success", "message": "appointment saved successfully!"}]
+  // storeAlert = JSON.stringify(storeAlert);
+  // localStorage.setItem("alert", storeAlert);
   modalTitle = document.getElementById('appSchedModalLongTitle');
-  console.log(modalTitle.innerText);
+  // console.log(modalTitle.innerText);
   if(localStorage.getItem("langSelect")==="english"){
     var appDate = new Date(modalTitle.innerText.substr(4, 11));
   }else{
@@ -279,68 +284,109 @@ function saveAppSchedChanges(e) {
   }
   console.log("appDate: " + appDate)
   //GMT offset to local time
-  var d = new Date();
-  var n = d.getTimezoneOffset() / 60;
-  if (n < 0) { n = n * -1 };
-  appDate.setHours(appDate.getHours() + n);
-  var appSchedArray = localStorage.getItem("appSched");
-  appSchedArray = JSON.parse(appSchedArray)
+  var timeOffset = getTimeOffset();
+  // console.log(timeOffset);
+  // appDate.setHours(appDate.getHours() - timeOffset);
+  // console.log("date: ", appDate);
+  // var appSchedArray = localStorage.getItem("appSched");
+  // appSchedArray = JSON.parse(appSchedArray)
   if (localStorage.getItem("langSelect") === "english") {
     var startTime = document.getElementById("app-start-time").value;
     var endTime = document.getElementById("app-end-time").value;
     var fName = document.getElementById("first-name").value;
     var lName = document.getElementById("last-name").value;
+    var pId = document.getElementById("pId").value;
     var comments = document.getElementById("appSchedModalTextarea1").value;
   } else {
     var startTime = document.getElementById("app-start-time-he").value;
     var endTime = document.getElementById("app-end-time-he").value;
     var fName = document.getElementById("first-name-he").value;
     var lName = document.getElementById("last-name-he").value;
+    var pId = document.getElementById("pId-he").value;
     var comments = document.getElementById("appSchedModalTextarea1-he").value;
   }
   var startHour = startTime.substr(0, 2);
   var startMin = startTime.substr(3, 2);
-  var dateTime = appDate.getTime() + startHour * 60 * 60 * 1000 + startMin * 60 * 1000;
-  console.log("dateTime: " + dateTime);
-  if (appSchedArray.length === 0) {
-    appSchedArray.push({ "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
-    appSchedArray = JSON.stringify(appSchedArray);
-    localStorage.setItem("appSched", appSchedArray);
-    console.log(appSchedArray);
-    return;
-  }
+  var dateTimeStart = appDate.getTime()/1000 + startHour * 60 * 60 + startMin * 60;
+  // dateTimeStart = new Date(dateTimeStart);
+  // dateTimeStart.setHours(dateTimeStart.getHours() + 3)
+  // dateTimeStart = dateTimeStart.toISOString();
+  // console.log(dateTimeStart);
+  
+  var endHour = endTime.substr(0, 2);
+  var endMin = endTime.substr(3, 2);
+  var dateTimeEnd = appDate.getTime()/1000 + endHour * 60 * 60 + endMin * 60;
+  // dateTimeEnd = new Date(dateTimeEnd);
+  // dateTimeEnd.setHours(dateTimeEnd.getHours() + 3)
+  // dateTimeEnd = dateTimeEnd.toISOString();
+  // console.log(dateTimeEnd);
 
-  var mid = Math.floor(appSchedArray.length / 2);
-  var start = 0;
-  var end = appSchedArray.length - 1;
-  var mid = Math.floor((start + end) / 2);
-  var existDateTime = 0;
-  var meetingId = (dateTime - (n * 60 * 60 * 1000))
-  for (i = 0; i < appSchedArray.length; i++) {
-    if (mid === start) {
-      i = appSchedArray.length;
-      if (dateTime > existDateTime) {
-        existDateTime = new Date(appSchedArray[end].date.substr(0, 11) + appSchedArray[end].start + ":00.000Z").getTime();
-        if (dateTime > existDateTime) {
-          appSchedArray.splice(end + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
-        } else {
-          appSchedArray.splice(mid + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
+  // console.log("dateTime: " + dateTimeEnd);
+  // console.log("data: " + timeOffset, dateTimeStart, dateTimeEnd, comments, pId);
+
+  $.ajax({
+    type: "POST",
+    url: "http://127.0.0.1/healthcareProvider/fetchData.php",
+    data: { table: "setApp", curr_date: timeOffset, start: dateTimeStart, end: dateTimeEnd, notes: comments, pId: pId },
+    xhrFields: {
+        withCredentials: true
+    },
+    success: function (res) {
+        console.log("this is the set reminder res: ", res);
+        if(res === "success"){
+            if(localStorage.getItem("langSelect")==="hebrew"){
+                message = ".הפגישה נשמרה בהצלחה"
+            }else{
+                message = "Appointment saved successfully!"
+            }
+            $("#appSchedModal").modal('hide');
+            setTimeout(function () { alertToast('success', message) }, 500);
+        }else {
+            message = "Something went wrong . . .";
+            $("#appSchedModal").modal('hide');
+            setTimeout(function () { alertToast('failure', message) }, 500);
         }
-      } else {
-        appSchedArray.splice(mid, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
-      }
     }
-    else if (dateTime > existDateTime) {
-      start = mid;
-      mid = Math.floor((start + end) / 2);
-    } else {
-      end = mid;
-      mid = Math.floor((start + end) / 2);
-    }
-  }
-  appSchedArray = JSON.stringify(appSchedArray)
-  console.log("App Array: " + appSchedArray);
-  localStorage.setItem("appSched", appSchedArray);
+});
+  // if (appSchedArray.length === 0) {
+  //   appSchedArray.push({ "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
+  //   appSchedArray = JSON.stringify(appSchedArray);
+  //   localStorage.setItem("appSched", appSchedArray);
+  //   console.log(appSchedArray);
+  //   return;
+  // }
+
+  // var mid = Math.floor(appSchedArray.length / 2);
+  // var start = 0;
+  // var end = appSchedArray.length - 1;
+  // var mid = Math.floor((start + end) / 2);
+  // var existDateTime = 0;
+  // var meetingId = (dateTime - (n * 60 * 60 * 1000))
+  // for (i = 0; i < appSchedArray.length; i++) {
+  //   if (mid === start) {
+  //     i = appSchedArray.length;
+  //     if (dateTime > existDateTime) {
+  //       existDateTime = new Date(appSchedArray[end].date.substr(0, 11) + appSchedArray[end].start + ":00.000Z").getTime();
+  //       if (dateTime > existDateTime) {
+  //         appSchedArray.splice(end + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
+  //       } else {
+  //         appSchedArray.splice(mid + 1, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
+  //       }
+  //     } else {
+  //       appSchedArray.splice(mid, 0, { "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments, "meeting notes": "", "meetingId": meetingId });
+  //     }
+  //   }
+  //   else if (dateTime > existDateTime) {
+  //     start = mid;
+  //     mid = Math.floor((start + end) / 2);
+  //   } else {
+  //     end = mid;
+  //     mid = Math.floor((start + end) / 2);
+  //   }
+  // }
+  // appSchedArray = JSON.stringify(appSchedArray)
+  // console.log("App Array: " + appSchedArray);
+  // localStorage.setItem("appSched", appSchedArray);
 }
 
 
