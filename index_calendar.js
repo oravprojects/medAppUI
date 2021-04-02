@@ -267,7 +267,7 @@ function loadCalendar() {
 
 const appointmentSchedFunction = () => {
   var appSchedArray = localStorage.getItem("appSched");
-  console.log("1: " + appSchedArray);
+  // console.log("1: " + appSchedArray);
 }
 
 function saveAppSchedChanges(e) {
@@ -329,25 +329,28 @@ function saveAppSchedChanges(e) {
     url: "http://127.0.0.1/healthcareProvider/fetchData.php",
     data: { table: "setApp", curr_date: timeOffset, start: dateTimeStart, end: dateTimeEnd, notes: comments, pId: pId },
     xhrFields: {
-        withCredentials: true
+      withCredentials: true
     },
     success: function (res) {
-        console.log("this is the set reminder res: ", res);
-        if(res === "success"){
-            if(localStorage.getItem("langSelect")==="hebrew"){
-                message = ".הפגישה נשמרה בהצלחה"
-            }else{
-                message = "Appointment saved successfully!"
-            }
-            $("#appSchedModal").modal('hide');
-            setTimeout(function () { alertToast('success', message) }, 500);
-        }else {
-            message = "Something went wrong . . .";
-            $("#appSchedModal").modal('hide');
-            setTimeout(function () { alertToast('failure', message) }, 500);
+      console.log("this is the set reminder res: ", res);
+      if (res === "success") {
+        if (localStorage.getItem("langSelect") === "hebrew") {
+          message = ".הפגישה נשמרה בהצלחה"
+        } else {
+          message = "Appointment saved successfully!"
         }
+        $("#appSchedModal").modal('hide');
+        setTimeout(function () {
+          alertToast('success', message);
+          loadAppSched();
+        }, 500);
+      } else {
+        message = "Something went wrong . . .";
+        $("#appSchedModal").modal('hide');
+        setTimeout(function () { alertToast('failure', message) }, 500);
+      }
     }
-});
+  });
   // if (appSchedArray.length === 0) {
   //   appSchedArray.push({ "date": appDate, "start": startTime, "end": endTime, "fName": fName, "lName": lName, "comments": comments });
   //   appSchedArray = JSON.stringify(appSchedArray);

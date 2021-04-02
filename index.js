@@ -71,7 +71,8 @@ function appointmentClicks(){
             i=appSched.length;
           }
         }
-        textArea.value = existingNotes;
+        // textArea.value = existingNotes;
+        textArea.value = "";
       }
       if (localStorage.getItem("langSelect") === "hebrew") {
         textArea.dir = "rtl"
