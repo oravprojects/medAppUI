@@ -7,33 +7,34 @@ var patt = /[A-Za-z]/
 var checkAgain = true;
 var patientNumber = 0;
 var todayApps = document.querySelectorAll(".dash-appointment");
-var appSched = localStorage.getItem("appSched");
+// var appSched = localStorage.getItem("appSched");
+
 // create an appointment schedule array if it doesn't exist
-if (appSched === null) {
-    console.log("no appointments in storage");
-    appSched = [];
-    appSched = JSON.stringify(appSched);
-    localStorage.setItem("appSched", appSched);
-}
-appSched = JSON.parse(appSched);
-console.log(appSched);
-var appSchedTemp = [];
-var d = new Date();
-var n = d.getTimezoneOffset() / 60;
-if (n < 0) { n = n * -1 };
-var currDate = new Date();
-currDate.setHours(0);
-currDate.setMinutes(0);
-currDate.setSeconds(0);
-currDate.setMilliseconds(0);
-currDate.setHours(currDate.getHours() + n)
-var tomorrow = new Date(currDate);
-tomorrow.setDate(tomorrow.getDate() + 1);
-tomorrow.setHours(0);
-tomorrow.setMinutes(0);
-tomorrow.setSeconds(0);
-tomorrow.setMilliseconds(0);
-tomorrow.setHours(tomorrow.getHours() + n);
+// if (appSched === null) {
+//     console.log("no appointments in storage");
+//     appSched = [];
+//     appSched = JSON.stringify(appSched);
+//     localStorage.setItem("appSched", appSched);
+// }
+// appSched = JSON.parse(appSched);
+// console.log(appSched);
+// var appSchedTemp = [];
+// var d = new Date();
+// var n = d.getTimezoneOffset() / 60;
+// if (n < 0) { n = n * -1 };
+// var currDate = new Date();
+// currDate.setHours(0);
+// currDate.setMinutes(0);
+// currDate.setSeconds(0);
+// currDate.setMilliseconds(0);
+// currDate.setHours(currDate.getHours() + n)
+// var tomorrow = new Date(currDate);
+// tomorrow.setDate(tomorrow.getDate() + 1);
+// tomorrow.setHours(0);
+// tomorrow.setMinutes(0);
+// tomorrow.setSeconds(0);
+// tomorrow.setMilliseconds(0);
+// tomorrow.setHours(tomorrow.getHours() + n);
 
 var timeOffset = getTimeOffset();
 
@@ -73,12 +74,12 @@ function getApps() {
 //     }
 // });
 
-for (i = 0; i < appSched.length; i++) {
-    if (new Date(appSched[i].date).getTime() >= currDate.getTime() &&
-        new Date(appSched[i].date).getTime() < tomorrow.getTime()) {
-        appSchedTemp.push(appSched[i]);
-    }
-}
+// for (i = 0; i < appSched.length; i++) {
+//     if (new Date(appSched[i].date).getTime() >= currDate.getTime() &&
+//         new Date(appSched[i].date).getTime() < tomorrow.getTime()) {
+//         appSchedTemp.push(appSched[i]);
+//     }
+// }
 function scrollFunction(num) {
     if ((window.innerHeight + window.scrollY - 48) >= (document.body.offsetHeight)) {
         console.log("at bottom");
@@ -104,6 +105,7 @@ function loadAppSched() {
 
     Promise.all(promises).then(result => {
         appSchedTemp = result[0];
+        sessionStorage.setItem("appSchedTemp", JSON.stringify(appSchedTemp));
         console.log("after promise:", appSchedTemp);
         var patt = /[A-Za-z]/
         if (appSchedTemp.length > 0) {

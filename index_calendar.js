@@ -265,10 +265,10 @@ function loadCalendar() {
   dateHebTitle.innerHTML = dayHebName + ", " + dayNumber + " " + monthHebName + ", " + year;
 }
 
-const appointmentSchedFunction = () => {
-  var appSchedArray = localStorage.getItem("appSched");
-  // console.log("1: " + appSchedArray);
-}
+// const appointmentSchedFunction = () => {
+//   var appSchedArray = localStorage.getItem("appSched");
+//   // console.log("1: " + appSchedArray);
+// }
 
 function saveAppSchedChanges(e) {
   e.preventDefault();
@@ -408,7 +408,7 @@ function addLoadEvent(func) {
   }
 }
 addLoadEvent(loadCalendar);
-addLoadEvent(appointmentSchedFunction);
+// addLoadEvent(appointmentSchedFunction);
 
 // addLoadEvent(function() {
 //     document.body.style.backgroundColor = '#EFDF95';

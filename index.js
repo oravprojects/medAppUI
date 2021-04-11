@@ -63,16 +63,16 @@ function appointmentClicks(){
       var textArea = document.getElementById('exampleFormControlTextarea1');
       textArea.value = "";
       if (text.includes(" AM") || text.includes(" PM")) {
-        var appSched = localStorage.getItem("appSched");
-        appSched = JSON.parse(appSched);
-        for(i=0; i<appSched.length; i++){
-          if(appSched[i].meetingId == modalButton.name){
-            var existingNotes = appSched[i].meetingNotes;
-            i=appSched.length;
+        var appArray = sessionStorage.getItem("appSchedTemp");
+        appArray = JSON.parse(appArray);
+        for(i=0; i<appArray.length; i++){
+          if(appArray[i].idappointment == modalButton.name){
+            var existingNotes = appArray[i].notes;
+            i=appArray.length;
           }
         }
-        // textArea.value = existingNotes;
-        textArea.value = "";
+        textArea.value = existingNotes;
+        // textArea.value = "";
       }
       if (localStorage.getItem("langSelect") === "hebrew") {
         textArea.dir = "rtl"
@@ -104,7 +104,7 @@ function getTimeOffset(){
 
 // Save report in daily report log.
 function saveDailyReport() {
-  var usr = localStorage.getItem("user");
+  // var usr = localStorage.getItem("user");
   var notes = document.getElementById("exampleFormControlTextarea1").value;
   if (notes === "") {
     if (localStorage.getItem("langSelect") === "english") {
@@ -154,15 +154,15 @@ function saveChanges(e) {
 }
 
 function saveMeetingNotes(e){
-  meetingId = e.target.name;
-  console.log("button name: " + meetingId)
-  var patientName = document.getElementById('exampleModalLongTitle').innerText;
-  var user = localStorage.getItem('user');
+  var meetingId = e.target.name;
+  // console.log("button name: " + meetingId)
+  // var patientName = document.getElementById('exampleModalLongTitle').innerText;
+  // var user = localStorage.getItem('user');
   var notes = document.getElementById("exampleFormControlTextarea1").value;
-  var currDate = new Date();
-  var appSched = localStorage.getItem("appSched");
-  appSched = JSON.parse(appSched);
-  console.log("save meeting notes: " + patientName + " user: " + user + " notes: " + notes + " date: " + currDate.getTime());
+  // var currDate = new Date();
+  // var appSched = localStorage.getItem("appSched");
+  // appSched = JSON.parse(appSched);
+  // console.log("save meeting notes: " + patientName + " user: " + user + " notes: " + notes + " date: " + currDate.getTime());
   
   if (notes === "") {
     if (localStorage.getItem("langSelect") === "english") {
@@ -174,20 +174,30 @@ function saveMeetingNotes(e){
     return;
   }
 
-  for (i=0; i<appSched.length; i++){
-    console.log("this meetingId: " + meetingId + " array meeting id: " + appSched[i].meetingId)
-    if(appSched[i].meetingId == meetingId){
-      appSched[i].meetingNotes = notes;
-      appSched = JSON.stringify(appSched);
-      localStorage.setItem("appSched", appSched);
-      appSched = localStorage.getItem("appSched");
-      appSched = JSON.parse(appSched);
-      console.log(appSched[i]);
+  // for (i=0; i<appSched.length; i++){
+  //   console.log("this meetingId: " + meetingId + " array meeting id: " + appSched[i].meetingId)
+  //   if(appSched[i].meetingId == meetingId){
+  //     appSched[i].meetingNotes = notes;
+  //     appSched = JSON.stringify(appSched);
+  //     localStorage.setItem("appSched", appSched);
+  //     appSched = localStorage.getItem("appSched");
+  //     appSched = JSON.parse(appSched);
+  //     console.log(appSched[i]);
+  //   }
+  // }
+
+  $.ajax({
+    type: "POST",
+    url: "http://127.0.0.1/healthcareProvider/fetchData.php",
+    data: { table: "appnotes", id: meetingId, notes: notes},
+    success: function (res) {
+      console.log(res);
+      loadAppSched();
     }
-  }
+  });
 
   if (localStorage.getItem("langSelect") === "english") {
-    message = "Report submitted successfully!";
+    message = "Meeting notes submitted successfully!";
   } else {
     message = '!הדו"ח נשמר בהצלחה';
   }
@@ -421,6 +431,8 @@ function sortContent(dir, field, arr) {
 
 // log out
 function logout(event){
+  sessionStorage.clear();
+  localStorage.clear();
   console.log("loggin out");
   $.ajax({
     url: "http://127.0.0.1/healthcareProvider/logout.php",
