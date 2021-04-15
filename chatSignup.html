@@ -14,38 +14,40 @@
     <div class="wrapper">
         <section class="form signup">
             <header>Chat Signup</header>
-            <form action="#">
-                <div class="error-txt">This is an error message</div>
+            <form action="#" enctype="multipart/form-data" autocomplete="off">
+                <div class="error-txt"></div>
                 <div class="name-details">
                     <div class="field input">
                         <label>first name</label>
-                        <input type="text" placeholder="John">
+                        <input type="text" name="fname" placeholder="John" required>
                     </div>
                     <div class="field input">
                         <label>last name</label>
-                        <input type="text" placeholder="Doe">
+                        <input type="text" name="lname"  placeholder="Doe" required>
                     </div>
                 </div>
                 <div class="field input">
                     <label>email</label>
-                    <input type="text" placeholder="johndoe@mail.com">
+                    <input type="text" name="email"  placeholder="johndoe@mail.com" required>
                 </div>
                 <div class="field input">
                     <label>password</label>
-                    <input type="text" placeholder="enter password">
+                    <input type="password" name="password"  placeholder="enter password" required>
                     <i class="fas fa-eye"></i>
                 </div>
                 <div class="field image">
                     <label>upload image</label>
-                    <input type="file">
+                    <input type="file" name="image" required>
                 </div>
                 <div class="field button">
                     <input type="submit" value="continue to chat">
                 </div>
             </form>
-            <div class="link">already signed up? <a href="#">login</a></div>
+            <div class="link">already signed up? <a href="http://127.0.0.1:5500/chatLogin">login</a></div>
         </section>
     </div>
+    <script src="javascript/pass-show-hide.js"></script>
+    <script src="javascript/chatSignup.js"></script>
 </body>
 
 </html>
