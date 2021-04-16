@@ -7,7 +7,7 @@ form.onsubmit = (e)=>{
 
 continueBtn.onclick = ()=>{
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost/healthcareProvider/chatSignup.php", true);
+    xhr.open("POST", "http://127.0.0.1/healthcareProvider/chatSignup.php", true);
     xhr.onload = ()=>{
         if(xhr.readyState === XMLHttpRequest.DONE){
             if(xhr.status === 200){

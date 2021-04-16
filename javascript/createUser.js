@@ -4,7 +4,7 @@ $("#user-info-form").on("submit", function (e) {
     console.log("dataString: " + dataString);
     $.ajax({
       type: "POST",
-      url: "http://localhost/healthcareProvider/create_user.php",
+      url: "http://127.0.0.1/healthcareProvider/create_user.php",
       data: dataString,
       success: function (response) {
         console.log("submitted successfully to php function: " + response);
@@ -18,7 +18,7 @@ $("#user-info-form").on("submit", function (e) {
     console.log("dataString: " + dataString);
     $.ajax({
       type: "POST",
-      url: "http://localhost/healthcareProvider/create_patient.php",
+      url: "http://127.0.0.1/healthcareProvider/create_patient.php",
       data: dataString,
       success: function (response) {
         console.log(response);
