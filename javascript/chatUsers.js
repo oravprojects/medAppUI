@@ -9,10 +9,16 @@ searchBtn.onclick = () => {
     searchBar.classList.toggle("active");
     searchBar.focus();
     searchBtn.classList.toggle("active");
+    searchBar.value = "";
 }
 
 searchBar.onkeyup = ()=>{
     let searchTerm = searchBar.value;
+    // if(searchTerm != ""){
+    //     searchBar.classList.add("active");
+    // }else{
+    //     searchBar.classList.remove("active");
+    // }
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1/healthcareProvider/chatSearch.php", true);
     xhr.withCredentials = true;
@@ -20,7 +26,8 @@ searchBar.onkeyup = ()=>{
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let data = xhr.response;
-                console.log(data);
+                usersList.innerHTML = data;
+                    // console.log(data);
             }
         }
     }
@@ -50,20 +57,23 @@ xhr.onload = () => {
 }
 xhr.send();
 
-// setInterval(()=>{
-//     let xhr = new XMLHttpRequest();
-//     xhr.open("GET", "http://127.0.0.1/healthcareProvider/chatAvailUsers.php", true);
-//     xhr.withCredentials = true;
-//     xhr.onload = () => {
-//         if (xhr.readyState === XMLHttpRequest.DONE) {
-//             if (xhr.status === 200) {
-//                 let data = xhr.response;
-//                 usersList.innerHTML = data;
-//             }
-//         }
-//     }
-//     xhr.send();
-// }, 500)
+setInterval(()=>{
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://127.0.0.1/healthcareProvider/chatAvailUsers.php", true);
+    xhr.withCredentials = true;
+    xhr.onload = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let data = xhr.response;
+                if(!searchBar.classList.contains("active")){
+                    usersList.innerHTML = data;
+                    // console.log(data);
+                }
+            }
+        }
+    }
+    xhr.send();
+}, 500)
 
 function isJSON(str) {
     try {
