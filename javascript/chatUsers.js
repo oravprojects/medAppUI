@@ -3,7 +3,28 @@ searchBtn = document.querySelector(".users .search button"),
 userName = document.querySelector(".details span"),
 status = document.querySelector(".details p"),
 image = document.querySelector(".content img"),
-usersList = document.querySelector(".users .users-list");
+usersList = document.querySelector(".users .users-list"),
+logoutBtn = document.querySelector(".logout");
+
+logoutBtn.onclick = () => {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://127.0.0.1/healthcareProvider/chatLogout.php", true);
+    xhr.withCredentials = true;
+    xhr.onload = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let data = xhr.response;
+                if(data === "success"){
+                    location.href = "http://127.0.0.1:5500/chatLogin.html";
+                }else{
+                    console.log(data);
+                }
+            }
+        }
+    }
+    // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send();
+}
 
 searchBtn.onclick = () => {
     searchBar.classList.toggle("active");
@@ -50,6 +71,10 @@ xhr.onload = () => {
                     image.src = "http://127.0.0.1/healthcareProvider/images/" + JSON.parse(data).image;
             }
             else {
+                if(data === "logout"){
+                    location.href = "http://127.0.0.1:5500/chatLogin.html";
+                    return;
+                }
                 console.log("something went wrong . . .")
             }
         }
@@ -65,6 +90,9 @@ setInterval(()=>{
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let data = xhr.response;
+                if(data === "logout"){
+                    location.href = "http://127.0.0.1:5500/chatLogin.html";
+                }
                 if(!searchBar.classList.contains("active")){
                     usersList.innerHTML = data;
                     // console.log(data);

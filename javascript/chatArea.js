@@ -26,6 +26,10 @@ sendBtn.onclick = () => {
     xhr.onload = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
+                if(data === "logout"){
+                    location.href = "http://127.0.0.1:5500/chatLogin.html";
+                    return;
+                }
                 inputField.value = "";
             }
         }
@@ -36,6 +40,13 @@ sendBtn.onclick = () => {
     xhr.send(formData);
 }
 
+// chatBox.onmouseenter = ()=>{
+//     chatBox.classList.add("active");
+// }
+// chatBox.onmouseleave = ()=>{
+//     chatBox.classList.remove("active");
+// }
+
 setInterval(()=>{
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1/healthcareProvider/getChatContent.php", true);
@@ -44,15 +55,25 @@ setInterval(()=>{
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let data = xhr.response;
+                if(data === "logout"){
+                    location.href = "http://127.0.0.1:5500/chatLogin.html";
+                    return;
+                }
                 chatBox.innerHTML = data;
+                if(!chatBox.classList.contains("active")){
+                    scrollToBottom();
+                    chatBox.classList.add("active");
+                }
             }
         }
     }
-    // let formData = new FormData(form);
-    // console.log(...formData);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send("guest_id=" + guestId + "&img=" + img);
 }, 500)
+
+function scrollToBottom(){
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
 
 let xhr = new XMLHttpRequest();
 xhr.open("POST", "http://127.0.0.1/healthcareProvider/chatUsers.php", true);
@@ -69,6 +90,10 @@ xhr.onload = () => {
                     hostImage.src = "http://127.0.0.1/healthcareProvider/images/" + JSON.parse(data).image;
             }
             else {
+                if(data === "logout"){
+                    location.href = "http://127.0.0.1:5500/chatLogin.html";
+                    return;
+                }
                 console.log("something went wrong . . .")
             }
         }
