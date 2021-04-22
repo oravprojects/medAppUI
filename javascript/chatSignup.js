@@ -29,7 +29,7 @@ continueBtn.onclick = ()=>{
             if(xhr.status === 200){
                 let data = xhr.response;
                 if(data === "success"){
-                    location.href = "http://127.0.0.1:5500/chatUsers.html";
+                    location.href = "http://127.0.0.1:5500/chatLogin.html";
                 }else{
                     console.log("error: ", data);
                     errorText.textContent = data;
