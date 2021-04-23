@@ -1,3 +1,12 @@
+var exampleSocket = new WebSocket("ws://127.0.0.1/healthcareProvider/socketServer.php");
+exampleSocket.onopen = function (event) {
+    exampleSocket.send("Here's some text that the server is urgently awaiting!");
+};
+
+exampleSocket.onmessage = function (event) {
+    console.log(event.data);
+}
+
 let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1/healthcareProvider/checkStatus.php", true);
     xhr.withCredentials = true;
