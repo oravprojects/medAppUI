@@ -19,6 +19,26 @@ form.onsubmit = (e)=>{
     e.preventDefault();
 }
 
+// socket test
+// var exampleSocket = new WebSocket("ws://127.0.0.1:8000/healthcareProvider/socketServer.php");
+
+// sendBtn.onclick = () => {
+//     let formData = new FormData(form);
+//     console.log(...formData);
+//     let msg = {"message": formData.get('message'), "guest_id": guestId}
+//     let message = formData.get('message');
+//     console.log(message);
+//     exampleSocket.send(message);
+//     // exampleSocket = new WebSocket("ws://127.0.0.1:8000/healthcareProvider/socketServer.php");
+//     // exampleSocket.onmessage = function (event) {
+//     //     console.log(event.data);
+//     // }    
+// }
+
+// exampleSocket.onmessage = function (event) {
+//     console.log(event.data);
+// }
+
 sendBtn.onclick = () => {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1/healthcareProvider/chatContent.php", true);
@@ -26,6 +46,8 @@ sendBtn.onclick = () => {
     xhr.onload = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
+                let data = xhr.response;
+                console.log(data);
                 if(data === "logout"){
                     location.href = "http://127.0.0.1:5500/chatLogin.html";
                     return;
@@ -38,6 +60,7 @@ sendBtn.onclick = () => {
     formData.set("guest_id", guestId)
     console.log(...formData);
     xhr.send(formData);
+    chatBox.classList.remove("active");
 }
 
 // chatBox.onmouseenter = ()=>{
