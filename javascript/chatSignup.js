@@ -15,13 +15,13 @@ let xhr = new XMLHttpRequest();
 xhr.send();
 
 const form = document.querySelector(".signup form"),
-continueBtn = form.querySelector(".button input"),
+createAcctBtn = form.querySelector(".button input"),
 errorText = form.querySelector(".error-txt");
 form.onsubmit = (e)=>{
     e.preventDefault();
 }
 
-continueBtn.onclick = ()=>{
+createAcctBtn.onclick = ()=>{
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1/healthcareProvider/chatSignup.php", true);
     xhr.onload = ()=>{
